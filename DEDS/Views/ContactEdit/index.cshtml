@@ -1,0 +1,25 @@
+﻿@using Dou.Misc.Extension
+@Html.MenuMap()
+@Html.DataManagerOptionsJavascript(null, "dou_options")
+
+
+<head>
+    <style>
+        input[type=checkbox][disabled]::before {
+            content: ""; /* 或其他你想要的內容，或者不設定 content */
+            /* 其他樣式 */
+        }
+       
+    </style>
+</head>
+@*<table id="_table"></table>*@
+<script src="~/Scripts/gis/other/tableDragger/table-dragger.js"></script>
+<script src="~/Scripts/Comm/editsort.js"></script>
+<script>
+    //$(document).ready(function () {
+
+    //    $("#_table").DouEditableTable(dou_options);
+    //});
+
+
+</script>

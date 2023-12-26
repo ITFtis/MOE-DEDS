@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<ArrayOfMenuDefAttribute xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <MenuDefAttribute xsi:type="HtmlIFrameMenuDefAttribute">
+    <Name>工服案</Name>
+    <MenuPath>業務系統</MenuPath>
+    <Index>1</Index>
+    <IsOnlyPath>false</IsOnlyPath>
+    <IsPromptUI>true</IsPromptUI>
+	<Target>_self</Target>
+    <Id>IS</Id>
+    <Url>https://pj.ftis.org.tw/is</Url>
+  </MenuDefAttribute>
+  <MenuDefAttribute xsi:type="HtmlIFrameMenuDefAttribute">
+    <Name>工服資料簡易查詢</Name>
+    <MenuPath>業務系統</MenuPath>
+    <Index>1</Index>
+	<ActionController>HtmlIframeOtherMainLayout</ActionController>
+    <IsOnlyPath>false</IsOnlyPath>
+    <IsPromptUI>false</IsPromptUI>
+    <Id>ISQ</Id>
+    <Url>https://pj4.ftis.org.tw/WorkForm</Url>
+  </MenuDefAttribute>
+  <MenuDefAttribute xsi:type="HtmlIFrameMenuDefAttribute">
+    <Name>人員基本資料管理</Name>
+    <MenuPath>會內系統</MenuPath>
+    <Index>1</Index>
+    <IsOnlyPath>false</IsOnlyPath>
+    <IsPromptUI>true</IsPromptUI>
+    <Id>HrEmp</Id>
+    <Url>https://pj.ftis.org.tw/FtisEmpManage</Url>
+  </MenuDefAttribute>
+  <MenuDefAttribute xsi:type="HtmlIFrameMenuDefAttribute">
+    <Name>座位表查詢</Name>
+    <MenuPath>會內系統</MenuPath>
+    <Index>2</Index>
+    <IsOnlyPath>false</IsOnlyPath>
+    <IsPromptUI>false</IsPromptUI>
+    <FromAppend>false</FromAppend>
+    <Id>EmpSeat1</Id>
+    <Url>https://pj4.ftis.org.tw/SEAT/SEAT/SEAT</Url>
+  </MenuDefAttribute>
+  <MenuDefAttribute xsi:type="HtmlIFrameMenuDefAttribute">
+    <Name>座位表管理</Name>
+    <MenuPath>會內系統</MenuPath>
+    <Index>2</Index>
+    <IsOnlyPath>false</IsOnlyPath>
+    <IsPromptUI>false</IsPromptUI>
+    <Id>EmpSeat2</Id>
+    <Url>https://pj4.ftis.org.tw/SEAT/Customization/Customization</Url>
+  </MenuDefAttribute>
+  <MenuDefAttribute xsi:type="HtmlIFrameMenuDefAttribute">
+    <Name>座位表查詢(新視窗)</Name>
+    <MenuPath>會內系統</MenuPath>
+    <Index>2</Index>
+    <IsOnlyPath>false</IsOnlyPath>
+    <IsPromptUI>true</IsPromptUI>
+    <Id>EmpSeat3</Id>
+    <Url>https://pj4.ftis.org.tw/SEAT/SEAT/SEAT</Url>
+  </MenuDefAttribute>
+  <MenuDefAttribute xsi:type="HtmlIFrameMenuDefAttribute">
+    <Name>資產管理系統</Name>
+    <MenuPath>會內系統</MenuPath>
+    <Index>6</Index>
+    <IsOnlyPath>false</IsOnlyPath>
+    <IsPromptUI>true</IsPromptUI>
+    <Id>AssetSys</Id>
+    <Url>https://pj3.ftis.org.tw/AssetSys</Url>
+  </MenuDefAttribute>
+  <MenuDefAttribute xsi:type="HtmlIFrameMenuDefAttribute">
+    <Name>百老匯</Name>
+    <MenuPath>會內系統</MenuPath>
+    <Index>9</Index>
+    <IsOnlyPath>false</IsOnlyPath>
+    <IsPromptUI>true</IsPromptUI>
+    <Id>ChatGPT</Id>
+    <Url>https://pj.ftis.org.tw/CHAT/ChatHistory</Url>
+  </MenuDefAttribute>
+  <MenuDefAttribute xsi:type="HtmlIFrameMenuDefAttribute">
+    <Name>財務系統</Name>
+    <MenuPath>會內系統</MenuPath>
+    <Index>9</Index>
+    <IsOnlyPath>false</IsOnlyPath>
+    <IsPromptUI>true</IsPromptUI>
+    <Id>FBSys</Id>
+    <Url>https://pj3.ftis.org.tw/FBsys/User/Login?ad=true</Url>
+  </MenuDefAttribute>
+  <MenuDefAttribute xsi:type="HtmlIFrameMenuDefAttribute">
+    <Name>線上管理系統</Name>
+    <MenuPath>會內系統</MenuPath>
+    <Index>99</Index>
+    <IsOnlyPath>false</IsOnlyPath>
+    <IsPromptUI>false</IsPromptUI>
+    <Id>OldMis</Id>
+    <Url>https://mis.ftis.org.tw/</Url>
+  </MenuDefAttribute>
+  <MenuDefAttribute xsi:type="HtmlIFrameMenuDefAttribute">
+    <Name>抽獎活動系統</Name>
+    <MenuPath>會內系統</MenuPath>
+    <Index>99</Index>
+    <IsOnlyPath>false</IsOnlyPath>
+    <IsPromptUI>true</IsPromptUI>
+    <Id>Lottery</Id>
+    <Url>https://pj3.ftis.org.tw/DrawGame/</Url>
+  </MenuDefAttribute>
+ 
+</ArrayOfMenuDefAttribute>

@@ -1,0 +1,52 @@
+﻿@using Dou.Misc.Extension
+@Html.MenuMap()
+@Html.DataManagerOptionsJavascript(null, "dou_options")
+
+<head>
+    <style>
+        .semicolon {
+            text-align: center;
+            margin: 0.3em -1.3em 0;
+        }
+
+        .hashtag {
+            margin: 0.4em 0em 0 -3.2em;
+        }
+              
+    </style>
+</head>
+<table id="_table"></table>
+
+<script src="~/Scripts/Comm/Basic.js"></script>
+<script>
+    $(document).ready(function () {
+        helper.jspanel.jspAlertMsg(undefined, {
+            title: '', content: '<font color="red" size="4em">●公務用資料，限相關人員使用，嚴禁其他用途。</br></br>●請遵循「個人資料保護法」相關規定，限公務使用，禁止對外洩漏及公開個人資料。</br></br>●保管人遇職務異動時列入移交。</font>'
+        })
+        
+        dou_options.afterCreateEditDataForm = function ($_c, row) {
+            changetypeposition('OfficePhone1', 'OfficePhone2', 'OfficePhone3', '');
+        }
+
+        dou_options.afterEditDataConfirm = function (d, callback) {
+            var phone1 = $.isNumeric($('input[data-fn=OfficePhone1]').val().trim());
+            var phone2 = $.isNumeric($('input[data-fn=OfficePhone2]').val().trim());
+            var phone3 = $('input[data-fn=OfficePhone3]').val().trim();
+            if (phone1 == false || phone2 == false) { //兩個部分都只能打純數字
+                callback("電話:只能輸入純數字");
+            }
+            else if (phone3 !== "" && $.isNumeric(phone3) == false) {
+                callback("分機:只能輸入純數字");
+            }
+            else { callback() };
+        }
+
+
+        $("#_table").DouEditableTable(dou_options);
+    });
+
+
+
+
+
+</script>

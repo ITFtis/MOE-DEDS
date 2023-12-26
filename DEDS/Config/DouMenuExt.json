@@ -1,0 +1,25 @@
+﻿[
+  {
+    "Name": "災情決策",
+    "Index": 1,
+    "IsOnlyPath": true,
+    "Icon": "~/images/menu/menu_system.png"
+  },
+  {
+    "Name": "倉儲管理",
+    "Index": 3,
+    "IsOnlyPath": true,
+    "Icon": "~/images/menu/menu_data.png"
+  },
+  {
+    "Name": "通聯資料",
+    "Index": 5,
+    "IsOnlyPath": true
+  },
+  {
+    "Name": "系統管理",
+    "Index": 999,
+    "IsOnlyPath": true,
+    "Icon": "~/images/menu/menu_admin.png"
+  }
+]

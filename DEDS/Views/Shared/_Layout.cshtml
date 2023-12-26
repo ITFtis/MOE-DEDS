@@ -1,0 +1,160 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        災情預警應變決策支援系統
+    </title>
+    <link rel="SHORTCUT ICON" href="~/images/logo.png" data-logo />
+    @Styles.Render("~/Content/css")
+    <script>
+        window.app = window.app || {};
+        app.siteRoot = "@Url.Content("~/")";
+    </script>
+    @if (ViewBag.HasGis != null && ViewBag.HasGis)
+    {
+        @Styles.Render("~/Scripts/gis/csskit")
+    }
+    @Styles.Render("~/dou/css")
+    <link href="~/Scripts/gis/b3/css/bootstrap.css" rel="stylesheet">
+    @*@Styles.Render("~/content/prj/css")*@
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/dou/js")
+
+    @if (ViewBag.HasGis != null && ViewBag.HasGis)
+    {
+
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+              integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+              crossorigin="" />
+        <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+                integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+                crossorigin=""></script>
+        @Scripts.Render("~/Scripts/gis/jskit")
+        <script src="~/Scripts/prj/createMapHelper.js"></script>
+        <link rel="stylesheet" href="~/Content/prj/map.css" />
+    }
+    <style>
+
+        /*muti level*/
+        .nav .dropdown-submenu {
+            position: relative;
+        }
+
+            .nav .dropdown-submenu > .dropdown-menu {
+                top: 0;
+                left: 100%;
+                margin-top: -6px;
+                margin-left: -1px;
+                -webkit-border-radius: 0 6px 6px 6px;
+                -moz-border-radius: 0 6px 6px 6px;
+                border-radius: 0 6px 6px 6px;
+            }
+
+        .dropdown-submenu:hover > .dropdown-menu {
+            display: block;
+        }
+
+        .nav .dropdown-submenu > a:after {
+            display: block;
+            content: " ";
+            float: right;
+            width: 0;
+            height: 0;
+            border-color: transparent;
+            border-style: solid;
+            border-width: 5px 0 5px 5px;
+            border-left-color: #cccccc;
+            margin-top: 5px;
+            margin-right: -10px;
+        }
+
+        .nav .dropdown-submenu:hover > a:after {
+            border-left-color: #ffffff;
+        }
+
+        .nav .dropdown-submenu.pull-left {
+            float: none;
+        }
+
+        .dropdown-submenu.pull-left > .dropdown-menu {
+            left: -100%;
+            margin-left: 10px;
+            -webkit-border-radius: 6px 0 6px 6px;
+            -moz-border-radius: 6px 0 6px 6px;
+            border-radius: 6px 0 6px 6px;
+        }
+
+        .prj-title {
+            text-shadow: 0.1rem 0.1rem .3rem #fff, -0.1rem -0.1rem .3rem #fff, -0.1rem 0.1rem .3rem #fff, 0.1rem -0.1rem .3rem #fff;
+            font-weight: bold;
+            color: #0f4b8a;
+            cursor: default;
+        }
+
+            .prj-title img {
+                width: 140px;
+                margin-right: .4rem;
+            }
+
+        .dou-menu .home_ctrl {
+            display: none;
+        }
+
+        @@media (max-width: 576px) {
+            .dou-menu > .container-fluid > .prj-title {
+                white-space: nowrap;
+                max-width: calc( 100% - 120px );
+            }
+
+            .prj-title img {
+                display: none;
+            }
+
+            .prj-title {
+                font-size: 1.2rem;
+            }
+
+            .body-content {
+                height: auto !important;
+            }
+        }
+    </style>
+
+</head>
+<body data-controller="@ViewContext.RouteData.Values["controller"].ToString()">
+    <header class="fixed-top">
+        <nav class="dou-menu navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow">
+            <div class="container-fluid">
+                <h3 class="prj-title"><img src="~/images/title.png"><b>災情預警應變決策支援系統</b></h3>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1 justify-content-end">
+                        @Html.Partial("DouMenuPartial")@*功能菜單*@
+                    </ul>
+                </div>
+                @Html.Partial("DouUserProfilePartial")@*登入人員資料*@
+            </div>
+        </nav>
+    </header>
+    <div class="container-fluid body-content">
+        @RenderBody()@*各controoler資料*@
+
+    </div>
+    <hr />
+    <footer class="text-center">
+        <p>&copy; @DateTime.Now.Year - 版權所有,最佳解析度1280x800</p>
+    </footer>
+
+
+    @*@RenderSection("scripts", required: false)*@
+</body>
+</html>

@@ -1,0 +1,117 @@
+﻿<link href="~/Content/prj/citysta/vehicle.css" rel="stylesheet">
+<link href="~/Content/prj/citysta/disinfectant.css" rel="stylesheet">
+<script src="~/Scripts/prj/citysta/citysta.js"></script>
+<script src="~/Scripts/prj/citysta/disinfectant.js"></script>
+<script src="~/Scripts/prj/data.js"></script>
+<script src="~/Scripts/gis/other/highcharts.js"></script>
+<ul class="nav nav-tabs" id="ctrlTab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="ctrl-tab1" data-bs-toggle="tab" data-bs-target="#tab1-pane-content" type="button" role="tab" aria-controls="tab1-pane-content" aria-selected="true">依用途</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="ctrl-tab2" data-bs-toggle="tab" data-bs-target="#tab2-pane-content" type="button" role="tab" aria-controls="tab2-pane-content" aria-selected="true">依狀態</button>
+    </li>
+</ul>
+<div class="tab-content ctrlTabContent" id="ctrlTabContent">
+    <div class="tab-pane fade show active display-container" id="tab1-pane-content" role="tabpanel" aria-labelledby="ctrl-tab1" tabindex="0">
+        <div class="left-container part-container">
+            <div class="sta sta-count">
+                <div class="data-container w-20"><div class="use-1"><label>環境消毒</label><div class="data">-</div></div></div>
+                <div class="data-container w-20"><div class="use-2"><label>登革熱</label><div class="data">-</div></div></div>
+                <div class="data-container w-20"><div class="use-3"><label>紅火蟻</label><div class="data">-</div></div></div>
+                <div class="data-container w-20"><div class="use-4"><label>荔枝椿象</label><div class="data">-</div></div></div>
+                <div class="data-container w-20"><div class="use-5"><label>其他</label><div class="data">-</div></div></div>
+                <div class="data-container w-100"><div class="t-div"><label>總數</label><div class="data t">-</div></div></div>
+            </div>
+            <div class="sta sta-county">
+                <div class="county-title"><label>北部地區</label></div>
+                <!--<div class="county-row">-->
+                <div class="county-data" data-county="臺北市"><div class="btn btn-light"><label class="title"></label><div class="data"><label class="use-1">-</label>/<label class="use-2">-</label>/<label class="use-3">-</label>/<label class="use-4">-</label>/<label class="use-5">-</label></div><div class="data"><label class="t">-</label></div></div></div>
+                <div class="county-data" data-county="新北市"><div class="btn btn-light"><label class="title"></label><div class="data"><label class="use-1">-</label>/<label class="use-2">-</label>/<label class="use-3">-</label>/<label class="use-4">-</label>/<label class="use-5">-</label></div><div class="data"><label class="t">-</label></div></div></div>
+                <div class="county-data" data-county="桃園市"><div class="btn btn-light"><label class="title"></label><div class="data"><label class="use-1">-</label>/<label class="use-2">-</label>/<label class="use-3">-</label>/<label class="use-4">-</label>/<label class="use-5">-</label></div><div class="data"><label class="t">-</label></div></div></div>
+                <div class="county-data" data-county="新竹縣"><div class="btn btn-light"><label class="title"></label><div class="data"><label class="use-1">-</label>/<label class="use-2">-</label>/<label class="use-3">-</label>/<label class="use-4">-</label>/<label class="use-5">-</label></div><div class="data"><label class="t">-</label></div></div></div>
+                <div class="county-data" data-county="新竹市"><div class="btn btn-light"><label class="title"></label><div class="data"><label class="use-1">-</label>/<label class="use-2">-</label>/<label class="use-3">-</label>/<label class="use-4">-</label>/<label class="use-5">-</label></div><div class="data"><label class="t">-</label></div></div></div>
+                <div class="county-data" data-county="基隆市"><div class="btn btn-light"><label class="title"></label><div class="data"><label class="use-1">-</label>/<label class="use-2">-</label>/<label class="use-3">-</label>/<label class="use-4">-</label>/<label class="use-5">-</label></div><div class="data"><label class="t">-</label></div></div></div>
+                <div class="county-data" data-county="宜蘭縣"><div class="btn btn-light"><label class="title"></label><div class="data"><label class="use-1">-</label>/<label class="use-2">-</label>/<label class="use-3">-</label>/<label class="use-4">-</label>/<label class="use-5">-</label></div><div class="data"><label class="t">-</label></div></div></div>
+
+                <!--</div>-->
+                <div class="county-title"><label>中部地區</label></div>
+                <div class="county-data" data-county="苗栗縣"><div class="btn btn-light"><label class="title"></label><div class="data"><label class="use-1">-</label>/<label class="use-2">-</label>/<label class="use-3">-</label>/<label class="use-4">-</label>/<label class="use-5">-</label></div><div class="data"><label class="t">-</label></div></div></div>
+                <div class="county-data" data-county="臺中市"><div class="btn btn-light"><label class="title"></label><div class="data"><label class="use-1">-</label>/<label class="use-2">-</label>/<label class="use-3">-</label>/<label class="use-4">-</label>/<label class="use-5">-</label></div><div class="data"><label class="t">-</label></div></div></div>
+                <div class="county-data" data-county="彰化縣"><div class="btn btn-light"><label class="title"></label><div class="data"><label class="use-1">-</label>/<label class="use-2">-</label>/<label class="use-3">-</label>/<label class="use-4">-</label>/<label class="use-5">-</label></div><div class="data"><label class="t">-</label></div></div></div>
+                <div class="county-data" data-county="雲林縣"><div class="btn btn-light"><label class="title"></label><div class="data"><label class="use-1">-</label>/<label class="use-2">-</label>/<label class="use-3">-</label>/<label class="use-4">-</label>/<label class="use-5">-</label></div><div class="data"><label class="t">-</label></div></div></div>
+                <div class="county-data" data-county="南投縣"><div class="btn btn-light"><label class="title"></label><div class="data"><label class="use-1">-</label>/<label class="use-2">-</label>/<label class="use-3">-</label>/<label class="use-4">-</label>/<label class="use-5">-</label></div><div class="data"><label class="t">-</label></div></div></div>
+
+                <!--</div>-->
+                <div class="county-title"><label>南部地區</label></div>
+                <div class="county-data" data-county="嘉義縣"><div class="btn btn-light"><label class="title"></label><div class="data"><label class="use-1">-</label>/<label class="use-2">-</label>/<label class="use-3">-</label>/<label class="use-4">-</label>/<label class="use-5">-</label></div><div class="data"><label class="t">-</label></div></div></div>
+                <div class="county-data" data-county="嘉義市"><div class="btn btn-light"><label class="title"></label><div class="data"><label class="use-1">-</label>/<label class="use-2">-</label>/<label class="use-3">-</label>/<label class="use-4">-</label>/<label class="use-5">-</label></div><div class="data"><label class="t">-</label></div></div></div>
+                <div class="county-data" data-county="臺南市"><div class="btn btn-light"><label class="title"></label><div class="data"><label class="use-1">-</label>/<label class="use-2">-</label>/<label class="use-3">-</label>/<label class="use-4">-</label>/<label class="use-5">-</label></div><div class="data"><label class="t">-</label></div></div></div>
+                <div class="county-data" data-county="高雄市"><div class="btn btn-light"><label class="title"></label><div class="data"><label class="use-1">-</label>/<label class="use-2">-</label>/<label class="use-3">-</label>/<label class="use-4">-</label>/<label class="use-5">-</label></div><div class="data"><label class="t">-</label></div></div></div>
+                <div class="county-data" data-county="屏東縣"><div class="btn btn-light"><label class="title"></label><div class="data"><label class="use-1">-</label>/<label class="use-2">-</label>/<label class="use-3">-</label>/<label class="use-4">-</label>/<label class="use-5">-</label></div><div class="data"><label class="t">-</label></div></div></div>
+
+
+                <div class="county-title"><label>東部及離島地區</label></div>
+                <div class="county-data" data-county="花蓮縣"><div class="btn btn-light"><label class="title"></label><div class="data"><label class="use-1">-</label>/<label class="use-2">-</label>/<label class="use-3">-</label>/<label class="use-4">-</label>/<label class="use-5">-</label></div><div class="data"><label class="t">-</label></div></div></div>
+                <div class="county-data" data-county="臺東縣"><div class="btn btn-light"><label class="title"></label><div class="data"><label class="use-1">-</label>/<label class="use-2">-</label>/<label class="use-3">-</label>/<label class="use-4">-</label>/<label class="use-5">-</label></div><div class="data"><label class="t">-</label></div></div></div>
+                <div class="county-data" data-county="澎湖縣"><div class="btn btn-light"><label class="title"></label><div class="data"><label class="use-1">-</label>/<label class="use-2">-</label>/<label class="use-3">-</label>/<label class="use-4">-</label>/<label class="use-5">-</label></div><div class="data"><label class="t">-</label></div></div></div>
+                <div class="county-data" data-county="金門縣"><div class="btn btn-light"><label class="title"></label><div class="data"><label class="use-1">-</label>/<label class="use-2">-</label>/<label class="use-3">-</label>/<label class="use-4">-</label>/<label class="use-5">-</label></div><div class="data"><label class="t">-</label></div></div></div>
+                <div class="county-data" data-county="連江縣"><div class="btn btn-light"><label class="title"></label><div class="data"><label class="use-1">-</label>/<label class="use-2">-</label>/<label class="use-3">-</label>/<label class="use-4">-</label>/<label class="use-5">-</label></div><div class="data"><label class="t">-</label></div></div></div>
+
+            </div>
+            <div class="btn btn-sm btn-default zoom-ctrl glyphicon glyphicon-resize-full" title="放大"></div>
+        </div>
+        <div class="right-container part-container">
+            <div class="table-container">
+                <table></table>
+                <div class="btn btn-sm btn-default zoom-ctrl glyphicon glyphicon-resize-full" title="放大"></div>
+            </div>
+            <div class="chart-container">
+                <div id="chart-count">
+                </div>
+                <div class="btn btn-sm btn-default zoom-ctrl glyphicon glyphicon-resize-full" title="放大"></div>
+            </div>
+        </div>
+
+    </div>
+    <div class="tab-pane fade display-container" id="tab2-pane-content" role="tabpanel" aria-labelledby="vehicle-tab" tabindex="1">
+        <div class="sta sta-count state">
+        </div>
+        <div class="sta sta-county state">
+            <div class="county-title"><label>北部地區</label></div>
+            <!--<div class="county-row">-->
+            <div class="county-data" data-county="臺北市"></div>
+            <div class="county-data" data-county="新北市"></div>
+            <div class="county-data" data-county="桃園市"></div>
+            <div class="county-data" data-county="新竹縣"></div>
+            <div class="county-data" data-county="新竹市"></div>
+            <div class="county-data" data-county="基隆市"></div>
+            <div class="county-data" data-county="宜蘭縣"></div>
+
+            <!--</div>-->
+            <div class="county-title"><label>中部地區</label></div>
+            <div class="county-data" data-county="苗栗縣"></div>
+            <div class="county-data" data-county="臺中市"></div>
+            <div class="county-data" data-county="彰化縣"></div>
+            <div class="county-data" data-county="雲林縣"></div>
+            <div class="county-data" data-county="南投縣"></div>
+
+            <!--</div>-->
+            <div class="county-title"><label>南部地區</label></div>
+            <div class="county-data" data-county="嘉義縣"></div>
+            <div class="county-data" data-county="嘉義市"></div>
+            <div class="county-data" data-county="臺南市"></div>
+            <div class="county-data" data-county="高雄市"></div>
+            <div class="county-data" data-county="屏東縣"></div>
+
+
+            <div class="county-title"><label>東部及離島地區</label></div>
+            <div class="county-data" data-county="花蓮縣"></div>
+            <div class="county-data" data-county="臺東縣"></div>
+            <div class="county-data" data-county="澎湖縣"></div>
+            <div class="county-data" data-county="金門縣"></div>
+            <div class="county-data" data-county="連江縣"></div>
+
+        </div>
+    </div>
+</div>
