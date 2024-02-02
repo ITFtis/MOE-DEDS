@@ -35,7 +35,10 @@ var fdsfsdf = "";
             var maxshowcount = 9999;//範圍內最多限制前n數量 
             var nearmeter = 5000; //範圍內(公尺)
             $.each(this.allcctvs, function () {
+                if (!this)
+                    return;
                 this.distance = helper.gis.pointDistance([this.X, this.Y], [x, y]);
+                
             });
             if (this.allcctvs.length > maxshowcount) { //有限制範圍內最大數量，排序後，取第maxshowcount的距離用於決定nearmeter範圍
                 this.allcctvs.sort(function (a, b) { return a.distance - b.distance });
@@ -43,7 +46,7 @@ var fdsfsdf = "";
                 nearmeter = nearmeter < _lastmeter ? nearmeter : _lastmeter;
             }
             this.$pinctrl.CctvCtrl('setFilter', function (d) {
-                return d.distance <= nearmeter;
+                return d && d.distance <= nearmeter;
             });
         },
         hide: function () {

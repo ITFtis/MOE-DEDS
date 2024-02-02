@@ -10,6 +10,10 @@
     </title>
     <link rel="SHORTCUT ICON" href="~/images/logo.png" data-logo />
     @Styles.Render("~/Content/css")
+    <script>
+        window.app = window.app || {};
+        app.siteRoot = "@Url.Content("~/")";
+    </script>
     @if (ViewBag.HasGis != null && ViewBag.HasGis)
     {
         @Styles.Render("~/Scripts/gis/csskit")
@@ -21,24 +25,19 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/dou/js")
-    <script>
-        window.app = window.app || {};
-        app.siteRoot = "@Url.Content("~/")";
-    </script>
-    @if ((ViewBag.HasGis != null && ViewBag.HasGis) || ViewBag.EmbedHtml != null && ViewBag.EmbedHtml)
-    {
-        <link rel="stylesheet" href="~/Content/prj/map.css" />
-    }
+
     @if (ViewBag.HasGis != null && ViewBag.HasGis)
     {
-        @Scripts.Render("~/Scripts/gis/jskit")
-        <script src="~/Scripts/prj/createMapHelper.js"></script>
+
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
               integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
               crossorigin="" />
         <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
                 integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
                 crossorigin=""></script>
+        @Scripts.Render("~/Scripts/gis/jskit")
+        <script src="~/Scripts/prj/createMapHelper.js"></script>
+        <link rel="stylesheet" href="~/Content/prj/map.css" />
     }
     <style>
 
@@ -95,7 +94,7 @@
             text-shadow: 0.1rem 0.1rem .3rem #fff, -0.1rem -0.1rem .3rem #fff, -0.1rem 0.1rem .3rem #fff, 0.1rem -0.1rem .3rem #fff;
             font-weight: bold;
             color: #0f4b8a;
-            cursor: pointer;
+            cursor: default;
         }
 
             .prj-title img {
@@ -128,12 +127,12 @@
     </style>
 
 </head>
-<body>
+<body data-controller="@ViewContext.RouteData.Values["controller"].ToString()">
     <header class="fixed-top">
         <nav class="dou-menu navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow">
             <div class="container-fluid">
                 <h3 class="prj-title"><img src="~/images/title.png"><b>災情預警應變決策支援系統</b></h3>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"  data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -152,17 +151,10 @@
     </div>
     <hr />
     <footer class="text-center">
-        <p>&copy; @DateTime.Now.Year - 版權所有,最佳解析度1280x800</p>
+        <p>客服電話 : (02)2784-4188 #5105、5106 周一至周五 08:30-17:30</p>
     </footer>
 
-    
-    @RenderSection("scripts", required: false)
+
+    @*@RenderSection("scripts", required: false)*@
 </body>
-    <script>
-        $('body').ready(function () {
-            $('.prj-title').on('click', function () {
-                location.href = "@(Url.Action("Index", "Home"))";
-            })
-        });
-    </script>
 </html>

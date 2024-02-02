@@ -19,7 +19,7 @@
         justify-content:center;
     }
     .home-container > .wlink{
-        padding:3rem;
+        padding:1.75vw;
         max-width:calc( 400px + 6rem);
         min-height:300px;
     }
@@ -36,6 +36,8 @@
         border:2px white solid;
      }
      .home-container > .wlink a{
+         display:inline-block;
+         width:100%;
          color:white;
          font-weight:bold;
          text-decoration:none;
@@ -89,8 +91,8 @@
     }
 </style>
 <div class="home-container container-fluid row">
-    <div class="col-sm-4 link1 wlink"><div class="c"><div class="img-c"></div><div class="btn btn-outline-info "><a href="@(Url.Action("Index", "RtHydro"))" class="text-justify">災情儀錶板</a></div></div></div>
-    <div class="col-sm-4 link2 wlink"><div class="c"><div class="img-c"></div><div class="btn btn-outline-success"><a href="@(Url.Action("Index", "DDashboard"))">決策支援圖台</a></div></div></div>
+    <div class="col-sm-4 link1 wlink"><div class="c"><div class="img-c"></div><div class="btn btn-outline-info "><a href="@(Url.Action("Index", "DDashboard"))" class="text-justify">災情儀錶板</a></div></div></div>
+    <div class="col-sm-4 link2 wlink"><div class="c"><div class="img-c"></div><div class="btn btn-outline-success"><a href="@(Url.Action("Index", "RtHydro"))">決策支援圖台</a></div></div></div>
     <div class="col-sm-4 link3 wlink"><div class="c"><div class="img-c"></div><div class="btn btn-outline-secondary"><a href="https://newemis.epa.gov.tw/Home/Login" target="_mss">物資倉儲管理</a></div></div></div>
 </div>
 

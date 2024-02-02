@@ -137,6 +137,7 @@ element.style {
     padding-top: 6px;
     clear: both;
     margin-bottom: 2px;
+    font-weight:bold;
 }
 .flood-query .floodarea-dom .legend {
     display: none;

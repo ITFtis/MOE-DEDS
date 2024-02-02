@@ -1,0 +1,205 @@
+2024-01-19 16:30:03,149 ERROR [10] (Startup+<>c:33) - DouErrorHandler發出的錯誤!!
+System.Exception: System.String錯誤:{"IsPrimaryKey":false,"DefaultValue":null,"Index":0,"Display":"單位","Required":true,"StringLength":0,"Visible":false,"VisibleEdit":true,"VisibleView":true,"Sortable":false,"MobileResponsive":true,"UseInputType":true,"EditType":3,"EditParameter":null,"TextListMatchValue":false,"TextLength":0,"TextAreaHeight":3,"ColTier":2,"ColSize":12,"ColBreakBefore":false,"ColBreakBeforeTitle":null,"ColBreakAfter":false,"ColBreakAfterTitle":null,"SelectItems":null,"SelectItemsClassNamespace":"DEDS.Models.Comm.CityIDSelectItems, DEDS","SelectSourceDbContextNamespace":null,"SelectSourceModelNamespace":null,"SelectSourceModelValueField":null,"SelectSourceModelDisplayField":null,"SelectSourceModelFilterField":null,"SelectSourceModelFilterValue":null,"SelectGearingWith":"Name,CityID,false","ImageMaxWidth":0,"ImageMaxHeight":0,"Filter":true,"FilterAssign":0,"IsOnlyServerSiteColumn":false,"TypeId":"Dou.Misc.Attr.ColumnDefAttribute, Dou, Version=1.1.0.0, Culture=neutral, PublicKeyToken=null"} ---> Newtonsoft.Json.JsonReaderException: Unexpected character encountered while parsing value: 登. Path '', line 0, position 0.
+   於 Newtonsoft.Json.JsonTextReader.ParseValue()
+   於 Newtonsoft.Json.JsonTextReader.Read()
+   於 Newtonsoft.Json.JsonReader.ReadForType(JsonContract contract, Boolean hasConverter)
+   於 Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)
+   於 Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)
+   於 Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)
+   於 Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)
+   於 Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value)
+   於 DEDS.Models.Comm.Function.GetInfo(String UserID, String PWD) 於 D:\git\MOE-DEDS\DEDS\Models\Comm\UserBasic.cs: 行 274
+   於 DEDS.Models.Comm.CityIDSelectItems.GetSelectItems() 於 D:\git\MOE-DEDS\DEDS\Models\Comm\UserBasic.cs: 行 145
+   於 Dou.Misc.DataManagerScriptHelper.GetDataManagerOptions(Type modeType) 於 D:\CVS_SRC\SourceCode\Dou\Misc\DataManagerScriptHelper.cs: 行 246
+   --- 內部例外狀況堆疊追蹤的結尾 ---
+   於 Dou.Misc.DataManagerScriptHelper.GetDataManagerOptions(Type modeType) 於 D:\CVS_SRC\SourceCode\Dou\Misc\DataManagerScriptHelper.cs: 行 314
+   於 Dou.Misc.DataManagerScriptHelper.GetDataManagerOptions[T]() 於 D:\CVS_SRC\SourceCode\Dou\Misc\DataManagerScriptHelper.cs: 行 26
+   於 Dou.Controllers.AModelController`1.GetDataManagerOptions() 於 D:\CVS_SRC\SourceCode\Dou\Controllers\AModelController.cs: 行 510
+   於 DEDS.Controllers.Comm.CommEditController.GetDataManagerOptions() 於 D:\git\MOE-DEDS\DEDS\Controllers\Comm\CommEditController.cs: 行 37
+   於 Dou.Misc.Extension.HtmlHelperExtensions.DataManagerOptionsJavascript(HtmlHelper helper, String containerSelector, String javascriptOptionsVarname, Type t, Controller ctrl) 於 D:\CVS_SRC\SourceCode\Dou\Misc\Extension\HtmlHelperExtensions.cs: 行 99
+   於 ASP._Page_Views_CommEdit_index_cshtml.Execute() 於 D:\git\MOE-DEDS\DEDS\Views\CommEdit\index.cshtml: 行 3
+   於 System.Web.WebPages.WebPageBase.ExecutePageHierarchy()
+   於 System.Web.Mvc.WebViewPage.ExecutePageHierarchy()
+   於 System.Web.WebPages.StartPage.RunPage()
+   於 System.Web.WebPages.StartPage.ExecutePageHierarchy()
+   於 System.Web.WebPages.WebPageBase.ExecutePageHierarchy(WebPageContext pageContext, TextWriter writer, WebPageRenderingBase startPage)
+   於 System.Web.Mvc.RazorView.RenderView(ViewContext viewContext, TextWriter writer, Object instance)
+   於 System.Web.Mvc.BuildManagerCompiledView.Render(ViewContext viewContext, TextWriter writer)
+   於 System.Web.Mvc.ViewResultBase.ExecuteResult(ControllerContext context)
+   於 System.Web.Mvc.ControllerActionInvoker.InvokeActionResult(ControllerContext controllerContext, ActionResult actionResult)
+   於 System.Web.Mvc.ControllerActionInvoker.InvokeActionResultFilterRecursive(IList`1 filters, Int32 filterIndex, ResultExecutingContext preContext, ControllerContext controllerContext, ActionResult actionResult)
+   於 System.Web.Mvc.ControllerActionInvoker.InvokeActionResultFilterRecursive(IList`1 filters, Int32 filterIndex, ResultExecutingContext preContext, ControllerContext controllerContext, ActionResult actionResult)
+   於 System.Web.Mvc.ControllerActionInvoker.InvokeActionResultWithFilters(ControllerContext controllerContext, IList`1 filters, ActionResult actionResult)
+   於 System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass3_6.<BeginInvokeAction>b__4()
+   於 System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass3_1.<BeginInvokeAction>b__1(IAsyncResult asyncResult)
+2024-01-19 16:35:06,094 ERROR [6] (Startup+<>c:33) - DouErrorHandler發出的錯誤!!
+System.Exception: System.String錯誤:{"IsPrimaryKey":false,"DefaultValue":null,"Index":0,"Display":"單位","Required":false,"StringLength":0,"Visible":false,"VisibleEdit":false,"VisibleView":true,"Sortable":false,"MobileResponsive":true,"UseInputType":true,"EditType":3,"EditParameter":null,"TextListMatchValue":false,"TextLength":0,"TextAreaHeight":3,"ColTier":2,"ColSize":12,"ColBreakBefore":false,"ColBreakBeforeTitle":null,"ColBreakAfter":false,"ColBreakAfterTitle":null,"SelectItems":null,"SelectItemsClassNamespace":"DEDS.Models.Comm.CityIDSelectItems, DEDS","SelectSourceDbContextNamespace":null,"SelectSourceModelNamespace":null,"SelectSourceModelValueField":null,"SelectSourceModelDisplayField":null,"SelectSourceModelFilterField":null,"SelectSourceModelFilterValue":null,"SelectGearingWith":"CategoryId,CityID,true","ImageMaxWidth":0,"ImageMaxHeight":0,"Filter":true,"FilterAssign":0,"IsOnlyServerSiteColumn":false,"TypeId":"Dou.Misc.Attr.ColumnDefAttribute, Dou, Version=1.1.0.0, Culture=neutral, PublicKeyToken=null"} ---> Newtonsoft.Json.JsonReaderException: Unexpected character encountered while parsing value: 登. Path '', line 0, position 0.
+   於 Newtonsoft.Json.JsonTextReader.ParseValue()
+   於 Newtonsoft.Json.JsonTextReader.Read()
+   於 Newtonsoft.Json.JsonReader.ReadForType(JsonContract contract, Boolean hasConverter)
+   於 Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)
+   於 Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)
+   於 Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)
+   於 Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)
+   於 Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value)
+   於 DEDS.Models.Comm.Function.GetInfo(String UserID, String PWD) 於 D:\git\MOE-DEDS\DEDS\Models\Comm\UserBasic.cs: 行 274
+   於 DEDS.Models.Comm.CityIDSelectItems.GetSelectItems() 於 D:\git\MOE-DEDS\DEDS\Models\Comm\UserBasic.cs: 行 145
+   於 Dou.Misc.DataManagerScriptHelper.GetDataManagerOptions(Type modeType) 於 D:\CVS_SRC\SourceCode\Dou\Misc\DataManagerScriptHelper.cs: 行 246
+   --- 內部例外狀況堆疊追蹤的結尾 ---
+   於 Dou.Misc.DataManagerScriptHelper.GetDataManagerOptions(Type modeType) 於 D:\CVS_SRC\SourceCode\Dou\Misc\DataManagerScriptHelper.cs: 行 314
+   於 Dou.Misc.DataManagerScriptHelper.GetDataManagerOptions[T]() 於 D:\CVS_SRC\SourceCode\Dou\Misc\DataManagerScriptHelper.cs: 行 26
+   於 Dou.Controllers.AModelController`1.GetDataManagerOptions() 於 D:\CVS_SRC\SourceCode\Dou\Controllers\AModelController.cs: 行 510
+   於 DEDS.Controllers.Comm.ContactController.GetDataManagerOptions() 於 D:\git\MOE-DEDS\DEDS\Controllers\Comm\ContactController.cs: 行 33
+   於 Dou.Misc.Extension.HtmlHelperExtensions.DataManagerOptionsJavascript(HtmlHelper helper, String containerSelector, String javascriptOptionsVarname, Type t, Controller ctrl) 於 D:\CVS_SRC\SourceCode\Dou\Misc\Extension\HtmlHelperExtensions.cs: 行 99
+   於 ASP._Page_Views_Contact_Index_cshtml.Execute() 於 D:\git\MOE-DEDS\DEDS\Views\Contact\Index.cshtml: 行 3
+   於 System.Web.WebPages.WebPageBase.ExecutePageHierarchy()
+   於 System.Web.Mvc.WebViewPage.ExecutePageHierarchy()
+   於 System.Web.WebPages.StartPage.RunPage()
+   於 System.Web.WebPages.StartPage.ExecutePageHierarchy()
+   於 System.Web.WebPages.WebPageBase.ExecutePageHierarchy(WebPageContext pageContext, TextWriter writer, WebPageRenderingBase startPage)
+   於 System.Web.Mvc.RazorView.RenderView(ViewContext viewContext, TextWriter writer, Object instance)
+   於 System.Web.Mvc.BuildManagerCompiledView.Render(ViewContext viewContext, TextWriter writer)
+   於 System.Web.Mvc.ViewResultBase.ExecuteResult(ControllerContext context)
+   於 System.Web.Mvc.ControllerActionInvoker.InvokeActionResult(ControllerContext controllerContext, ActionResult actionResult)
+   於 System.Web.Mvc.ControllerActionInvoker.InvokeActionResultFilterRecursive(IList`1 filters, Int32 filterIndex, ResultExecutingContext preContext, ControllerContext controllerContext, ActionResult actionResult)
+   於 System.Web.Mvc.ControllerActionInvoker.InvokeActionResultFilterRecursive(IList`1 filters, Int32 filterIndex, ResultExecutingContext preContext, ControllerContext controllerContext, ActionResult actionResult)
+   於 System.Web.Mvc.ControllerActionInvoker.InvokeActionResultWithFilters(ControllerContext controllerContext, IList`1 filters, ActionResult actionResult)
+   於 System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass3_6.<BeginInvokeAction>b__4()
+   於 System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass3_1.<BeginInvokeAction>b__1(IAsyncResult asyncResult)
+2024-01-19 17:19:46,134 ERROR [6] (Startup+<>c:33) - DouErrorHandler發出的錯誤!!
+System.Exception: System.String錯誤:{"IsPrimaryKey":false,"DefaultValue":null,"Index":0,"Display":"單位","Required":false,"StringLength":0,"Visible":false,"VisibleEdit":false,"VisibleView":true,"Sortable":false,"MobileResponsive":true,"UseInputType":true,"EditType":3,"EditParameter":null,"TextListMatchValue":false,"TextLength":0,"TextAreaHeight":3,"ColTier":2,"ColSize":12,"ColBreakBefore":false,"ColBreakBeforeTitle":null,"ColBreakAfter":false,"ColBreakAfterTitle":null,"SelectItems":null,"SelectItemsClassNamespace":"DEDS.Models.Comm.CityIDSelectItems, DEDS","SelectSourceDbContextNamespace":null,"SelectSourceModelNamespace":null,"SelectSourceModelValueField":null,"SelectSourceModelDisplayField":null,"SelectSourceModelFilterField":null,"SelectSourceModelFilterValue":null,"SelectGearingWith":"CategoryId,CityID,true","ImageMaxWidth":0,"ImageMaxHeight":0,"Filter":true,"FilterAssign":0,"IsOnlyServerSiteColumn":false,"TypeId":"Dou.Misc.Attr.ColumnDefAttribute, Dou, Version=1.1.0.0, Culture=neutral, PublicKeyToken=null"} ---> Newtonsoft.Json.JsonReaderException: Unexpected character encountered while parsing value: 登. Path '', line 0, position 0.
+   於 Newtonsoft.Json.JsonTextReader.ParseValue()
+   於 Newtonsoft.Json.JsonTextReader.Read()
+   於 Newtonsoft.Json.JsonReader.ReadForType(JsonContract contract, Boolean hasConverter)
+   於 Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)
+   於 Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)
+   於 Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)
+   於 Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)
+   於 Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value)
+   於 DEDS.Models.Comm.Function.GetInfo(String UserID, String PWD) 於 D:\git\MOE-DEDS\DEDS\Models\Comm\UserBasic.cs: 行 275
+   於 DEDS.Models.Comm.CityIDSelectItems.GetSelectItems() 於 D:\git\MOE-DEDS\DEDS\Models\Comm\UserBasic.cs: 行 145
+   於 Dou.Misc.DataManagerScriptHelper.GetDataManagerOptions(Type modeType) 於 D:\CVS_SRC\SourceCode\Dou\Misc\DataManagerScriptHelper.cs: 行 246
+   --- 內部例外狀況堆疊追蹤的結尾 ---
+   於 Dou.Misc.DataManagerScriptHelper.GetDataManagerOptions(Type modeType) 於 D:\CVS_SRC\SourceCode\Dou\Misc\DataManagerScriptHelper.cs: 行 314
+   於 Dou.Misc.DataManagerScriptHelper.GetDataManagerOptions[T]() 於 D:\CVS_SRC\SourceCode\Dou\Misc\DataManagerScriptHelper.cs: 行 26
+   於 Dou.Controllers.AModelController`1.GetDataManagerOptions() 於 D:\CVS_SRC\SourceCode\Dou\Controllers\AModelController.cs: 行 510
+   於 DEDS.Controllers.Comm.ContactController.GetDataManagerOptions() 於 D:\git\MOE-DEDS\DEDS\Controllers\Comm\ContactController.cs: 行 33
+   於 Dou.Misc.Extension.HtmlHelperExtensions.DataManagerOptionsJavascript(HtmlHelper helper, String containerSelector, String javascriptOptionsVarname, Type t, Controller ctrl) 於 D:\CVS_SRC\SourceCode\Dou\Misc\Extension\HtmlHelperExtensions.cs: 行 99
+   於 ASP._Page_Views_Contact_Index_cshtml.Execute() 於 D:\git\MOE-DEDS\DEDS\Views\Contact\Index.cshtml: 行 3
+   於 System.Web.WebPages.WebPageBase.ExecutePageHierarchy()
+   於 System.Web.Mvc.WebViewPage.ExecutePageHierarchy()
+   於 System.Web.WebPages.StartPage.RunPage()
+   於 System.Web.WebPages.StartPage.ExecutePageHierarchy()
+   於 System.Web.WebPages.WebPageBase.ExecutePageHierarchy(WebPageContext pageContext, TextWriter writer, WebPageRenderingBase startPage)
+   於 System.Web.Mvc.RazorView.RenderView(ViewContext viewContext, TextWriter writer, Object instance)
+   於 System.Web.Mvc.BuildManagerCompiledView.Render(ViewContext viewContext, TextWriter writer)
+   於 System.Web.Mvc.ViewResultBase.ExecuteResult(ControllerContext context)
+   於 System.Web.Mvc.ControllerActionInvoker.InvokeActionResult(ControllerContext controllerContext, ActionResult actionResult)
+   於 System.Web.Mvc.ControllerActionInvoker.InvokeActionResultFilterRecursive(IList`1 filters, Int32 filterIndex, ResultExecutingContext preContext, ControllerContext controllerContext, ActionResult actionResult)
+   於 System.Web.Mvc.ControllerActionInvoker.InvokeActionResultFilterRecursive(IList`1 filters, Int32 filterIndex, ResultExecutingContext preContext, ControllerContext controllerContext, ActionResult actionResult)
+   於 System.Web.Mvc.ControllerActionInvoker.InvokeActionResultWithFilters(ControllerContext controllerContext, IList`1 filters, ActionResult actionResult)
+   於 System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass3_6.<BeginInvokeAction>b__4()
+   於 System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass3_1.<BeginInvokeAction>b__1(IAsyncResult asyncResult)
+2024-01-19 17:20:41,978 ERROR [8] (Startup+<>c:33) - DouErrorHandler發出的錯誤!!
+System.Exception: System.String錯誤:{"IsPrimaryKey":false,"DefaultValue":null,"Index":0,"Display":"單位","Required":false,"StringLength":0,"Visible":false,"VisibleEdit":false,"VisibleView":true,"Sortable":false,"MobileResponsive":true,"UseInputType":true,"EditType":3,"EditParameter":null,"TextListMatchValue":false,"TextLength":0,"TextAreaHeight":3,"ColTier":2,"ColSize":12,"ColBreakBefore":false,"ColBreakBeforeTitle":null,"ColBreakAfter":false,"ColBreakAfterTitle":null,"SelectItems":null,"SelectItemsClassNamespace":"DEDS.Models.Comm.CityIDSelectItems, DEDS","SelectSourceDbContextNamespace":null,"SelectSourceModelNamespace":null,"SelectSourceModelValueField":null,"SelectSourceModelDisplayField":null,"SelectSourceModelFilterField":null,"SelectSourceModelFilterValue":null,"SelectGearingWith":"CategoryId,CityID,true","ImageMaxWidth":0,"ImageMaxHeight":0,"Filter":true,"FilterAssign":0,"IsOnlyServerSiteColumn":false,"TypeId":"Dou.Misc.Attr.ColumnDefAttribute, Dou, Version=1.1.0.0, Culture=neutral, PublicKeyToken=null"} ---> Newtonsoft.Json.JsonReaderException: Unexpected character encountered while parsing value: 登. Path '', line 0, position 0.
+   於 Newtonsoft.Json.JsonTextReader.ParseValue()
+   於 Newtonsoft.Json.JsonTextReader.Read()
+   於 Newtonsoft.Json.JsonReader.ReadForType(JsonContract contract, Boolean hasConverter)
+   於 Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)
+   於 Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)
+   於 Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)
+   於 Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)
+   於 Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value)
+   於 DEDS.Models.Comm.Function.GetInfo(String UserID, String PWD) 於 D:\git\MOE-DEDS\DEDS\Models\Comm\UserBasic.cs: 行 275
+   於 DEDS.Models.Comm.CityIDSelectItems.GetSelectItems() 於 D:\git\MOE-DEDS\DEDS\Models\Comm\UserBasic.cs: 行 145
+   於 Dou.Misc.DataManagerScriptHelper.GetDataManagerOptions(Type modeType) 於 D:\CVS_SRC\SourceCode\Dou\Misc\DataManagerScriptHelper.cs: 行 246
+   --- 內部例外狀況堆疊追蹤的結尾 ---
+   於 Dou.Misc.DataManagerScriptHelper.GetDataManagerOptions(Type modeType) 於 D:\CVS_SRC\SourceCode\Dou\Misc\DataManagerScriptHelper.cs: 行 314
+   於 Dou.Misc.DataManagerScriptHelper.GetDataManagerOptions[T]() 於 D:\CVS_SRC\SourceCode\Dou\Misc\DataManagerScriptHelper.cs: 行 26
+   於 Dou.Controllers.AModelController`1.GetDataManagerOptions() 於 D:\CVS_SRC\SourceCode\Dou\Controllers\AModelController.cs: 行 510
+   於 DEDS.Controllers.Comm.ContactController.GetDataManagerOptions() 於 D:\git\MOE-DEDS\DEDS\Controllers\Comm\ContactController.cs: 行 33
+   於 Dou.Misc.Extension.HtmlHelperExtensions.DataManagerOptionsJavascript(HtmlHelper helper, String containerSelector, String javascriptOptionsVarname, Type t, Controller ctrl) 於 D:\CVS_SRC\SourceCode\Dou\Misc\Extension\HtmlHelperExtensions.cs: 行 99
+   於 ASP._Page_Views_Contact_Index_cshtml.Execute() 於 D:\git\MOE-DEDS\DEDS\Views\Contact\Index.cshtml: 行 3
+   於 System.Web.WebPages.WebPageBase.ExecutePageHierarchy()
+   於 System.Web.Mvc.WebViewPage.ExecutePageHierarchy()
+   於 System.Web.WebPages.StartPage.RunPage()
+   於 System.Web.WebPages.StartPage.ExecutePageHierarchy()
+   於 System.Web.WebPages.WebPageBase.ExecutePageHierarchy(WebPageContext pageContext, TextWriter writer, WebPageRenderingBase startPage)
+   於 System.Web.Mvc.RazorView.RenderView(ViewContext viewContext, TextWriter writer, Object instance)
+   於 System.Web.Mvc.BuildManagerCompiledView.Render(ViewContext viewContext, TextWriter writer)
+   於 System.Web.Mvc.ViewResultBase.ExecuteResult(ControllerContext context)
+   於 System.Web.Mvc.ControllerActionInvoker.InvokeActionResult(ControllerContext controllerContext, ActionResult actionResult)
+   於 System.Web.Mvc.ControllerActionInvoker.InvokeActionResultFilterRecursive(IList`1 filters, Int32 filterIndex, ResultExecutingContext preContext, ControllerContext controllerContext, ActionResult actionResult)
+   於 System.Web.Mvc.ControllerActionInvoker.InvokeActionResultFilterRecursive(IList`1 filters, Int32 filterIndex, ResultExecutingContext preContext, ControllerContext controllerContext, ActionResult actionResult)
+   於 System.Web.Mvc.ControllerActionInvoker.InvokeActionResultWithFilters(ControllerContext controllerContext, IList`1 filters, ActionResult actionResult)
+   於 System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass3_6.<BeginInvokeAction>b__4()
+   於 System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass3_1.<BeginInvokeAction>b__1(IAsyncResult asyncResult)
+2024-01-19 17:21:53,358 ERROR [5] (Startup+<>c:33) - DouErrorHandler發出的錯誤!!
+System.Exception: System.String錯誤:{"IsPrimaryKey":false,"DefaultValue":null,"Index":0,"Display":"單位","Required":false,"StringLength":0,"Visible":false,"VisibleEdit":false,"VisibleView":true,"Sortable":false,"MobileResponsive":true,"UseInputType":true,"EditType":3,"EditParameter":null,"TextListMatchValue":false,"TextLength":0,"TextAreaHeight":3,"ColTier":2,"ColSize":12,"ColBreakBefore":false,"ColBreakBeforeTitle":null,"ColBreakAfter":false,"ColBreakAfterTitle":null,"SelectItems":null,"SelectItemsClassNamespace":"DEDS.Models.Comm.CityIDSelectItems, DEDS","SelectSourceDbContextNamespace":null,"SelectSourceModelNamespace":null,"SelectSourceModelValueField":null,"SelectSourceModelDisplayField":null,"SelectSourceModelFilterField":null,"SelectSourceModelFilterValue":null,"SelectGearingWith":"CategoryId,CityID,true","ImageMaxWidth":0,"ImageMaxHeight":0,"Filter":true,"FilterAssign":0,"IsOnlyServerSiteColumn":false,"TypeId":"Dou.Misc.Attr.ColumnDefAttribute, Dou, Version=1.1.0.0, Culture=neutral, PublicKeyToken=null"} ---> Newtonsoft.Json.JsonSerializationException: Cannot deserialize the current JSON array (e.g. [1,2,3]) into type 'DEDS.Models.Comm.LoginInfo' because the type requires a JSON object (e.g. {"name":"value"}) to deserialize correctly.
+To fix this error either change the JSON to a JSON object (e.g. {"name":"value"}) or change the deserialized type to an array or a type that implements a collection interface (e.g. ICollection, IList) like List<T> that can be deserialized from a JSON array. JsonArrayAttribute can also be added to the type to force it to deserialize from a JSON array.
+Path '', line 1, position 1.
+   於 Newtonsoft.Json.Serialization.JsonSerializerInternalReader.EnsureArrayContract(JsonReader reader, Type objectType, JsonContract contract)
+   於 Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateList(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, Object existingValue, String id)
+   於 Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateValueInternal(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)
+   於 Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)
+   於 Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)
+   於 Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)
+   於 Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)
+   於 Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value)
+   於 DEDS.Models.Comm.Function.GetInfo(String UserID, String PWD) 於 D:\git\MOE-DEDS\DEDS\Models\Comm\UserBasic.cs: 行 275
+   於 DEDS.Models.Comm.CityIDSelectItems.GetSelectItems() 於 D:\git\MOE-DEDS\DEDS\Models\Comm\UserBasic.cs: 行 145
+   於 Dou.Misc.DataManagerScriptHelper.GetDataManagerOptions(Type modeType) 於 D:\CVS_SRC\SourceCode\Dou\Misc\DataManagerScriptHelper.cs: 行 246
+   --- 內部例外狀況堆疊追蹤的結尾 ---
+   於 Dou.Misc.DataManagerScriptHelper.GetDataManagerOptions(Type modeType) 於 D:\CVS_SRC\SourceCode\Dou\Misc\DataManagerScriptHelper.cs: 行 314
+   於 Dou.Misc.DataManagerScriptHelper.GetDataManagerOptions[T]() 於 D:\CVS_SRC\SourceCode\Dou\Misc\DataManagerScriptHelper.cs: 行 26
+   於 Dou.Controllers.AModelController`1.GetDataManagerOptions() 於 D:\CVS_SRC\SourceCode\Dou\Controllers\AModelController.cs: 行 510
+   於 DEDS.Controllers.Comm.ContactController.GetDataManagerOptions() 於 D:\git\MOE-DEDS\DEDS\Controllers\Comm\ContactController.cs: 行 33
+   於 Dou.Misc.Extension.HtmlHelperExtensions.DataManagerOptionsJavascript(HtmlHelper helper, String containerSelector, String javascriptOptionsVarname, Type t, Controller ctrl) 於 D:\CVS_SRC\SourceCode\Dou\Misc\Extension\HtmlHelperExtensions.cs: 行 99
+   於 ASP._Page_Views_Contact_Index_cshtml.Execute() 於 D:\git\MOE-DEDS\DEDS\Views\Contact\Index.cshtml: 行 3
+   於 System.Web.WebPages.WebPageBase.ExecutePageHierarchy()
+   於 System.Web.Mvc.WebViewPage.ExecutePageHierarchy()
+   於 System.Web.WebPages.StartPage.RunPage()
+   於 System.Web.WebPages.StartPage.ExecutePageHierarchy()
+   於 System.Web.WebPages.WebPageBase.ExecutePageHierarchy(WebPageContext pageContext, TextWriter writer, WebPageRenderingBase startPage)
+   於 System.Web.Mvc.RazorView.RenderView(ViewContext viewContext, TextWriter writer, Object instance)
+   於 System.Web.Mvc.BuildManagerCompiledView.Render(ViewContext viewContext, TextWriter writer)
+   於 System.Web.Mvc.ViewResultBase.ExecuteResult(ControllerContext context)
+   於 System.Web.Mvc.ControllerActionInvoker.InvokeActionResult(ControllerContext controllerContext, ActionResult actionResult)
+   於 System.Web.Mvc.ControllerActionInvoker.InvokeActionResultFilterRecursive(IList`1 filters, Int32 filterIndex, ResultExecutingContext preContext, ControllerContext controllerContext, ActionResult actionResult)
+   於 System.Web.Mvc.ControllerActionInvoker.InvokeActionResultFilterRecursive(IList`1 filters, Int32 filterIndex, ResultExecutingContext preContext, ControllerContext controllerContext, ActionResult actionResult)
+   於 System.Web.Mvc.ControllerActionInvoker.InvokeActionResultWithFilters(ControllerContext controllerContext, IList`1 filters, ActionResult actionResult)
+   於 System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass3_6.<BeginInvokeAction>b__4()
+   於 System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass3_1.<BeginInvokeAction>b__1(IAsyncResult asyncResult)
+2024-01-19 17:52:37,053 ERROR [6] (Startup+<>c:33) - DouErrorHandler發出的錯誤!!
+System.Exception: System.String錯誤:{"IsPrimaryKey":false,"DefaultValue":null,"Index":22,"Display":"單位","Required":false,"StringLength":0,"Visible":true,"VisibleEdit":true,"VisibleView":true,"Sortable":false,"MobileResponsive":true,"UseInputType":true,"EditType":3,"EditParameter":null,"TextListMatchValue":false,"TextLength":0,"TextAreaHeight":3,"ColTier":2,"ColSize":12,"ColBreakBefore":false,"ColBreakBeforeTitle":null,"ColBreakAfter":false,"ColBreakAfterTitle":null,"SelectItems":null,"SelectItemsClassNamespace":"DEDS.Models.Manager.ALLCityIDSelectItems, DEDS","SelectSourceDbContextNamespace":null,"SelectSourceModelNamespace":null,"SelectSourceModelValueField":null,"SelectSourceModelDisplayField":null,"SelectSourceModelFilterField":null,"SelectSourceModelFilterValue":null,"SelectGearingWith":null,"ImageMaxWidth":0,"ImageMaxHeight":0,"Filter":false,"FilterAssign":0,"IsOnlyServerSiteColumn":false,"TypeId":"Dou.Misc.Attr.ColumnDefAttribute, Dou, Version=1.1.0.0, Culture=neutral, PublicKeyToken=null"} ---> System.Exception: SelectItemsClassNamespace:DEDS.Models.Manager.ALLCityIDSelectItems, DEDS
+   於 Dou.Misc.DataManagerScriptHelper.GetDataManagerOptions(Type modeType) 於 D:\CVS_SRC\SourceCode\Dou\Misc\DataManagerScriptHelper.cs: 行 243
+   --- 內部例外狀況堆疊追蹤的結尾 ---
+   於 Dou.Misc.DataManagerScriptHelper.GetDataManagerOptions(Type modeType) 於 D:\CVS_SRC\SourceCode\Dou\Misc\DataManagerScriptHelper.cs: 行 314
+   於 Dou.Misc.DataManagerScriptHelper.GetDataManagerOptions[T]() 於 D:\CVS_SRC\SourceCode\Dou\Misc\DataManagerScriptHelper.cs: 行 26
+   於 Dou.Controllers.AModelController`1.GetDataManagerOptions() 於 D:\CVS_SRC\SourceCode\Dou\Controllers\AModelController.cs: 行 510
+   於 Dou.Controllers.UserBaseControll`2.GetDataManagerOptions() 於 D:\CVS_SRC\SourceCode\Dou\Controllers\UserBaseControll.cs: 行 487
+   於 Dou.Misc.Extension.HtmlHelperExtensions.DataManagerOptionsJavascript(HtmlHelper helper, String containerSelector, String javascriptOptionsVarname, Type t, Controller ctrl) 於 D:\CVS_SRC\SourceCode\Dou\Misc\Extension\HtmlHelperExtensions.cs: 行 99
+   於 ASP._Page_Views_Shared_DouUserPartial_cshtml.Execute() 於 D:\git\MOE-DEDS\DEDS\Views\Shared\DouUserPartial.cshtml: 行 7
+   於 System.Web.WebPages.WebPageBase.ExecutePageHierarchy()
+   於 System.Web.Mvc.WebViewPage.ExecutePageHierarchy()
+   於 System.Web.WebPages.WebPageBase.ExecutePageHierarchy(WebPageContext pageContext, TextWriter writer, WebPageRenderingBase startPage)
+   於 System.Web.Mvc.RazorView.RenderView(ViewContext viewContext, TextWriter writer, Object instance)
+   於 System.Web.Mvc.BuildManagerCompiledView.Render(ViewContext viewContext, TextWriter writer)
+   於 System.Web.Mvc.HtmlHelper.RenderPartialInternal(String partialViewName, ViewDataDictionary viewData, Object model, TextWriter writer, ViewEngineCollection viewEngineCollection)
+   於 System.Web.Mvc.Html.PartialExtensions.Partial(HtmlHelper htmlHelper, String partialViewName, Object model, ViewDataDictionary viewData)
+   於 System.Web.Mvc.Html.PartialExtensions.Partial(HtmlHelper htmlHelper, String partialViewName)
+   於 ASP._Page_Views_User_Index_cshtml.Execute() 於 D:\git\MOE-DEDS\DEDS\Views\User\Index.cshtml: 行 2
+   於 System.Web.WebPages.WebPageBase.ExecutePageHierarchy()
+   於 System.Web.Mvc.WebViewPage.ExecutePageHierarchy()
+   於 System.Web.WebPages.StartPage.RunPage()
+   於 System.Web.WebPages.StartPage.ExecutePageHierarchy()
+   於 System.Web.WebPages.WebPageBase.ExecutePageHierarchy(WebPageContext pageContext, TextWriter writer, WebPageRenderingBase startPage)
+   於 System.Web.Mvc.RazorView.RenderView(ViewContext viewContext, TextWriter writer, Object instance)
+   於 System.Web.Mvc.BuildManagerCompiledView.Render(ViewContext viewContext, TextWriter writer)
+   於 System.Web.Mvc.ViewResultBase.ExecuteResult(ControllerContext context)
+   於 System.Web.Mvc.ControllerActionInvoker.InvokeActionResult(ControllerContext controllerContext, ActionResult actionResult)
+   於 System.Web.Mvc.ControllerActionInvoker.InvokeActionResultFilterRecursive(IList`1 filters, Int32 filterIndex, ResultExecutingContext preContext, ControllerContext controllerContext, ActionResult actionResult)
+   於 System.Web.Mvc.ControllerActionInvoker.InvokeActionResultFilterRecursive(IList`1 filters, Int32 filterIndex, ResultExecutingContext preContext, ControllerContext controllerContext, ActionResult actionResult)
+   於 System.Web.Mvc.ControllerActionInvoker.InvokeActionResultWithFilters(ControllerContext controllerContext, IList`1 filters, ActionResult actionResult)
+   於 System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass3_6.<BeginInvokeAction>b__4()
+   於 System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass3_1.<BeginInvokeAction>b__1(IAsyncResult asyncResult)

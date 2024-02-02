@@ -9,14 +9,12 @@ using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 
 
 namespace DEDS.Controllers.Comm
 {
-    [Dou.Misc.Attr.MenuDef(Id = "CommEdit", Name = "人員資料管理", MenuPath = "通聯資料", Action = "Index", Func = Dou.Misc.Attr.FuncEnum.ALL, AllowAnonymous = false)]
+    [Dou.Misc.Attr.MenuDef(Id = "CommEdit", Name = "人員資料管理", MenuPath = "通聯資料", Action = "Index", Index = 1, Func = Dou.Misc.Attr.FuncEnum.ALL, AllowAnonymous = false)]
     public class CommEditController : Dou.Controllers.AGenericModelController<UserBasic>
     {
         public DouModelContextExt Db = new DouModelContextExt();
@@ -57,9 +55,9 @@ namespace DEDS.Controllers.Comm
                 string PWD = Dou.Context.CurrentUser<User>().Password;
                 bool IsManager = Dou.Context.CurrentUser<User>().IsManager;
                 if (!IsManager)
-                {                    
-                    List<LoginInfo> Info = fun.GetInfo(UserID, PWD);
-                    string CityID = Info[0].CityId.ToString(); // 取得登錄者的部門ID
+                {
+                    //List<LoginInfo> Info = fun.GetInfo(UserID, PWD);
+                    string CityID = fun.GetInfo(UserID, PWD); // 取得登錄者的部門ID
                     var result = iquery.Where(s => s.CityID == CityID).ToList();
                     foreach (var item in result)
                     {
@@ -110,8 +108,8 @@ namespace DEDS.Controllers.Comm
             bool IsManager = Dou.Context.CurrentUser<User>().IsManager;
             if (!IsManager)
             {
-                List<LoginInfo> Info = fun.GetInfo(UserID, PWD);
-                string CityID = Info[0].CityId.ToString(); // 取得登錄者的部門ID
+                //List<LoginInfo> Info = fun.GetInfo(UserID, PWD);
+                string CityID = fun.GetInfo(UserID, PWD); // 取得登錄者的部門ID
                 obj.CityID = CityID;
             }
 
@@ -160,6 +158,8 @@ namespace DEDS.Controllers.Comm
         }
 
 
+        
+
         protected void AddToHis(IEnumerable<UserBasic> objs, string Action)
         {
             var obj = objs.FirstOrDefault();
@@ -198,7 +198,7 @@ namespace DEDS.Controllers.Comm
                     Act = false
                 };
                 Db.Tabulation.Add(Data);
-            }           
+            }
             Db.SaveChanges();
         }
 
@@ -211,27 +211,31 @@ namespace DEDS.Controllers.Comm
             // 有變更單位再更新排序表
             if (Action == "編輯")
             {
-                // 先將舊資料刪除 再新增新的
-                foreach (var item in UserList)
+                // 單位整個變動的話 要移除舊資料再新增
+                if (obj.CityID != UserList[0].CityID)
                 {
-                    Db.Tabulation.Remove(item);
-                }
-
-                foreach (var item in CategoryList)
-                {
-                    var Data = new Tabulation
+                    //刪除
+                    foreach (var item in UserList)
                     {
-                        UID = obj.UID,
-                        Name = obj.Name,
-                        CityID = obj.CityID,
-                        CategoryId = item.CategoryId,
-                        Sort = item.Sort + 1,
-                        Act = false
-                    };
-                    Db.Tabulation.Add(Data);
+                        Db.Tabulation.Remove(item);
+                    }
+                    //新增
+                    foreach (var item in CategoryList)
+                    {
+                        var Data = new Tabulation
+                        {
+                            UID = obj.UID,
+                            Name = obj.Name,
+                            CityID = obj.CityID,
+                            CategoryId = item.CategoryId,
+                            Sort = item.Sort + 1,
+                            Act = false
+                        };
+                        Db.Tabulation.Add(Data);
+                    }
+                    Db.SaveChanges();
                 }
-                Db.SaveChanges();
-            }       
+            }
             if (Action == "刪除")
             {
                 foreach (var item in UserList)
@@ -241,5 +245,7 @@ namespace DEDS.Controllers.Comm
                 Db.SaveChanges();
             }
         }
+
+        
     }
 }

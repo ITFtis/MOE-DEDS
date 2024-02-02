@@ -20,13 +20,13 @@ namespace DEDS.Models.Comm
         [ColumnDef(Display = "UID",Visible = false, VisibleEdit =false)]
         public string UID { get; set; }
 
-        [ColumnDef(Display = "姓名", Visible = true, VisibleEdit = false)]
+        [ColumnDef(Display = "姓名", Visible = true, VisibleEdit = false, EditType = EditType.TextList, SelectItemsClassNamespace = "DEDS.Models.Comm.NameSelectItems, DEDS")]
         public string Name { get; set; }
 
-        [ColumnDef(Display = "單位", Visible = false, VisibleEdit = false, Filter = true, SelectGearingWith = "CategoryId,CityID,true", EditType = EditType.Select, SelectItemsClassNamespace = "DEDS.Models.Comm.CityIDSelectItems, DEDS")]
+        [ColumnDef(Index = 0,Display = "單位", Visible = false, VisibleEdit = false, Filter = true, SelectGearingWith = "CategoryId,CityID,true", EditType = EditType.Select, SelectItemsClassNamespace = "DEDS.Models.Comm.CityIDSelectItems, DEDS")]
         public string CityID { get; set; }
 
-        [ColumnDef(Display = "業務類別", Visible = false, VisibleEdit = false, Filter = true, EditType = EditType.Select, SelectItemsClassNamespace = "DEDS.Models.Comm.CategoryIdSelectItems, DEDS")]
+        [ColumnDef(Index = 1, Display = "業務類別", Visible = false, VisibleEdit = false, Filter = true, EditType = EditType.Select, SelectItemsClassNamespace = "DEDS.Models.Comm.CategoryIdSelectItems, DEDS")]
         public string CategoryId { get; set; }
 
         [ColumnDef(Display = "排序", Visible = false, VisibleEdit = false)]

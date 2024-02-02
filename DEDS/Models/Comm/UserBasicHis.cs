@@ -14,7 +14,7 @@ namespace DEDS.Models.Comm
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [ColumnDef(Visible = false, VisibleEdit = false, VisibleView = false)]
-        public int No { get; set; }
+        public int PID { get; set; }
 
         [ColumnDef(Display = "UID", Visible = false, VisibleEdit = false)]
         public string UID { get; set; }

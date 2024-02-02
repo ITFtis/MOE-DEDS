@@ -10,75 +10,52 @@ var dff = app;
             setTimeout(function () {
                 window.datahelper.preInitData();
             }, 1000);
-            
-            //GOOGLE MAP
-            if (mapType == window.mapHelper.mapType.google) {
-                app.taiwancenter = new google.maps.LatLng(23.8, 121);
-                var mapOptions = {
-                    center: app.taiwancenter,
-                    mapTypeControl: false,
-                    scaleControl: true,
-                    scaleControlOptions: { position: google.maps.ControlPosition.LEFT_BOTTOM },
-                    zoom: 8,
-                    zoomControl: false,
-                    streetViewControlOptions: { position: google.maps.ControlPosition.LEFT_BOTTOM },
-                    mapTypeId: google.maps.MapTypeId.ROADMAP
-                };
-                app.mapmap = new google.maps.Map(document.getElementById("map"),
-                    mapOptions);
-
-                setTimeout(function () {
-                    var panorama = map.getStreetView()
-                    google.maps.event.addListener(panorama, 'pano_changed', function () { //街圖
-                        $("body>*:not(#map):not(script)").addClass("offdisplay");
-                    });
-                    google.maps.event.addListener(panorama, 'closeclick', function () {
-                        $("body>*:not(#map)").removeClass("offdisplay");
-                    });
-                });
-                
+            var $_menuctrl = $("#mainmenu");
+            if ($_menuctrl.length > 0) {
+                $_menuctrl.on($.menuctrl.eventKeys.init_ctrl_menu_completed, function () {
+                    var $_mctrl = $_menuctrl.find('.nav .popu-ctrl-menu[href="#main-ctrl"]')
+                    if ($_mctrl.length > 0 && !$_mctrl.hasClass('selected'))
+                        $_mctrl.trigger('setActive', [true]);
+                })
             }
-            //ArcGis MAP
-            else {
-                app.map = L.map('map', { zoomControl: false, trackResize: true });
-                L.Control.Scale.prototype._updateMetric = function (maxMeters) {
-                    var meters = this._getRoundNum(maxMeters),
-                        label = (meters >= 1000 ? meters / 1000 : meters) + (meters >= 1000 ? ' 公里' : ' 公尺');
+            app.map = L.map('map', { zoomControl: false, trackResize: true });
+            L.Control.Scale.prototype._updateMetric = function (maxMeters) {
+                var meters = this._getRoundNum(maxMeters),
+                    label = (meters >= 1000 ? meters / 1000 : meters) + (meters >= 1000 ? ' 公里' : ' 公尺');
 
-                    this._updateScale(this._mScale, label, meters / maxMeters);
-                };
-                L.control.scale().addTo(app.map);
-                //改以比例尺leaflet scale
-                var _tf = setInterval(function () {
-                    var _scale = $(".leaflet-control-scale");//.css('left', 0).css('right', 'none');
-                    if (_scale.length == 0)
-                        return;
-                    clearInterval(_tf);
-                    _scale.hide();
-                    //_scale.parent().hide(); //於css設定
+                this._updateScale(this._mScale, label, meters / maxMeters);
+            };
+            L.control.scale().addTo(app.map);
+            //改以比例尺leaflet scale
+            var _tf = setInterval(function () {
+                var _scale = $(".leaflet-control-scale");//.css('left', 0).css('right', 'none');
+                if (_scale.length == 0)
+                    return;
+                clearInterval(_tf);
+                _scale.hide();
+                //_scale.parent().hide(); //於css設定
 
-                    var repaint_scale = function () {
-                        var $_td = $('<span rowspan="2" valign="middle">').insertAfter($('.coordinateInfoPanel')).css('font-weight', 'bold');// tr:first'));
-                        _scale.find('>div:eq(0)').appendTo($_td).css('position', 'absolute').css('top', '1rem').css('right', '20px')
-                            .css('color', 'white').css('border-color', '#ccc').css('background-color', 'transparent')
-                            .css('padding-bottom', '.4em').css('line-height', '0').css('overflow', 'inherit');
-                        $("#_scaleinfo").hide();
-                    }
-                    if ($('.coordinateInfoPanel').length > 0) {
-                        repaint_scale();
-                    }
-                    else {
-                        $('#coordinateInfoDiv').on($.menuctrl.eventKeys.popu_init_before, function () {
-                            setTimeout(function () {
-                                repaint_scale();
-                            }, 600)
-                        });
-                    }
-                }, 100);
-            }
+                var repaint_scale = function () {
+                    var $_td = $('<span rowspan="2" valign="middle">').insertAfter($('.coordinateInfoPanel')).css('font-weight', 'bold');// tr:first'));
+                    _scale.find('>div:eq(0)').appendTo($_td).css('position', 'absolute').css('top', '1rem').css('right', '20px')
+                        .css('color', 'white').css('border-color', '#ccc').css('background-color', 'transparent')
+                        .css('padding-bottom', '.4em').css('line-height', '0').css('overflow', 'inherit');
+                    $("#_scaleinfo").hide();
+                }
+                if ($('.coordinateInfoPanel').length > 0) {
+                    repaint_scale();
+                }
+                else {
+                    $('#coordinateInfoDiv').on($.menuctrl.eventKeys.popu_init_before, function () {
+                        setTimeout(function () {
+                            repaint_scale();
+                        }, 600)
+                    });
+                }
+            }, 100);
 
             //底圖
-            var baseoptions = { map: app.map};
+            var baseoptions = { map: app.map, defaultLayer: $.MapBaseLayerDefaultSettings.ext.Google.silver.name };
             $.extend(baseoptions, $.MapBaseLayerDefaultSettings);
             baseoptions.tiles.other1 = {
                 id: "other2",
@@ -135,13 +112,7 @@ var dff = app;
             $.initGisMenu('mainmenu'); //初始化menu
             callback(app.map);
 
-            if ($('').floodPreventionPoint)
-                $('#other-ctrl').floodPreventionPoint();
-            else {
-                setTimeout(function () {
-                    $('.nav-item > a[href="#other-ctrl"]').hide().trigger('setActive', false);
-                }, 802);
-            }
+          
 
             //災情訊息查詢
             if ($('#main-ctrl').length > 0 && window.FLOOD_QUERY_EVENT) {

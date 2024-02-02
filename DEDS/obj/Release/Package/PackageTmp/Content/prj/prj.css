@@ -1,11 +1,11 @@
 ﻿body {
-    --dou-menu-height: 57px;
+    --dou-menu-height: 61px !important;
 }
 .body-content {
     padding-top: var(--dou-menu-height) !important;
     min-height: calc( 100% - var(--dou-menu-height) ) !important;
  }
-.dou-menu {
+/*.dou-menu {
     background: #87CEFA;
     background: -moz-radial-gradient(center, ellipse cover, #6495ED 0%, #87CEFA 100%);
     background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, #6495ED), color-stop(100%, #87CEFA));
@@ -14,10 +14,21 @@
     background: -ms-radial-gradient(center, ellipse cover, #6495ED 0%, #87CEFA 100%);
     background: radial-gradient(ellipse at center, #6495ED 0%,#87CEFA 100%);
     background-size: 250% 250%;
+}*/
+.dou-menu {
+    background: #33CCCC;
+    background: -moz-radial-gradient(center, ellipse cover, #33CCCC 0%, #33CCCC 100%);
+    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, #00AAAA), color-stop(100%, #33CCCC));
+    background: -webkit-radial-gradient(center, ellipse cover, #00AAAA 0%, #33CCCC 100%);
+    background: -o-radial-gradient(center, ellipse cover, #00AAAA 0%, #33CCCC 100%);
+    background: -ms-radial-gradient(center, ellipse cover, #00AAAA 0%, #33CCCC 100%);
+    background: linear-gradient( #00AAAA,#33CCCC 0%C 100%);
+    background-size: 250% 250%;
+    padding-bottom:.2rem;
 }
 
 .dou-menu.navbar.bg-dark .navbar-nav .dropdown-menu {
-    background-color: #6495ED !important;
+    background-color: #00AAAA !important;
 }
 
 .dou-menu .menu-title{
@@ -31,9 +42,9 @@
 .dou-menu li > a > img {
     width: 1.5rem;
 }
-.title-image{
-    height:40px;
-    margin-right:.3rem;
+.prj-title  img{
+    height: 40px;
+    margin-right: .3rem;
 }
 .title-name {
     /*color: #1f1f1f;*/
@@ -72,13 +83,19 @@ body > header .dou-menu .dou-action-controller-root {
         object-position: left;
     }
 }
-@media (max-width: 840px) {
-    .dou-menu .title-image{
-        display:none;
+@media (max-width: 960px) {
+    .dou-menu .prj-title{
+        font-size:calc( 1rem + .2vw );
     }
 }
-@media (max-width: 400px) {
-    .dou-menu .user-profile-nav {
-        display:none;
+    @media (max-width: 840px) {
+        .dou-menu img {
+            display: none;
+        }
     }
-}
+
+    @media (max-width: 400px) {
+        .dou-menu .user-profile-nav {
+            display: none;
+        }
+    }

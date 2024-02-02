@@ -188,11 +188,9 @@ var jspAlertMsg = function (jcontainer, optins, callback) {
 
     var $_content = $_modal.find('.modal-content');
     var $_header = undefined;
-    //var $_footer = undefined;
     
     if (bv >= 5)
         $_header = $('<div class="modal-header"><h4 class="modal-title" >' + settings.title + '</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>').appendTo($_content);
-        //$_footer = $('<div class="modal-footer"><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">確 定</button></div>').appendTo($_content);
     else
         $_header = $('<div class="modal-header"><h4 class="modal-title pull-left float-left" >' + settings.title + '</h4><button type="button" class="close pull-right float-right btn-close" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>').appendTo($_content);
     var $_body = $('<div class="modal-body">').appendTo($_content);
@@ -209,7 +207,6 @@ var jspAlertMsg = function (jcontainer, optins, callback) {
         if(callback)
             callback();
         $_header.find('button').trigger('click'); //為了移除backdrop
-        //$_footer.find('button').trigger('click'); //為了移除backdrop
         $_modal.remove();
 
     });
@@ -227,6 +224,7 @@ var jspConfirmYesNo = function (jcontainer, optins, callback) {
         theme: 'warning',
         position: "center",
         controls: { buttons: 'closeonly', iconfont: 'font-awesome' },
+        classes: 'modal-lg modal-dialog-centered',
         content: "請確認",
         toolbarFooter: [
                    {
@@ -247,7 +245,7 @@ var jspConfirmYesNo = function (jcontainer, optins, callback) {
     //var jpMsg = jcontainer.jsPanel(settings);
     //return jpMsg;
 
-    var $_modal = $('<div class="modal fade" tabindex="-1" role="dialog" data-show="true"><div class="modal-dialog ' + settings.classes + '" role="document"><div class="modal-content"></div></div></div>').appendTo(jcontainer);
+    var $_modal = $('<div class="modal fade" data-bs-backdrop="static" tabindex="-1" role="dialog" data-show="true"><div class="modal-dialog ' + settings.classes + '" role="document"><div class="modal-content"></div></div></div>').appendTo(jcontainer);
     if (settings.size) {
         for (var _p in settings.size) {
             $_modal.find('.modal-dialog').css(_p, settings.size[_p]);
@@ -262,7 +260,7 @@ var jspConfirmYesNo = function (jcontainer, optins, callback) {
         $_header = $('<div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4 class="modal-title" id="myModalLabel">' + settings.title + '</h4></div>').appendTo($_content);
     var $_body = $('<div class="modal-body">').appendTo($_content);
     var $_footer = $('<div class="modal-footer">').appendTo($_content);
-    var $_confirmbtn = $('<button type="button" class="btn btn-primary btn-sm"> 確 定 </button>').appendTo($_footer);
+    var $_confirmbtn = $('<button type="button" class="btn btn-warning" data-bs-dismiss="modal"> 同 意 </button>').appendTo($_footer);
     var $_closebtn = $('<button type="button" class="btn btn-default btn-outline-dark  取 消  btn-sm" data-dismiss="modal" data-bs-dismiss="modal"> 取 消 </button>').appendTo($_footer);
     
     if (typeof settings.content === 'string')

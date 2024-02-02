@@ -1,0 +1,48 @@
+﻿@using Dou.Misc.Extension
+@Html.MenuMap()
+@*@Html.DataManagerOptionsJavascript(null, "dou_options")*@
+
+
+<head>
+    <style>
+        .button {
+            display: grid;
+            margin:0 30em 0 30em;
+        }
+
+    </style>
+</head>
+
+@*<script src="~/Scripts/Comm/export.js"></script>*@
+<script src="~/Scripts/jquery.loading.js"></script>
+<link href="~/Content/loading.css" rel="stylesheet" />
+
+<span class="btn btn-outline-primary  glyphicon glyphicon-export button" title="匯出" onclick="exportPDF()">匯 出</span>
+
+<script>
+    function exportPDF() {
+        $('body').loading();
+        $.ajax({
+            type: "GET",
+            url: "../DEDS/ContactExport/ExportPDF",
+            success: function (data) {
+                const now = new Date();
+                const year = now.getFullYear() - 1911;
+                var fileName = "環境部" + year + "年度環境污染事故緊急應變通聯手冊.pdf";
+                var Account = data.Account;
+                var fileUrl = "../DEDS/Data/Comm/Export/" + Account +"/Contact_Watermark.pdf";
+                var link = document.createElement("a"); // 建立 <a> 標籤
+                link.href = fileUrl;
+                link.download = fileName; // 設定下載的檔案名稱
+                link.click(); // 自動點擊下載
+                $('body').loading('stop');
+            },
+            error: function () {
+                alert("匯出程序出錯，請聯絡客服人員");
+                $('body').loading('stop');
+            }
+        });
+    };
+
+</script>
+@*<table id="_table"></table>*@

@@ -585,7 +585,7 @@ var Init雷達迴波圖 = function ($_meter) {
 
     var $_p = $('<div class="row"><div class="col-md-12"></div></div>').appendTo($_meter);
     $_p.PinCtrl({
-        map: app.map, name: '雷達迴波圖', useLabel: false, useList: false, autoReload: { auto: false, interval: 10 * 1000 }
+        map: app.map, name: '雷達回波圖', useLabel: false, useList: false, autoReload: { auto: false, interval: 10 * 1000 }
     }).on($.BasePinCtrl.eventKeys.initUICompleted, function () {
         var _timerflag = undefined;
         var timerreload = function () {
@@ -630,7 +630,7 @@ var Init雷達迴波圖 = function ($_meter) {
                     var gs = L.DouLayer.Qqesums.gridData2cellData(gparas.datas, gparas.colorDef);//$.map(gdata.datas, function (val, i) {return { lng: val[0], lat: val[1], color: getcolor(gdata.colorDef, val[2]) }});
 
                     $_legend.empty().show();
-                    L.DouLayer.Qqesums.genLegend($_legend, gparas.colorDef, 24, 16, 'dBZ', '雷達迴波');
+                    L.DouLayer.Qqesums.genLegend($_legend, gparas.colorDef, 24, 16, 'dBZ', '雷達回波');
                     _layer.setData(gs);
                     $_silder = bindSilder($_p, _layer);
 

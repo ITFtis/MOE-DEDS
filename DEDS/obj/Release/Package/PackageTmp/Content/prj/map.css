@@ -37,10 +37,11 @@ body.full-body-content .tools-group-panel{
     z-index: 9999;
 }
 .body-content {
-    padding: 0 !important;
-    margin-top: var(--dou-menu-height) !important;
+   padding: 0 !important;
+    /* margin-top: var(--dou-menu-height) !important;
     min-height: 0 !important;
-    height: calc( 100% - var(--dou-menu-height) ) !important;
+    height: calc( 100% - var(--dou-menu-height) ) !important;*/
+   height:100% !important;
     transition:margin ease .2s;
 }
 #coordinateInfoDiv, .coordinateInfoPanel {
@@ -74,7 +75,7 @@ input[type=checkbox][disabled] {
     font-size: 1.1rem;
     /* width: 1.1rem; */
 }
-#main-ctrl .pinctrl .checkbox-glyphicon, #other-ctrl .pinctrl .checkbox-glyphicon {
+#main-ctrl .pinctrl .checkbox-glyphicon, #source-ctrl .pinctrl .checkbox-glyphicon {
     display: none;
 }
 #main-ctrl, #main-ctrl select, #main-ctrl input, #main-ctrl .input-group-text {
@@ -137,13 +138,13 @@ input[type=checkbox][disabled] {
     left: calc( var(--adj-popu-width, -370px) * -1 + 4px ) !important;
 }
 
-#qpesums-legend .legend-color, #dayrainfall-legend .legend-color {
+#qpesums-legend .legend-color, #dayrainfall-legend .legend-color, #rader-legend .legend-color {
     overflow: hidden;
     border-radius: 20px;
     border: 2px #ddd solid;
 }
 
-#qpesums-legend, #dayrainfall-legend  {
+#qpesums-legend, #dayrainfall-legend, #rader-legend {
     text-shadow: 0 0 3px #000;
 }
 @media (max-width: 768px) {

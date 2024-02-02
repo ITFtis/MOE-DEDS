@@ -57,7 +57,6 @@ var transactionDouClientDataToServer = function (row, url, callback) {
             callback({ Success: false, Desc: jqXHR });
         });
 };
-
 (function ($) {
     'use strict';
     $.editformWindowStyle = {
@@ -86,7 +85,9 @@ var transactionDouClientDataToServer = function (row, url, callback) {
         delete: 'btn-default btn-sm  glyphicon glyphicon-trash',
         deleteall: 'btn-danger glyphicon glyphicon-remove',
         view: 'btn-default btn-sm  glyphicon glyphicon-eye-open',
-        query: 'btn-secondary'
+        query: 'btn-secondary',
+        remove: 'glyphicon glyphicon-remove',
+        error_message: 'glyphicon glyphicon-exclamation-sign'
     }, $.douButtonsDefault || {});
     $.edittableoptions = {
         rootParentContainer: "body",
@@ -98,10 +99,11 @@ var transactionDouClientDataToServer = function (row, url, callback) {
         toolbar: undefined,
         toolbarAlign: 'left',
         ctrlFieldAlign: 'right',
+        editCtrlButtonValign: 'bottom',//top, bottom
         height: undefined,
         addable: true,
         editable: true,
-        deleteable: true,
+        editable: true,
         useMutiDelete: false,
         useMutiSelect: false,
         buttonClasses: {}, //douButtonsDefault，或直接override $.douButtonsDefault所有值
@@ -112,8 +114,10 @@ var transactionDouClientDataToServer = function (row, url, callback) {
         editformWindowClasses: undefined, /*modal-sm、modal-lg、modal-xl>> modal用*/
         editformWindowStyle: $.editformWindowStyle.modal,
         datas: [],
+        addToListTop:false,
         singleDataEdit: false,
         singleDataEditCompletedReturnUrl: undefined,
+        beforeCreateTable: function (setting, callback) {callback() },
         beforeCreateEditDataForm: undefined, //function (row, callback) {todo something....; callback();}
         afterCreateEditDataForm: undefined,//function($_container,row)
         afterEditDataConfirm: undefined,//function編輯完資料，送到Server前
@@ -264,6 +268,9 @@ var transactionDouClientDataToServer = function (row, url, callback) {
         if (fopts.selectGearingWith) { //與其他select連動
             var _gearingFiledName = fopts.selectGearingWith.split(',')[0];
             var _gearingFiledSelectItemData = fopts.selectGearingWith.split(',')[1];
+            var _inseparable = false;
+            if (fopts.selectGearingWith.split(',').length==3)
+                _inseparable = fopts.selectGearingWith.split(',')[2].toUpperCase() == 'TRUE';
             var $_allgfoptions = undefined; //欲連動原所有option
             $_list.addClass('field-gearing').on('change', function (e, args) { //連動
                 //欲連動可能select、input+datalist
@@ -280,8 +287,14 @@ var transactionDouClientDataToServer = function (row, url, callback) {
                 var v = $_list.val();
                 $_gf.empty();
 
-                if (v == '')
-                    $_allgfoptions.appendTo($_gf);
+                if (v == '') {
+                    if (!_inseparable) //_inseparable=false,parent null>>details show all
+                        $_allgfoptions.appendTo($_gf);
+                    else {
+                        if ($_allgfoptions.first().val() == '')
+                            $_allgfoptions.first().appendTo($_gf);
+                    }
+                }
                 else {
                     if ($_allgfoptions.first().val() == '')
                         $_allgfoptions.first().appendTo($_gf);
@@ -294,7 +307,11 @@ var transactionDouClientDataToServer = function (row, url, callback) {
                 }
                 if ($_gf.hasClass('field-gearing'))
                     $_gf.trigger('change');
-            })
+            });//.trigger('change');
+            if (_inseparable)
+                setTimeout(function () {
+                    $_list.trigger('change');
+                });
         }
     }
 
@@ -312,7 +329,7 @@ var transactionDouClientDataToServer = function (row, url, callback) {
                 return $editEle.val();// .data("fn");
             },
             setValue: function ($editEle, v) {
-                if (this.key || this.editable === false)
+                if ((this.key || this.editable === false) && v != undefined )
                     $editEle.prop('disabled', true);
                 $editEle.val(v);
             }
@@ -322,7 +339,8 @@ var transactionDouClientDataToServer = function (row, url, callback) {
                 var $editEle = $('<input type="number"  class=" form-control" data-fn="' + this.field + '" ' +
                     (this.placeholder ? 'placeholder="' + this.placeholder + '"' : (this.key || this.allowNull === false ? 'placeholder="不能空值"' : '')) +
                     (this.maxlength ? ' maxlength="' + this.maxlength + '"' : ' ') + ' ></input>').appendTo($_fieldContainer);
-
+                if (this.step)
+                    $editEle.attr("step", this.step);
                 if (this.defaultvalue)
                     $editEle.val(this.defaultvalue);
 
@@ -376,8 +394,8 @@ var transactionDouClientDataToServer = function (row, url, callback) {
                 var _id = 'id' + geguid();
                 var $_dtp = $("<div id='" + _id + "' class='input-group date datetimeul datepick' data-fn='" + this.field + "'  data-target-input='nearest'>").appendTo($_fieldContainer);
                 if (this.useInputType && isInputSupportDate()) {
-                    $('<input type="datetime-local" title="' + this.title + '" required class="form-control not-datetimepicker-input" data-target="#' + _id + '" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}"/><span class="validity input-group-text-no"></span>').appendTo($_dtp)
-                        .attr('data-placeholder', this.title);//required >>為了filter before show data-placeholder
+                    $('<input type="datetime-local" title="' + this.title + '" required class="form-control not-datetimepicker-input" data-target="#' + _id + '" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}"/><span class="validity input-group-text-no"></span>').appendTo($_dtp);
+                        //.attr('data-placeholder', this.title);//required >>為了filter before show data-placeholder
                 }
                 else {
                     $('<input type="text" class="form-control datetimepicker-input" data-target="#' + _id + '"/>').appendTo($_dtp);
@@ -442,8 +460,8 @@ var transactionDouClientDataToServer = function (row, url, callback) {
                 var $_dtp = $("<div id='" + _id + "' class='input-group date datetimeul datepick' data-fn='" + this.field + "'  data-target-input='nearest'>").appendTo($_fieldContainer);
                 if (this.useInputType && isInputSupportDate()) {
                     //$('<input type="text"  onmouseenter="(this.type=\'date\')" onmouseout="(this.type=\'text\')" title="' + this.title + '" class="form-control not-datetimepicker-input" data-target="#' + _id + '" pattern="\d{4}-\d{2}-\d{2}"/><span class="validity input-group-text-no"></span>').appendTo($_dtp)
-                    $('<input type="date" title="' + this.title + '" required class="form-control not-datetimepicker-input" data-target="#' + _id + '" pattern="\d{4}-\d{2}-\d{2}"/><span class="validity input-group-text-no"></span>').appendTo($_dtp)
-                        .attr('data-placeholder', this.title);//required >>為了filter before show data-placeholder
+                    $('<input type="date" title="' + this.title + '" required class="form-control not-datetimepicker-input" data-target="#' + _id + '" pattern="\d{4}-\d{2}-\d{2}"/><span class="validity input-group-text-no"></span>').appendTo($_dtp);
+                        //.attr('data-placeholder', this.title);//required >>為了filter before show data-placeholder
                 }
                 else {
                     $('<input type="text" class="form-control datetimepicker-input" data-target="#' + _id + '"/>').appendTo($_dtp);
@@ -594,7 +612,7 @@ var transactionDouClientDataToServer = function (row, url, callback) {
                 if (flag) //filter
                     $editEle = $('<input class=" form-control"  data-fn="' + this.field + '" ></textarea>').appendTo($_fieldContainer);
                 else
-                    $editEle = $('<textarea rows="3" class=" form-control"  data-fn="' + this.field + '" ' + (this.key || this.allowNull === false ? 'placeholder="不能空值"' : '') +
+                    $editEle = $('<textarea rows="' + this.textareaheight +'" class=" form-control"  data-fn="' + this.field + '" ' + (this.key || this.allowNull === false ? 'placeholder="不能空值"' : '') +
                         (this.maxlength ? ' maxlength="' + this.maxlength + '"' : ' ') + '></textarea>').appendTo($_fieldContainer);
                 if (this.defaultvalue)
                     $editEle.val(this.defaultvalue);
@@ -609,7 +627,7 @@ var transactionDouClientDataToServer = function (row, url, callback) {
             }
         },
         "textlist": {
-            editContent: function ($_fieldContainer) {
+            editContent: function ($_fieldContainer, _row, _appendEmpty) {
                 if (this.selectitems === undefined)
                     alert(this.field +" selectitems 資料有問題");
                 var listid = 'id_' + helper.misc.geguid();
@@ -657,43 +675,7 @@ var transactionDouClientDataToServer = function (row, url, callback) {
                     });
                 }
 
-                gearingSelectDom($editEle,this);
-                return;
-                if (this.selectGearingWith) { //與其他select連動
-                    var _gearingFiledName = this.selectGearingWith.split(',')[0];
-                    var _gearingFiledSelectItemData = this.selectGearingWith.split(',')[1];
-                    var $_allgfoptions = undefined; //欲連動原所有option
-                    $editEle.addClass('field-gearing').on('change', function (e,args) { //連動
-                        //欲連動可能select、input+datalist
-                        var $_gf = $_fieldContainer.closest('.filter-toolbar-plus,.data-edit-form-group').find('select[data-fn="' + _gearingFiledName + '"]');//預連動select
-                        if ($_gf.length == 0) {
-                            $_gf = $_fieldContainer.closest('.filter-toolbar-plus,.data-edit-form-group').find('input[data-fn="' + _gearingFiledName + '"] + datalist');//預連動select
-                            if (!args || !args.fromSetValue)
-                                $_fieldContainer.closest('.filter-toolbar-plus,.data-edit-form-group').find('input[data-fn="' + _gearingFiledName + '"]').val(''); //清空資料
-                        }
-
-                        if (!$_allgfoptions)
-                            $_allgfoptions = $_gf.find('option');
-
-                        var v = $editEle.val();
-                        $_gf.empty();
-
-                        if (v == '')
-                            $_allgfoptions.appendTo($_gf);
-                        else {
-                            if ($_allgfoptions.first().val() == '')
-                                $_allgfoptions.first().appendTo($_gf);
-                            $.each($_allgfoptions, function () {
-                                var $_this = $(this);
-                                if ($_this.attr("data-" + _gearingFiledSelectItemData) == v)
-                                    $_this.appendTo($_gf);
-                            });
-                            //$_fnoptions.find('[data-dcode="' + dv + '"]').appendTo($_fnoselect);//.removeClass('d-none');
-                        }
-                        if ($_gf.hasClass('field-gearing'))
-                            $_gf.trigger('change');
-                    })
-                }
+                gearingSelectDom($editEle, this);////_appendEmpty來至filter
             },
             getValue: function ($editEle) {
                 var tv = $editEle.val();// .data("fn");
@@ -741,47 +723,24 @@ var transactionDouClientDataToServer = function (row, url, callback) {
                 var $_s = $(result.join(' ')).appendTo($_fieldContainer);
 
                 if (!_appendEmpty && this.defaultvalue != undefined) { //_appendEmpty=true來至filter
-                    $_s.val(this.defaultvalue + "");
+                    var dv = this.defaultvalue;
+                    //if (this.defaultvalue) {
+                    //    var _ddt = this.defaultvalue;
+                    if (typeof dv === 'string' && dv.startsWith("eval(") >= 0)
+                        dv = eval(dv);
+                        //_ddt = helper.format.JsonDateStr2Datetime(_ddt);
+                        //if (this.useInputType && isInputSupportDate())
+                        //    $_dtp.find('input').attr('value', _ddt.DateFormat("yyyy-MM-dd"));
+                        //else
+                        //    $_dtp.datetimepicker("date", _ddt);
+                    //}
+                    $_s.val(dv + "");
                 }
                 else
                     $_fieldContainer.find('select')[0].selectedIndex = 0;
 
-                gearingSelectDom($_s, this);
-                return;
-                if (this.selectGearingWith) { //與其他select連動
-                    var _gearingFiledName = this.selectGearingWith.split(',')[0];
-                    var _gearingFiledSelectItemData = this.selectGearingWith.split(',')[1];
-                    var $_allgfoptions = undefined; //欲連動原所有option
-                    $_s.addClass('field-gearing').on('change', function (e, args) { //連動
-                        that.editFormtter.event.call(this,e, args);
-                        //欲連動可能select、input+datalist
-                        var $_gf = $_fieldContainer.closest('.filter-toolbar-plus,.data-edit-form-group').find('select[data-fn="' + _gearingFiledName + '"]');//預連動select
-                        if ($_gf.length == 0) {
-                            $_gf = $_fieldContainer.closest('.filter-toolbar-plus,.data-edit-form-group').find('input[data-fn="' + _gearingFiledName + '"] + datalist');//預連動select
-                            if (!args || !args.fromSetValue)
-                                $_fieldContainer.closest('.filter-toolbar-plus,.data-edit-form-group').find('input[data-fn="' + _gearingFiledName + '"]').val(''); //清空資料
-                        }
-                        if (!$_allgfoptions)
-                            $_allgfoptions = $_gf.find('option');
-
-                        var v = $_s.val();
-                        $_gf.empty();
-                        
-                        if (v == '')
-                            $_allgfoptions.appendTo($_gf);
-                        else {
-                            if ($_allgfoptions.first().val() == '')
-                                $_allgfoptions.first().appendTo($_gf);
-                            $.each($_allgfoptions, function () {
-                                var $_this = $(this);
-                                if ($_this.attr("data-" + _gearingFiledSelectItemData) == v)
-                                    $_this.appendTo($_gf);
-                            });
-                        }
-                        if ($_gf.hasClass('field-gearing'))
-                            $_gf.trigger('change');
-                    })
-                }
+                gearingSelectDom($_s, this, _appendEmpty); //_appendEmpty來至filter
+                
 
             },
             getValue: function ($editEle) {
@@ -791,6 +750,8 @@ var transactionDouClientDataToServer = function (row, url, callback) {
                 if (this.key || this.editable === false)
                     $editEle.prop('disabled', true);
                 $editEle.val(v + "");//bool要變字串
+
+                //console.log('setValue:' + this.field);
                 if ($editEle.hasClass('field-gearing'))
                     setTimeout(function () { //setTimeout因select2尚未初始化，會造成$_allgfoptions ==empty
                         $editEle.trigger('change', { fromSetValue: true });
@@ -1042,6 +1003,7 @@ var transactionDouClientDataToServer = function (row, url, callback) {
                 this.settings.tableOptions.formatNoMatches = stringEval2Function(this.settings.tableOptions.formatNoMatches);
                 this.settings.tableOptions.formatSearch = stringEval2Function(this.settings.tableOptions.formatSearch);
                 this.settings.tableOptions.responseHandler = stringEval2Function(this.settings.tableOptions.responseHandler);
+                this.settings.tableOptions.queryParams = stringEval2Function(this.settings.tableOptions.queryParams);
             }
 
             this.settings.datas = options.datas; //如options.datas=[] ,則extend後this.settings.datas的實體還是原this.settings.datas[]的實體
@@ -1137,13 +1099,13 @@ var transactionDouClientDataToServer = function (row, url, callback) {
                     if (this.settings.ctrlFieldAlign == 'right')
                         this.settings.fields[0].push(_ctrf);
                     else
-                        this.settings.fields[0].splice(0, 0, _ctrf);
+                        this.settings.fields[0].splice(this.settings.fields[0][0].hasOwnProperty("checkbox") ? 1 : 0, 0, _ctrf);
                 }
                 else {
                     if (this.settings.ctrlFieldAlign == 'right')
                         this.settings.fields.push(_ctrf);
                     else
-                        this.settings.fields.splice(0, 0, _ctrf);
+                        this.settings.fields.splice(this.settings.fields[0].hasOwnProperty("checkbox")?1:0, 0, _ctrf);
                 }
             }
 
@@ -1222,9 +1184,11 @@ var transactionDouClientDataToServer = function (row, url, callback) {
                     orgOnLoadError(status, dat);
             }
 
-
-            this.createBootstrapTable();
-            this.ctrlBtnListen();
+            this.settings.beforeCreateTable(this.settings, function () {
+                current.createBootstrapTable();
+                current.ctrlBtnListen();
+            });
+            
         },
         showTableColumn: function (fn, _show) {
             if (this.$table) {
@@ -1256,7 +1220,9 @@ var transactionDouClientDataToServer = function (row, url, callback) {
 
             if (this.settings.classes) this.$___bootstraptable.addClass(this.settings.classes);
             if (this.settings.singleDataEdit) {
-                this.$table.find(".btn-update-data-manager:first").trigger("click");
+                //this.$table.find('tr[data-index="你的序號"] .btn-update-data-manager:first').trigger("click");
+                //this.$table.find('.btn-update-data-manager:first').trigger("click");
+                this.editSpecificData(this.getData()[0]);
                 return;
             }
             
@@ -1348,13 +1314,15 @@ var transactionDouClientDataToServer = function (row, url, callback) {
 
                             current.settings.afterAddServerData(urow, function () {
                                 current.addDatas(urow);
-                                current.$element.triggerHandler($.dou.events.add, [urow]);
+                                
 
                                 current._editformWindowStyleEnd();
                                 if (result.Desc != undefined) // undefined不需alert訊息，特殊客製化需求用
                                     jspAlertMsg($("body"), { autoclose: autoclose, content: result.Desc, classes: 'modal-sm' });//.css("overflow", "hidden").css("width", "251");
+                                current.$element.triggerHandler($.dou.events.add, [urow]);
                             });
                         } else {
+                            console.log("result.Desc:" + result.ExceptionMsg || result.Desc);
                             current.$___currentEditFormWindow.triggerHandler("set-error-message", result.Desc);
                         }
                     });
@@ -1395,7 +1363,7 @@ var transactionDouClientDataToServer = function (row, url, callback) {
                             }
 
                         } else {
-                            console.log("result.Desc:" + result.Desc);
+                            console.log("result.Desc:" + result.ExceptionMsg || result.Desc);
                             current.$___currentEditFormWindow.trigger("set-error-message", result.Desc);
                         }
                     });
@@ -1437,8 +1405,10 @@ var transactionDouClientDataToServer = function (row, url, callback) {
                             current._editformWindowStyleEnd();
                             current.$element.triggerHandler($.dou.events.delete, $.isArray(row) ? $.isArray(row) : [row]);
                         }
-                        else
+                        else {
+                            console.log("result.Desc:" + result.ExceptionMsg || result.Desc);
                             jspAlertMsg($("body"), { autoclose: 99999, content: result.Desc }).css("overflow", "hidden");//.css("width", "251");
+                        }
                     });
                 }
             });
@@ -1496,7 +1466,7 @@ var transactionDouClientDataToServer = function (row, url, callback) {
             var current = this;
             if (_toServer) {
                 helper.misc.showBusyIndicator(this.$table, { timeout: 180000 });
-                current.settings.addServerData(_rows, function (result) {
+                current.settings.updateServerData(_rows, function (result) {
                     helper.misc.hideBusyIndicator(current.$table);
                     if (result.Success) {
                         current.___updateDataToTable(result.data);
@@ -1517,8 +1487,25 @@ var transactionDouClientDataToServer = function (row, url, callback) {
             var that = this;
             if (!this.settings.datas)
                 this.settings.datas = [];
+            var $_pinfo = this.$___bootstraptable.find('>.fixed-table-pagination');
+            var ocount = this.settings.datas.length;
+            var tocount, tcount;//修正分頁筆數資訊
+            if (this.settings.tableOptions.sidePagination =='server' && $_pinfo.length > 0) { 
+                var otext = $_pinfo.find('.pagination-info').text();
+
+                var sidx = otext.indexOf('到第') + 2;
+                var eidx = otext.indexOf('筆', sidx);
+                tocount = parseInt(otext.substr(sidx, eidx - sidx));
+                sidx = otext.indexOf('總共') + 2;
+                eidx = otext.indexOf('筆', sidx);
+                tcount = parseInt(otext.substr(sidx, eidx - sidx));
+            }
+
+
             var _appendDatas = $.isArray(_datas) ? _datas : [_datas];
-            this.$table.bootstrapTable('append', _appendDatas);
+            if (!_datas && _appendDatas.length == 0)
+                return;
+            this.$table.bootstrapTable(this.settings.addToListTop ? 'prepend' :'append', _appendDatas);
             //if ($.isArray(_datas)) {
             _appendDatas.forEach(function (_d) {
                 that.settings.datas.push(_d);
@@ -1530,10 +1517,23 @@ var transactionDouClientDataToServer = function (row, url, callback) {
             //    this.settings.datas.push(_datas);//需放於.bootstrapTable('append', urow);後
             //current.$table.bootstrapTable('insertRow', {index:0, row:urow});
 
-            var ntr = this.$table.parent(".fixed-table-body")[0];
-            ntr.scrollTop = ntr.scrollHeight;
-            for (var _i = 1; _i <= _appendDatas.length; _i++)
-                $("tr[data-index=" + (this.settings.datas.length - _i) + "]").hide().fadeIn(2000);
+            //var ntr = this.$table.parent(".fixed-table-body")[0];
+            //ntr.scrollTop = ntr.scrollHeight;   //不work
+            //$('body').scrollTop(ntr.scrollHeight);  //work 20230512尚未確認用這
+            var ridx = this.settings.addToListTop ? 0 : ocount;
+
+            /*for (var _i = 1; _i <= _appendDatas.length; _i++)*/
+            for (var _i = 0; _i < _appendDatas.length; _i++)
+                $("tr[data-index=" + (ridx+_i) + "]").hide().fadeIn(2000);
+
+            if (this.settings.tableOptions.sidePagination =='server' && $_pinfo.length > 0) {
+                $_pinfo.find('.pagination-info').text(otext.replace("到第 " + tocount + " 筆", "到第 " + (tocount+_appendDatas.length) + " 筆").
+                    replace("總共 " + tcount + " 筆", "總共 " + (tcount + _appendDatas.length ) + " 筆"));
+            }
+            if (!this.settings.addToListTop) {
+                var element = this.$table.find("tr[data-index=" + ridx + "]")[0];
+                element.scrollIntoView();
+            }
         },
         ___updateDataToTable: function (_datas) {
             if (!_datas || ($.isArray(_datas) && _datas.length == 0))
@@ -1596,7 +1596,7 @@ var transactionDouClientDataToServer = function (row, url, callback) {
                     var _match = true;
                     $.each(current._currentKeysField, function () {
                         _match = row[this.field] == d[this.field];
-                        if (_match)
+                        if (!_match)
                             return false;
                     });
                     if (_match) {
@@ -1614,6 +1614,10 @@ var transactionDouClientDataToServer = function (row, url, callback) {
                 current.$_ctrlbtn = $(evt.target);
             });
             this.$_ctrlbtn = undefined;
+        },
+        editSpecificData: function (d) {
+            var _i = this.___getDataIndex(d, this.getData());
+            this.$table.find('tr[data-index="' + _i +'"] .btn-update-data-manager:first').trigger("click");
         },
         tableReload: function (_datas, _fromServer) {
             var sctop = this.$table.parent(".fixed-table-body")[0].scrollTop;
@@ -1694,12 +1698,11 @@ var transactionDouClientDataToServer = function (row, url, callback) {
                     var __showErrorMessage = function (_emsgs) {
                         if (_emsgs) {
                             _emsgs = $.isArray(_emsgs) ? _emsgs : [_emsgs];
-                            current.$___currentEditFormWindow.trigger("set-error-message", '<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>&nbsp; ' + _emsgs.join('<br><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>&nbsp; '));
+                            current.$___currentEditFormWindow.trigger("set-error-message", '<span class="' + current.settings.buttonClasses.error_message + '" aria-hidden="true"></span>&nbsp; ' + _emsgs.join('<br><span class="' + current.settings.buttonClasses.error_message +'" aria-hidden="true"></span>&nbsp; '));
                         }
                     }
                     if (errors.length > 0) {
                         __showErrorMessage(errors);
-                        //current.$___currentEditFormWindow.trigger("set-error-message", '<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>&nbsp; ' + errors.join('<br><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>&nbsp; '));
                         //focus第一筆
                         var sdd = $(".field-container[data-field=" + firstErrorField.field + "]", current.$___currentEditFormWindow).find(".field-content").children().first();
                         console.log(JSON.stringify(firstErrorField));
@@ -1766,7 +1769,7 @@ var transactionDouClientDataToServer = function (row, url, callback) {
                 var $_body = $('<div class="modal-body">').appendTo($_content);
                 var $_footer = $('<div class="modal-footer">').appendTo($_content);
                 var $_confirmbtn = $('<button type="button" class="btn btn-primary "> 確 定 </button>').appendTo($_footer);
-                var $_closebtn = $('<button type="button" class="btn btn-default"> 取 消 </button>').appendTo($_footer);
+                var $_closebtn = $('<button type="button" class="btn btn-default btn-outline-secondary"> 取 消 </button>').appendTo($_footer);
                 //data-bs-dismiss是5.0
                 //額外加data-bs-dismiss按鈕，不直接將屬性加在取消鈕，方便"確認"及"取消"可一致呼叫關掉modal
                 var $_dismissbtn = $('<button type="button" class="btn btn-default  data-dismiss" data-bs-dismiss="modal" data-dismiss="modal" style="display:none"> 取dfd 消 </button>').appendTo($_footer);
@@ -1785,14 +1788,19 @@ var transactionDouClientDataToServer = function (row, url, callback) {
                     _cancelAction(); //僅在點modal外會觸發，"確認"、"確認"取消不會觸發20230106
                 });
                 //var _isFromConfirm = false;
-                $_confirmbtn.click(function () {
+                $_confirmbtn.on('click',function () {
                     if (_confirmAction() === false)
                         return;
                 });
-                $_closebtn.click(function () {
+                $_closebtn.on('click',function () {
                     _cancelAction();
                 });
-
+                //editCtrlButtonValign
+                if (current.settings.editCtrlButtonValign == 'top') {
+                    $_footer.css('position', 'absolute').css('width', '100%').css('order', '0');
+                    //$_closebtn.css('border', '1px #bbb solid');
+                    $_body.css('order', '1');
+                }
 
 
 
@@ -1807,10 +1815,11 @@ var transactionDouClientDataToServer = function (row, url, callback) {
                         if ($_content.length > 0)
                             f.editFormtter.editContent.call(f, $_content, row);
                         if ($_content.children().length > 1) {
-                            alert(this.name + " editContent內文第一層只能含一個dom");
+                            if ($_content.children('input[list]').length==0)
+                                alert(this.name + " editContent內文第一層只能含一個dom");
                         }
-                        if (row && row[f.field] != undefined && $_content.length > 0)
-                            //if (row  && $_content.length > 0) 20210319
+                        //if (row && row[f.field] != undefined && $_content.length > 0) //20231129
+                        if (row  && $_content.length > 0) //20210319 >> 20231129
                             f.editFormtter.setValue.call(f, $_content.children().first(), row[f.field], row);
                     }
                     else {
@@ -1985,10 +1994,11 @@ var transactionDouClientDataToServer = function (row, url, callback) {
             _fileld.editFormtter.editContent.call(_fileld, $_fg, undefined, true);
             $_fg.find('[data-fn]').attr('placeholder', _fileld.title);
             var $_e = $_fg.find('[data-fn]').find("input, select").attr('placeholder', _fileld.title);
-            if (_fileld.datatype == 'datetime' || _fileld.datatype == 'date') {
+            if (_fileld.datatype == 'datetime' || _fileld.datatype == 'date' ) {
                 $_e.on('mouseenter', function () {
-                    $(this).attr('placeholder', _fileld.editParameter && _fileld.editParameter.format ? _fileld.editParameter.format :
-                        (_fileld.datatype == 'datetime' ? 'YYYY/MM/DD h:m:s' : 'YYYY/MM/DD'));
+                    if (!_fileld.useInputType)
+                        $(this).attr('placeholder', _fileld.editParameter && _fileld.editParameter.format ? _fileld.editParameter.format :
+                            (_fileld.datatype == 'datetime' ? 'YYYY/MM/DD h:m:s' : 'YYYY/MM/DD'));
                 });
                 $_e.on('mouseleave', function () {
                     $(this).attr('placeholder', _fileld.title);
@@ -2065,7 +2075,7 @@ var transactionDouClientDataToServer = function (row, url, callback) {
     $.fn['douTable'] = $.fn[pluginName];
     window.douHelper = window.douHelper || {};
     //依指定欄位(field)，取欄位物件
-    window.douHelper.getField = function (fields, fn) {
+    window.douHelper.getField = function (fields, fn, attrs) {
         var fns = [];
         var _f = function (_fd) {
             if ($.isArray(_fd)) { //多層表頭
@@ -2079,19 +2089,29 @@ var transactionDouClientDataToServer = function (row, url, callback) {
         $.each(fields, function () {
             _f(this);
         })
-        return fns.length > 0 ? fns[0] : undefined;
+        var _r = fns.length > 0 ? fns[0] : undefined;
+        $.extend(_r, attrs);
+        return _r;
     }
     //產單一欄位Dom
     window.douHelper.createDataEditContent = function ($_container, f, data, labelWidth) {
         var lw = labelWidth || 12;
         var cw = lw == 0 || lw == 12 ? 12 : 12 - lw;
-        //var $_formgroup = $('<div  class="form-group field-container row col-sm-4" data-field="' + f.field + '"><label class="col-sm-' + lw + ' control-label">' + f.title + '</label></div>').appendTo($_container);
-        var colclass = 'col-' + (f.coltier || 'md') + '-' + f.colsize || 12;
+
+        var colclasstemp = 'col-' + (f.coltier || 'md') + '-';
+
+        if (f.colBreakBefore)
+            $('<div class="' + colclasstemp + '-12 data-field-break" data-field-before-break="' + f.field + '" data-field-title="' + (f.colBreakBeforeTitle || '')+'"></div>').appendTo($_container);
+
+        var colclass = colclasstemp + f.colsize || 12;
         var $_formgroup = $('<div  class="form-group field-container '+colclass+'" data-field="' + f.field + '"><label class="col-sm-' + lw + ' control-label">' + f.title + '</label></div>').appendTo($_container);
         var $_content = $('<div class="field-content col-sm-' + cw + '"></div>').appendTo($_formgroup);
         f.editFormtter.editContent.call(f, $_content, data);
         if (data && data[f.field] != undefined && $_content.length > 0)
             f.editFormtter.setValue.call(f, $_content.children().first(), data[f.field], data);
+
+        if (f.colBreakAfter)
+            $('<div class="' + colclasstemp + '-12" data-field-after-break="' + f.field + '" data-field-title="' + (f.colBreakAfterTitle || '') + '"></div>').appendTo($_container);
     }
     //取單一欄位Dom值
     window.douHelper.getDataEditContentValue = function ($_container, f) {

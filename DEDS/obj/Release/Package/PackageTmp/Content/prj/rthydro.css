@@ -43,21 +43,57 @@
 }
 #main-ctrl .rain_normal {
     color: blue;
+    color: #0000ff;
+}
+.rain_normal, .googleContentFix .rain_normal {
+    background-color: #0000ff;
+    fill: #0000ff;
+    color: white;
 }
 #main-ctrl .rain_heavy {
-    color: green;
+    color: yellowgreen;
+    color:#007e39;
+}
+.rain_heavy, .googleContentFix .rain_heavy {
+    background-color: #007e39;
+    fill: #007e39;
+    color: white;
 }
 #main-ctrl .rain_extremely {
     color: #9ACD32;
+    color:#954001;
+}
+.rain_extremely, .googleContentFix .rain_extremely {
+    background-color: #954001;
+    fill: #954001;
+    color: white;
 }
 #main-ctrl .rain_torrential {
     color: orange;
+    color:#c00000;
+}
+.rain_torrential, .googleContentFix .rain_torrential {
+    background-color: #c00000;
+    fill: #c00000;
+    color: white;
 }
 #main-ctrl .rain_exttorrential {
     color: red;
+    color:#9d1b94;
+}
+.rain_exttorrential, .googleContentFix .rain_exttorrential {
+    background-color: #9d1b94;
+    fill: #9d1b94;
+    color: white;
 }
 #main-ctrl .rain_nodata {
     color: gray;
+    color:#000000;
+}
+.rain_nodata, .googleContentFix .rain_nodata {
+    background-color: #000000;
+    fill: #000000;
+    color: white;
 }
 #main-ctrl .green_status {
     color: green;
@@ -169,7 +205,7 @@
 }
 .fsta-c > .sta-c > .total .t-count {
     flex: auto;
-    font-size: 10vh;
+    font-size: 9vh;
     color: white;
     text-decoration: underline;
     display: flex;
@@ -182,4 +218,86 @@
     position:absolute;
     right:.5rem;
     margin-top:-0px;
+}
+
+.jsPanel-content.source-ctrl {
+    padding: 0 !important;
+}
+
+
+.jsPanel-hdr.epa_status, .epa_status:not(tr) {
+    background-color: #37679B;
+    color: white;
+}
+
+.jsPanel-hdr.cleaningteam_status, .cleaningteam_status:not(tr) {
+    background-color: #0F8618;
+    color: white;
+}
+
+.jsPanel-hdr.opencontract_status, .opencontract_status:not(tr) {
+    background-color: #002060;
+    color: white;
+}
+
+.jsPanel-hdr.landfill_InOperation_status, .landfill_InOperation_status {
+    background-color: #a56942;
+    color: #a56942;
+}
+.jsPanel-hdr.landfill_margin_status, .landfill_margin_status {
+    background-color: #5ed1a0;
+    color: #5ed1a0;
+}
+.jsPanel-hdr.landfill_nomargin_status, .landfill_nomargin_status {
+    background-color: #b5b5b6;
+    color: #b5b5b6;
+}
+
+.jsPanel-hdr.incineration_PuPu_status, .incineration_PuPu_status {
+    background-color: #4f4030;
+    color: #4f4030;
+}
+
+.jsPanel-hdr.incineration_PuPr_status, .incineration_PuPr_status {
+    background-color: #997258;
+    color: #997258;
+}
+
+.jsPanel-hdr.incineration_PrPr_status, .incineration_PrPr_status {
+    background-color: #c69a6a;
+    color: #c69a6a;
+}
+
+.leaflet-infowindow-title.infowindow-title-white {
+    color: white;
+}
+.source-ctrl .jsPanel-hdr, .source-ctrl .jsPanel-hdr-r-btn-close > .glyphicon-remove::before {
+    color: white;
+}
+.source-ctrl tr {
+    background-color: transparent !important;
+}
+/*開口合約*/
+.contract-info-tab .bootstrap-table tr > th > .th-inner, .contract-info-tab .bootstrap-table tr > td {
+    padding: .3rem .1rem !important;
+}
+
+.contract-info-tab .nav-link {
+    border-top: calc(var(--bs-nav-tabs-border-width) * -1);
+    margin-top: calc(var(--bs-nav-tabs-border-width) * -1);
+    border-top-left-radius: 0px !important;
+    border-top-right-radius: 0px !important;
+    border-bottom-left-radius: var(--bs-nav-tabs-border-radius) !important;
+    border-bottom-right-radius: var(--bs-nav-tabs-border-radius) !important;
+}
+.contract-info-tab .nav-link.active {
+    border-bottom: var(--bs-nav-tabs-border-width) solid var(--bs-nav-tabs-border-color);
+}
+.contract-info-tab .nav-tabs {
+    border-top: var(--bs-nav-tabs-border-width) solid var(--bs-nav-tabs-border-color);
+    border-bottom:none;
+    margin:.3rem 0 !important;
+}
+.infowindow-cwb-typh .googleContentFix{
+    white-space:normal !important;
 }

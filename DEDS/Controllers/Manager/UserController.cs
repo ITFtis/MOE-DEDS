@@ -22,6 +22,7 @@ namespace DEDS.Controllers.Manager
     [Dou.Misc.Attr.MenuDef(Id = "User", Name = "使用者管理", MenuPath = "系統管理", Action = "Index", Func = Dou.Misc.Attr.FuncEnum.ALL, AllowAnonymous = false)]
     public class UserController : Dou.Controllers.UserBaseControll<User, Role>
     {
+        public DouModelContextExt Db = new DouModelContextExt();
         string recaptchaProjectID = null;
         string recaptchaSiteKey = null;
         string recaptchaAction = null;
@@ -93,6 +94,7 @@ namespace DEDS.Controllers.Manager
                                 me.Add(role);
                             }
 
+                            var OldsysInfo = JsonConvert.DeserializeObject<List<LoginInfo>>(IsOldSysUser.Value)[0];
                             u = new User()
                             {
                                 Id = user.Id,
@@ -100,6 +102,7 @@ namespace DEDS.Controllers.Manager
                                 Password = Dou.Context.Config.PasswordEncode(user.Password.Trim()),
                                 Enabled = true,
                                 IsManager = false,
+                                Unit = OldsysInfo.CityId.ToString(),
                                 RoleUsers = new RoleUser[] { new RoleUser { RoleId = defaultRoleId, UserId = user.Id } }.ToList()
                             };
                             this.AddDBObject(GetModelEntity(), new User[] { u });
@@ -114,7 +117,7 @@ namespace DEDS.Controllers.Manager
                         {
                             ViewBag.ErrorMessage = IsOldSysUser.Value;
                             return PartialView(user);
-                        }                       
+                        }
                     }
                     else if (u != null && Dou.Context.Config.VerifyPassword(u.Password, user.Password.Trim())) // 驗證成功就進入系統
                     {
@@ -123,7 +126,7 @@ namespace DEDS.Controllers.Manager
                     }
                     else //驗證失敗
                     {
-                        ViewBag.ErrorMessage = "查無此使用者帳號！";
+                        ViewBag.ErrorMessage = "帳號密碼有誤！";
                         return PartialView(user);
                     }
                 }
@@ -243,7 +246,7 @@ namespace DEDS.Controllers.Manager
             try
             {
                 var Result = JsonConvert.DeserializeObject<List<LoginInfo>>(jsonstring);
-                return new KeyValuePair<bool, string>(true, "");
+                return new KeyValuePair<bool, string>(true, jsonstring);
             }
             catch //驗證失敗 不管是帳號資料異常或是登入失敗都是
             {

@@ -1,4 +1,6 @@
-﻿using Dou.Misc.Attr;
+﻿using DEDS.Models.Comm;
+using Dou.Misc.Attr;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,17 +10,17 @@ using System.Web;
 namespace DEDS.Models.Manager
 {
     [Table("User")]
-    public class User: Dou.Models.UserBaseExt
+    public class User : Dou.Models.UserBaseExt
     {
         [ColumnDef(Display = "名稱", Index = 2)]
         public override string Name { set; get; }
 
-        
+
 
         [ColumnDef(Display = "機關", Index = 20)]
         public string Organize { set; get; }
 
-        [ColumnDef(Display = "單位", Index = 22)]
+        [ColumnDef(Display = "單位", Index = 22, EditType = EditType.Select, SelectItemsClassNamespace = "DEDS.Models.Manager.ALLCityIDSelectItems, DEDS")]
         public string Unit { set; get; }
         [ColumnDef(Display = "部門", Index = 24)]
         public string SubUnit { set; get; }
@@ -35,7 +37,24 @@ namespace DEDS.Models.Manager
 
         [ColumnDef(Display = "權責人員", Required = true, EditType = EditType.Select, SelectItems = "{\"true\":\"是\",\"false\":\"否\"}", DefaultValue = "false")]
         public bool IsManager { get; set; }
+       
+    }
 
+    public class ALLCityIDSelectItems : Dou.Misc.Attr.SelectItemsClass
+    {
+        public DouModelContextExt Db = new DouModelContextExt();
+        public Function fun = new Function();
+        public override IEnumerable<KeyValuePair<string, object>> GetSelectItems()
+        {
+            var JSONList = fun.GetUnit();
+            List<KeyValuePair<string, object>> keyValuePair = new List<KeyValuePair<string, object>>();
+
+            keyValuePair = JSONList.Select(s => new KeyValuePair<string, object>(s.CityId,
+            JsonConvert.SerializeObject(new { v = s.Sector, s = s.Id }))).ToList();
+
+            return keyValuePair;
+
+        }
 
 
     }

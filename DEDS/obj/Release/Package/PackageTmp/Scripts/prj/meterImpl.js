@@ -7,12 +7,12 @@
         listTheme: 'none',
         autoReload: true,
         legendIcons: [
-            { 'name': '正常', 'url': app.siteRoot+'images/pin/雨量站-b.png', 'classes': 'rain_normal', disabled: true },
-            { 'name': '大雨', 'url': app.siteRoot +'images/pin/雨量站-g.png', 'classes': 'rain_heavy' },
-            { 'name': '豪雨', 'url': app.siteRoot +'images/pin/雨量站-y.png', 'classes': 'rain_extremely' },
-            { 'name': '大豪雨', 'url': app.siteRoot +'images/pin/雨量站-o.png', 'classes': 'rain_torrential' },
-            { 'name': '超大豪雨', 'url': app.siteRoot +'images/pin/雨量站-r.png', 'classes': 'rain_exttorrential' },
-            { 'name': '無資料', 'url': app.siteRoot +'images/pin/雨量站-gr.png', 'classes': 'rain_nodata', disabled: true }
+            { 'name': '正常', 'url': app.siteRoot +'images/pin/雨量_正常.png', 'classes': 'rain_normal', disabled: true },
+            { 'name': '大雨', 'url': app.siteRoot +'images/pin/雨量_大雨.png', 'classes': 'rain_heavy' },
+            { 'name': '豪雨', 'url': app.siteRoot +'images/pin/雨量_豪雨.png', 'classes': 'rain_extremely' },
+            { 'name': '大豪雨', 'url': app.siteRoot +'images/pin/雨量_大豪雨.png', 'classes': 'rain_torrential' },
+            { 'name': '超大豪雨', 'url': app.siteRoot +'images/pin/雨量_超大豪雨.png', 'classes': 'rain_exttorrential' },
+            { 'name': '無資料', 'url': app.siteRoot +'images/pin/雨量_無資料.png', 'classes': 'rain_nodata', disabled: true }
         ],
         //infoFields: [
         //    {
@@ -70,9 +70,9 @@ var InitEmic = function ($_container, options) {
             { field: 'CASE_DT', title: '災情時間' },
             { field: 'COUNTY_N', title: '行政區', formatter: function (v, data) { return v + data.TOWN_N } },
             { field: 'CASE_LOC', title: '地點' },
-            { field: 'DISASTER_MAIN_TYPE', title: '類別', formatter: function (v, data) { return v + '-' + data.DISASTER_SUB_TYPE }, showInList: false },
+            { field: 'DISASTER_MAIN_TYPE', title: '類別', formatter: function (v, data) { return v + '-' + data.DISASTER_SUB_TYPE } },
             { field: 'CASE_DESCRIPTION', title: '描述', showInList: false },
-            { field: 'INJURED_NO', title: '傷亡統計', formatter: function (v, d) { return '傷:' + v + ' 亡:' + d.DEATH_NO + ' 受困:' + d.TRAPPED_NO + ' 失蹤:' + d.MISSING_NO } },
+            { field: 'INJURED_NO', title: '傷亡統計', showInList: false, formatter: function (v, d) { return '傷:' + v + ' 亡:' + d.DEATH_NO + ' 受困:' + d.TRAPPED_NO + ' 失蹤:' + d.MISSING_NO } },
             { field: 'CASE_STATUS', title: '狀態' }
             ],
         legendIcons: [
@@ -103,7 +103,32 @@ var InitEmic = function ($_container, options) {
         },
     }, options));
 }
-
+var InitDengue = function ($_container, options) {
+    var $_ctrl = $('<div class="row"><div class="col-md-12"></div></div>').appendTo($_container);
+    $_ctrl.PinCtrl($.extend({
+        name: "登革熱",
+        map: app.map,
+        stTitle: function (data) { return data.居住縣市 + data.居住鄉鎮+data.居住村里 },
+        enabledStatusFilter: true,
+        canFullInfowindow: true,
+        autoReload: false,
+        cluster: true,
+        listOptions: { virtualScroll: true },
+        //listContainer: 'inner',
+        //listTheme: 'none',
+        loadBase: function (callback) { callback([]); },
+        loadInfo: function (dt, callback) { helper.data.get(app.siteRoot +'api/dengue/all', function (ds) { callback(ds); }) },
+        baseInfoMerge: {
+            xfield: '最小統計區中心點X', yfield: '最小統計區中心點Y', aftermerge: function (d) {
+                if (d.X == 'None') {
+                    d.X = 119;
+                    d.Y = 23;
+                }
+            }
+        }
+    }, options));
+    return $_ctrl;
+}
 var InitReportDisaster = function ($_container, options) {
    
     $_container.PinCtrl($.extend(floodPinOptions, { map: app.map, enabledStatusFilter: true, autoReload: true, listContainer: 'inner', listTheme:'none'}, options));
@@ -145,8 +170,8 @@ var FloodSensorOptions = {
         }
     ],
     legendIcons: [{ name: '正常', url: app.siteRoot + 'images/pin/Flood_b_7.png', classes: 'blue_status', disabled: true },
-        { name: '淹水', url: app.siteRoot + 'images/pin/Flood_r_7.png', classes: 'red_status' },
-        { name: '淹水10↑', url: app.siteRoot + 'images/pin/fsensor_10.png', classes: 'red_status' },
+        { name: '淹水', url: app.siteRoot + 'images/pin/Flood_r_7.png', classes: 'red_status', disabled: true },
+        { name: '淹水10↑', url: app.siteRoot + 'images/pin/fsensor_10.png', classes: 'red_status', disabled: true },
         { name: '淹水30↑', url: app.siteRoot + 'images/pin/fsensor_30.png', classes: 'red_status' },
         { name: '淹水50↑', url: app.siteRoot + 'images/pin/fsensor_50.png', classes: 'red_status' },
         { name: '待檢核', url: app.siteRoot + 'images/pin/Flood_y_7.png', classes: 'yellow_status', disabled: true  },
@@ -203,7 +228,7 @@ var FloodSensorOptions = {
         var that = this;
         var $_c = $($.BasePinCtrl.defaultSettings.pinInfoContent.call(this, data));
         var eurl = encodeURI(app.CSgdsRoot+ 'FDashboard.html?sensoruuid=' + data.SensorUUID);
-        console.log("eurl:" + eurl);
+        //console.log("eurl:" + eurl);
         var $_info = $('<div style="font-size:1.4rem;padding:0px 8px 0 6px;text-align:end;"></div>').appendTo($_c);
         /*$('<a href="' + eurl + '" target="_FDashboard"><sapn class="glyphicon glyphicon-info-sign" title="淹水感測整合資訊"></a>').appendTo($_info);*/
         if (data.Depth && data.Depth >= 10 && !data.floodarea) {
@@ -307,6 +332,26 @@ var InitFmgCctv = function ($_container, options) {
     }, options));
 }
 
+//人口密集圖
+InitPopulationDensity = function ($_container, options) {
+    var $_ctrl =$('<div class="row"><div class="col-md-12"></div></div>').appendTo($_container);
+    var kmloptions = $.extend({
+        map: app.map, useSearch: false, useLabel: false, useList: false,
+        //autoGenLegendIcons: true, styleSelector: true, legendContainer: '#legendDiv',
+        name: "人口密集圖",
+        url: app.siteRoot + 'Data/人口密集圖.kmz',
+        type: $.BasePinCtrl.type.polygon
+    }, options);
+    $_ctrl.KmlCtrl(kmloptions)
+        .on($.BasePinCtrl.eventKeys.initUICompleted, function () {
+            //_ctrl.find('.legend  img').insertBefore(_ctrl.find('.checkbox-name'));
+            //_ctrl.find('.legend').addClass('offdisplay');
+            //current.__pinctrl.instance.repaintLegendUI(current.settings.legendIcons);
+            var sdd = $_ctrl.instance;
+        });
+    return $_ctrl;
+}
+
 var InitResourceKmlCtrl = function ($_container, options, name, clustername) {
     return $_container.KmlCtrl($.extend({
         map: app.map, useSearch: true, cluster: true,
@@ -374,62 +419,180 @@ var InitResourceKmlCtrl = function ($_container, options, name, clustername) {
             }
         });
 }
-
-var Init護理機構 = function ($_meter) {
-    return InitResourceKmlCtrl($('<div class="row"><div class="col-md-12"></div></div>').appendTo($_meter), {}, '護理機構', 'a');
-}
-
-var Init兒少安養機構 = function ($_meter) {
-    return InitResourceKmlCtrl($('<div class="row"><div class="col-md-12"></div></div>').appendTo($_meter), {}, '兒少安養機構', 'b');
-}
-
-var Init老年福利機構 = function ($_meter) {
-    return InitResourceKmlCtrl($('<div class="row"><div class="col-md-12"></div></div>').appendTo($_meter), {}, '老年福利機構', 'c');
-}
-
-var Init身心障礙福利機構 = function ($_meter) {
-    return InitResourceKmlCtrl($('<div class="row"><div class="col-md-12"></div></div>').appendTo($_meter), {}, '身心障礙福利機構', 'd');
-}
-
-var Init區排水位 = function ($_meter) {
+var Init環保局資源 = function ($_meter) {
     return $('<div class="row"><div class="col-md-12"></div></div>').appendTo($_meter).PinCtrl({
-        map: app.map, useSearch: true,
-        name: "區排水位站",
-        stTitle: function (data) { return data.StationName },
+        map: app.map, 
+        name: "環保局",
+        stTitle: function (data) { return data.City+data.Town },
         loadBase: function (callback) { callback([]) },
-        loadInfo: "WS/ObsWs.asmx/GetDWaterRt",
+        loadInfo: datahelper.getEpaSource,
+        listTheme:'info epa_status source-ctrl',
         infoFields: [
-            { field: 'StationName', title: '站名' },
-            { field: 'InfoTime', title: '時間', formatter: function (r, d) { return r ? helper.format.JsonDateStr2Datetime(r).DateFormat('yyyy/MM/dd HH:mm') : '--' } },
-            { field: 'WaterLevel', title: '水位' },
-            { field: 'TopLine', title: '堤頂', showInList: false, formatter: function (r, d) { return r != undefined ? r : '--' } },
-            { field: 'WarningLevel', title: '警戒值', showInList: false, formatter: function (r, d) { return r != undefined && r != -999 ? r : '--' } }
+            { field: 'City', title: '單位', formatter: function (v, d) { return d.City + d.Town; }, showInfo: false },
+            { field: 'Vehicle', title: '清潔車輛', unit: '台',showInList :false },
+            { field: 'Disinfector', title: '清潔設備', unit: '台', showInList: false },
+            { field: 'SolidDrugStateDisinfectant', title: '消毒藥品(固)', unit: '公斤', showInList: false },
+            { field: 'LiquidDrugStateDisinfectant', title: '消毒藥品(液)', unit: '公升', showInList: false },
+            { field: 'Toilet', title: '流動廁所', showInList: false }
         ],
-        legendIcons: [{ 'name': '正常', 'url': 'Images/區排_正常.png', 'classes': 'water_normal' }, { 'name': '警戒', 'url': 'Images/區排_警戒.png', 'classes': 'water_warnleve1' }, { 'name': '無資料', 'url': 'Images/區排_無資料.png', 'classes': 'water_nodata' }],
-        checkDataStatus: function (data, index) {
-            var sidx = 0;
-            if (!data.InfoTime)
-                sidx = 2;
-            else if (data.WaterLevel != undefined && data.WarningLevel != undefined && data.WarningLevel != -999 && data.WaterLevel >= data.WarningLevel)
-                sidx = 1;
-            return this.settings.legendIcons[sidx];
+        legendIcons: [{ 'name': '環保局', url: app.siteRoot + 'images/pin/環保局.png', classes: 'epa_status' }],
+        baseInfoMerge: {
+            xfield: 'xx', yfield: 'yy', aftermerge: function (d) {
+                var sdd = d;
+            }
         }
     });
 }
+var Init清潔隊資源 = function ($_meter) {
+    return $('<div class="row"><div class="col-md-12"></div></div>').appendTo($_meter).PinCtrl({
+        map: app.map, 
+        name: "清潔隊",
+        stTitle: function (data) { return data.Town +'清潔隊' },
+        loadBase: function (callback) { callback([]) },
+        listTheme: 'info cleaningteam_status source-ctrl',
+        loadInfo: datahelper.getCleaningTeam,
+        infoFields: [
+            { field: 'City', title: '單位', formatter: function (v, d) { return d.Town +'清潔隊'; }, showInfo: false },
+            { field: 'Vehicle', title: '清潔車輛', unit: '台', showInList: false },
+            { field: 'Disinfector', title: '清潔設備', unit: '台', showInList: false },
+            { field: 'SolidDrugStateDisinfectant', title: '消毒藥品(固)', unit: '公斤', showInList: false },
+            { field: 'LiquidDrugStateDisinfectant', title: '消毒藥品(液)', unit: '公升', showInList: false },
+            { field: 'Toilet', title: '流動廁所', showInList: false }
+        ],
+        legendIcons: [{ 'name': '清潔隊', url: app.siteRoot + 'images/pin/清潔隊.png', classes: 'cleaningteam_status' }],
+        baseInfoMerge: {
+            xfield: 'xx', yfield: 'yy', aftermerge: function (d) {
+                var sdd = d;
+            }
+        }
+    });
+}
+var Init垃圾掩埋場 = function ($_meter) {
+    return $('<div class="row"><div class="col-md-12"></div></div>').appendTo($_meter).PinCtrl({
+        map: app.map, 
+        name: "垃圾掩埋場",
+        stTitle: function (data) { return data.name  },
+        loadBase: function (callback) { callback([]) },
+        listTheme: 'info landfill_InOperation_status source-ctrl',
+        loadInfo: datahelper.getLandfill,
+        infoFields: [
+            { field: 'city', title: '縣市', showInList: false },
+            { field: 'town', title: '鄉鎮', showInList: false },
+            { field: 'name', title: '名稱', showInInfo:false },
+            { field: 'manage', title: '管理機關', showInList: false },
+            { field: 'state', title: '現況', showInList: false }
+        ],
+        legendIcons: [{ 'name': '營運中', url: app.siteRoot + 'images/pin/垃圾掩埋場_營運中.png', classes: 'landfill_InOperation_status  infowindow-title-white' },
+            { 'name': '有餘裕量未封閉', url: app.siteRoot + 'images/pin/垃圾掩埋場_有餘裕量未封閉.png', classes: 'landfill_margin_status infowindow-title-white' },
+            { 'name': '無餘裕量未封閉', url: app.siteRoot + 'images/pin/垃圾掩埋場_無餘裕量未封閉.png', classes: 'landfill_nomargin_status infowindow-title-white' }],
+        //baseInfoMerge: {
+        //    xfield: 'lon', yfield: 'lat'
+        //},
+        checkDataStatus: function (data, index) {
+            
+            return $.BasePinCtrl.helper.getDataStatusLegendIcon(this.settings.legendIcons, data.state);
+        }
+    });
+}
+
+var Init焚化廠 = function ($_meter) {
+    return $('<div class="row"><div class="col-md-12"></div></div>').appendTo($_meter).PinCtrl({
+        map: app.map,
+        name: "焚化廠",
+        pinInfoLabelMinWidth: '5.2rem',
+        classes:'source-data',
+        stTitle: function (data) { return data.incineratorname },
+        loadBase: function (callback) { callback([]) },
+        listTheme: 'info incineration_PuPu_status source-ctrl',
+        loadInfo: datahelper.getIncineration,
+        infoFields: [
+            { field: 'address', title: '地址', showInList: true },
+            { field: 'area', title: '面積',unit:'公頃', showInList: false },
+            { field: 'operationtype', title: '營運型態', showInInfo: false },
+            { field: 'dsnprcqt', title: '設計處理量',unit:'公噸/日', showInList: false },
+            { field: 'incineratornum', title: '爐數', unit: '組', showInList: false },
+            { field: 'management', title: '管理單位', showInList: false },
+            { field: 'operationdept', title: '操作單位', showInList: false },
+            { field: 'incinmanageragency', title: '監督機構', showInList: false }
+        ],
+        legendIcons: [{ 'name': '公有公營', url: app.siteRoot + 'images/pin/焚化廠_公有公營.png', classes: 'incineration_PuPu_status infowindow-title-white' },
+            { 'name': '公有民營', url: app.siteRoot + 'images/pin/焚化廠_公有民營.png', classes: 'incineration_PuPr_status infowindow-title-white' },
+            { 'name': '民有民營', url: app.siteRoot + 'images/pin/焚化廠_民有民營.png', classes: 'incineration_PrPr_status infowindow-title-white' }],
+        checkDataStatus: function (data, index) {
+
+            return $.BasePinCtrl.helper.getDataStatusLegendIcon(this.settings.legendIcons, data.operationtype);
+        }
+    });
+}
+var Init開口合約 = function ($_meter) {
+    return $('<div class="row"><div class="col-md-12"></div></div>').appendTo($_meter).PinCtrl({
+        map: app.map, 
+        name: "開口合約",
+        stTitle: function (data) { return data.OPName },
+        loadBase: function (callback) { callback([]) },
+        canFullInfowindow:true,
+        listTheme: 'info opencontract_status source-ctrl',
+        loadInfo: datahelper.getOpenContract,
+        infoFields: [
+            { field: 'OPName', title: '合約名稱', showInInfo: false },
+            { field: 'City', title: '縣市', showInList: false },
+            { field: 'TOWN', title: '鄉鎮', showInList: false },
+            { field: 'Name', title: '類別', showInList: false },
+            { field: 'Fac', title: '廠商', showInList: false },
+            { field: 'Owner', title: '負責人', showInList: false },
+            { field: 'TEL', title: '連絡電話', showInList: false },
+            { field: 'MobileTEL', title: '行動電話', showInList: false },
+            { field: 'OContractDateEnd', title: '合約截止日', showInList: false }
+        ],
+        legendIcons: [{ 'name': '開口合約', url: app.siteRoot + 'images/pin/開口合約.png', classes: 'opencontract_status' }],
+        baseInfoMerge: {
+            xfield: 'xx', yfield: 'yy'
+        },
+        pinInfoContent: function (data) {
+            //data.Depth = 30;
+            var that = this;
+            var $_c = $($.BasePinCtrl.defaultSettings.pinInfoContent.call(this, data));
+
+            var $_base = $_c.find('table');
+            var $_detail = $('<div><table></div>')
+
+            $_c.empty();
+
+            $_tabpanel = helper.bootstrap.genBootstrapTabpanel($_c, undefined,'contract-info-tab', ['合約', '細項'], [$_base, $_detail],true);
+            $_tabpanel.find('.tab-content > .tab-pane:first').addClass('show active');
+            $_detail.find('table') .bootstrapTable({
+                columns: [
+                    { title: '項目', field: 'Items' },
+                    { title: '單位', field: 'Unit' },
+                    { title: '數量', field: 'Count' },
+                    { title: '價格', field: 'Price' },
+                    { title: '預算', field: 'Budge' }
+                ],
+                data: data.contract
+            });
+            return $_c[0].outerHTML;
+        }
+
+    });
+}
+
+
 var Init雷達迴波圖 = function ($_meter) {
     var _layer = undefined;
     var $_silder = undefined;
     var _timer = Date.now();
+    var $_legend = $('#rader-legend');
+
     var $_p = $('<div class="row"><div class="col-md-12"></div></div>').appendTo($_meter);
     $_p.PinCtrl({
-        map: app.map, name: '雷達迴波圖', useLabel: false, useList: false, autoReload: { auto: false, interval: 10 * 1000 }
+        map: app.map, name: '雷達回波圖', useLabel: false, useList: false, autoReload: { auto: false, interval: 10 * 1000 }
     }).on($.BasePinCtrl.eventKeys.initUICompleted, function () {
         var _timerflag = undefined;
         var timerreload = function () {
             clearInterval(_timerflag);
             _timerflag = setInterval(function () {
                 $_p.find('.pinswitch').trigger('change');
-            }, 5*60 * 1000);
+            }, 5 * 60 * 1000);
         }
         $_p.find('.pinswitch').off('change').on('change', function () {
             var s = $(this).is(':checked');
@@ -442,23 +605,38 @@ var Init雷達迴波圖 = function ($_meter) {
                 _timer = Date.now();
             }
             if (!_layer && s) {
-                helper.misc.showBusyIndicator();
-                $.getJSON('https://cwbopendata.s3.ap-northeast-1.amazonaws.com/MSC/O-A0058-005.json', function (r) {
-                    helper.misc.hideBusyIndicator();
-                    var url = r.cwbopendata.dataset.resource.uri;
-                    var time = r.cwbopendata.dataset.time.obsTime;
-                    var x1 = parseFloat(r.cwbopendata.dataset.datasetInfo.parameterSet.parameter[1].parameterValue.split('-')[0]);
-                    var x2 = parseFloat(r.cwbopendata.dataset.datasetInfo.parameterSet.parameter[1].parameterValue.split('-')[1]);
-                    var y1 = parseFloat(r.cwbopendata.dataset.datasetInfo.parameterSet.parameter[2].parameterValue.split('-')[0]);
-                    var y2 = parseFloat(r.cwbopendata.dataset.datasetInfo.parameterSet.parameter[2].parameterValue.split('-')[1]);
+                helper.misc.showBusyIndicator($_p, { timeout :10000});
+                var gparas = JSON.parse(JSON.stringify(L.DouLayer.Qqesums.DefaulParas));
+                gparas.url = app.siteRoot + 'rad/rt';
+                gparas.parser = L.DouLayer.Qqesums.Parser.sqpe;
+                $.getJSON(gparas.url, function (r) {
+                    helper.misc.hideBusyIndicator($_p);
+                    if (!r) {
+                        $("#other-layer-info .rader-layer").removeClass('offdisplay');//.text(_linfo);
+                        $("#other-layer-info .rader-layer-time").text('-無資料');
+                        return;
+                    }
+                    gparas.parser(gparas, r.Content);
 
-                    var imageBounds = [[y1, x1], [y2, x2]];
-                    app.map.createPane('cloudimage1').style.zIndex = 350;
-                    //var newOverlay = new google.maps.GroundOverlay(url, imageBounds, { map: this.map, opacity: this.currentOpacity }); //1.東南亞imageBounds對不齊??;2.GroundOverlay zoom in out會卡卡的
-                    _layer = L.imageOverlay(url, imageBounds, { opacity: 1, pane: 'cloudimage1' }).addTo(app.map);
+                    _layer = L.DouLayer.gridRectCanvas({ 'opacity': 1, ycellsize: gparas.ycellsize, xcellsize: gparas.xcellsize, noMask: true });//.addTo(app.map);
+                    _layer.on('mousemove', function (evt) {
+                        if (!L.Browser.mobile)
+                            _layer.bindTooltip('dBZ:' + evt.griddata.val, { className: "qpesums_tooltip" }).openTooltip(evt.latlng);
+                    }).on('mouseout', function (evt) {
+                        if (!L.Browser.mobile && _layer.getTooltip() != null)
+                            _layer.closeTooltip();
+                    });
+                    //用$.map 資料太大會有Maximum call stack size exceeded
+                    var gs = L.DouLayer.Qqesums.gridData2cellData(gparas.datas, gparas.colorDef);//$.map(gdata.datas, function (val, i) {return { lng: val[0], lat: val[1], color: getcolor(gdata.colorDef, val[2]) }});
+
+                    $_legend.empty().show();
+                    L.DouLayer.Qqesums.genLegend($_legend, gparas.colorDef, 24, 16, 'dBZ', '雷達回波');
+                    _layer.setData(gs);
                     $_silder = bindSilder($_p, _layer);
-                    $("#other-layer-info .rader-layer").removeClass('offdisplay');
-                    $("#other-layer-info .rader-layer-time").text(helper.format.JsonDateStr2Datetime(time).DateFormat('MM/dd HH:mm:ss') );
+
+                    $("#other-layer-info .rader-layer").removeClass('offdisplay');//.text(_linfo);
+                    $("#other-layer-info .rader-layer-time").text(helper.format.JsonDateStr2Datetime(r.Datetime).DateFormat('MM/dd HH:mm:ss'));
+                    _layer.addTo(app.map);
                 });
                 timerreload();
             } else {
@@ -477,13 +655,17 @@ var Init雷達迴波圖 = function ($_meter) {
                 else
                     $("#other-layer-info .rader-layer").addClass('offdisplay');
             }
-          
+            if ($("#other-layer-info .rader-layer").hasClass('offdisplay'))
+                $_legend.hide();
+            else
+                $_legend.show();
         });
     });
-   
+
 
     return $_p;
 }
+
 var Init累積雨量圖 = function ($_meter) {
     //https://cwbopendata.s3.ap-northeast-1.amazonaws.com/DIV2/O-A0040-003.kmz
     var _layer = undefined;
@@ -491,13 +673,14 @@ var Init累積雨量圖 = function ($_meter) {
     var _timer = Date.now();
     var $_legend = $('#dayrainfall-legend');
     var _legendColorDef = [{ min: 300, max: 5000, color: "#FFD6FE" }, { min: 200, max: 300, color: "#FE38FB" },
-        { min: 150, max: 200, color: "#DB2DD2" }, { min: 130, max: 150, color: "#AB1FA2" },
-        { min: 110, max: 130, color: "#AA1801" }, { min: 90, max: 110, color: "#D92203" },
-        { min: 70, max: 90, color: "#FF2A06" }, { min: 50, max: 70, color: "#FFA81D" },
-        { min: 40, max: 50, color: "#FFD328" }, { min: 30, max: 40, color: "#FEFD31" },
-        { min: 20, max: 30, color: "#00FB30" }, { min: 15, max: 20, color: "#26A31B" },
-        { min: 10, max: 15, color: "#0177FC" }, { min: 6, max: 10, color: "#00A5FE" },
-        { min: 2, max: 6, color: "#01D2FD" }, { min: 1, max: 2, color: "#9EFDFF" }, { min: 0, max: 1, color: "#EDEDE6" }    ];
+    { min: 150, max: 200, color: "#DB2DD2" }, { min: 130, max: 150, color: "#AB1FA2" },
+    { min: 110, max: 130, color: "#AA1801" }, { min: 90, max: 110, color: "#D92203" },
+    { min: 70, max: 90, color: "#FF2A06" }, { min: 50, max: 70, color: "#FFA81D" },
+    { min: 40, max: 50, color: "#FFD328" }, { min: 30, max: 40, color: "#FEFD31" },
+    { min: 20, max: 30, color: "#00FB30" }, { min: 15, max: 20, color: "#26A31B" },
+    { min: 10, max: 15, color: "#0177FC" }, { min: 6, max: 10, color: "#00A5FE" },
+    { min: 2, max: 6, color: "#01D2FD" }, { min: 1, max: 2, color: "#9EFDFF" }, { min: 0, max: 1, color: "#EDEDE6" }];
+    var $_p = $('<div class="row"><div class="col-md-12"></div></div>').appendTo($_meter);
     var $_p = $('<div class="row"><div class="col-md-12"></div></div>').appendTo($_meter);
     $_p.PinCtrl({
         map: app.map, name: '累積雨量圖', useLabel: false, useList: false
@@ -507,7 +690,7 @@ var Init累積雨量圖 = function ($_meter) {
             clearInterval(_timerflag);
             _timerflag = setInterval(function () {
                 $_p.find('.pinswitch').trigger('change');
-            }, 5*60 * 1000);
+            }, 5 * 60 * 1000);
         }
         $_p.find('.pinswitch').off('change').on('change', function () {
             var s = $(this).is(':checked');
@@ -521,7 +704,7 @@ var Init累積雨量圖 = function ($_meter) {
             }
             if (!_layer && s) {
                 helper.misc.showBusyIndicator();
-                $.getJSON(app.siteRoot + 'api/rain/dayrainfall', function (r) {
+                $.getJSON(app.siteRoot + 'rain/img/dayrainfall', function (r) {
                     helper.misc.hideBusyIndicator();
                     var url = r.Url;
                     //var time = r.cwbopendata.dataset.time.obsTime;
@@ -557,7 +740,7 @@ var Init累積雨量圖 = function ($_meter) {
                     }
                 }
                 else
-                    $("#other-layer-info .sum-rainfall-layer").addClass('offdisplay');
+                    $("#other-layer-info .rader-layer").addClass('offdisplay');
             }
             if ($("#other-layer-info .sum-rainfall-layer").hasClass('offdisplay'))
                 $_legend.hide();
@@ -575,7 +758,7 @@ var InitQpf060minRt = function ($_meter) {
     var $_silder = undefined;
     var _timer = Date.now();
     var $_legend = $('#qpesums-legend');
-    var $_p = $('<div class="row"><div class="col-md-12"></div></div>').appendTo($_meter);
+    var $_p = $('<div class="row non-public"><div class="col-md-12"></div></div>').appendTo($_meter);
     $_p.PinCtrl({
         map: app.map, name: '預報1小時降雨', useLabel: false, useList: false
     }).on($.BasePinCtrl.eventKeys.initUICompleted, function () {
@@ -627,7 +810,6 @@ var InitQpf060minRt = function ($_meter) {
                     $_legend.empty().show();
                     L.DouLayer.Qqesums.genLegend($_legend, gparas.colorDef, 24, 16, '毫米(mm)', '預報雨量');
                     _layer.setData(gs);
-                    
                     $_silder = bindSilder($_p, _layer);
 
                     $("#other-layer-info .qpfqpe60-layer").removeClass('offdisplay');//.text(_linfo);
@@ -652,7 +834,7 @@ var InitQpf060minRt = function ($_meter) {
                     }
                 }
                 else
-                    $("#other-layer-info .qpfqpe60-layer").addClass('offdisplay');
+                    $("#other-layer-info .rader-layer").addClass('offdisplay');
             }
             if ($("#other-layer-info .qpfqpe60-layer").hasClass('offdisplay'))
                 $_legend.hide();
@@ -664,8 +846,9 @@ var InitQpf060minRt = function ($_meter) {
     return $_p;
 }
 
-var bindSilder = function ($_c,g) {
-    $_oslider = $('<div class="col-12"><div class="opacity-slider" title="透明度"></div></div>').appendTo($_c).find('.opacity-slider')
+var bindSilder = function ($_c, g) {
+    $_c.find('.opacity-container').remove();
+    $_oslider = $('<div class="col-12 opacity-container"><div class="opacity-slider" title="透明度"></div></div>').appendTo($_c).find('.opacity-slider')
         .gis_layer_opacity_slider({
             map: app.map,
             range: "min",

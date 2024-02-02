@@ -142,8 +142,8 @@ namespace DEDS.Models.Comm
             if (!IsManager)
             {
 
-                List<LoginInfo> Info = fun.GetInfo(UserID, PWD);
-                string CityID = Info[0].CityId.ToString(); // 取得登錄者的部門ID
+                //List<LoginInfo> Info = fun.GetInfo(UserID, PWD);
+                string CityID = fun.GetInfo(UserID, PWD); // 取得登錄者的部門ID
                 var targetCityUnits = JSONList.Where(unit => unit.CityId == CityID).ToList();
 
                 keyValuePair = targetCityUnits.Select(s => new KeyValuePair<string, object>(s.CityId ,
@@ -178,8 +178,8 @@ namespace DEDS.Models.Comm
             // 找到 CityID 為 "1" 的 Unit
             if (!IsManager)
             {
-                List<LoginInfo> Info = fun.GetInfo(UserID, PWD);
-                string CityID = Info[0].CityId.ToString(); // 取得登錄者的部門ID
+                //List<LoginInfo> Info = fun.GetInfo(UserID, PWD);
+                string CityID = fun.GetInfo(UserID, PWD); // 取得登錄者的部門ID
                 var targetCityUnits = JSONList.Where(unit => unit.CityId == CityID).ToList();
                 var targetCityCategories = targetCityUnits.FirstOrDefault().Category;
 
@@ -227,8 +227,8 @@ namespace DEDS.Models.Comm
             var PositionList = fun.GetPosition();
             if (!IsManager) //一般使用者
             {
-                List<LoginInfo> Info = fun.GetInfo(UserID, PWD);
-                string CityID = Info[0].CityId.ToString(); // 取得登錄者的部門ID
+                //List<LoginInfo> Info = fun.GetInfo(UserID, PWD);
+                string CityID = fun.GetInfo(UserID, PWD); // 取得登錄者的部門ID
                 var TargetCityUsers = UserBasic.Where(r => r.CityID == CityID).ToList();
 
                 foreach (var item in TargetCityUsers)
@@ -257,22 +257,35 @@ namespace DEDS.Models.Comm
 
     public class Function
     {
-        public List<LoginInfo> GetInfo(string UserID, string PWD)
+        public DouModelContextExt Db = new DouModelContextExt();
+
+        //要改CityID取得方式 用User的Unit欄位
+        public string GetInfo(string UserID, string PWD)
         {
-            var options = new RestClientOptions(Startup.AppSet.OldSysUserLoginApi)
+            var cityID = Db.User.Where(q => q.Id == UserID).Select(w => w.Unit).FirstOrDefault();
+            bool Isint = int.TryParse(cityID, out int result);
+            if (Isint == false)
             {
-                MaxTimeout = -1,
-            };
-            var client = new RestClient(options);
-            var request = new RestRequest(Startup.AppSet.OldSysUserLoginApi, Method.Post);
-            request.AddHeader("token", "aS6bQK2Bj4rS[awqFY&"); //預防不是從系統Post的路徑呼叫的
-            request.AddHeader("Content-Type", "application/json");
-            var body = @"{""UserName"":""" + UserID + @""",""Pwd"":""" + PWD + @"""}";
-            request.AddStringBody(body, DataFormat.Json);
-            RestResponse response = client.Execute(request);
-            var jsonstring = response.Content;
-            var Result = JsonConvert.DeserializeObject<List<LoginInfo>>(jsonstring);
-            return Result;
+                var options = new RestClientOptions(Startup.AppSet.OldSysUserLoginApi)
+                {
+                    MaxTimeout = -1,
+                };
+                var client = new RestClient(options);
+                var request = new RestRequest(Startup.AppSet.OldSysUserLoginApi, Method.Post);
+                request.AddHeader("token", "aS6bQK2Bj4rS[awqFY&"); //預防不是從系統Post的路徑呼叫的
+                request.AddHeader("Content-Type", "application/json");
+                var body = @"{""UserName"":""" + UserID + @""",""Pwd"":""" + PWD + @"""}";
+                request.AddStringBody(body, DataFormat.Json);
+                RestResponse response = client.Execute(request);
+                var jsonstring = response.Content;
+                var Result = JsonConvert.DeserializeObject<List<LoginInfo>>(jsonstring);
+                return Result[0].CityId.ToString();
+            }
+            else
+            {
+                return cityID;
+            }
+            
         }
 
         static object LockGetAllDep = new object();

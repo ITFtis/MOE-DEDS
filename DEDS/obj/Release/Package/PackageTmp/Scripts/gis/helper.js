@@ -49,19 +49,22 @@ Date.prototype.addHours = function (hours) {
 //日期增加minutes小時
 Date.prototype.addMinutes = function (minutes) {
     this.setMinutes(this.getMinutes() + minutes);
+    
     return this;
 };
 //取月份天數 m:1~12
-var getDaysInMonth=function(y, m) {
+var getDaysInMonth = function (y, m) {
     return /8|3|5|10/.test(--m) ? 30 : m == 1 ? (!(y % 4) && y % 100) || !(y % 400) ? 29 : 28 : 31;
 }
 //str "/Date(1224043200000)/"
 var JsonDateStr2Datetime = function (str) {
     if (str && (typeof str === 'string'))
+
         if (str.indexOf("Date") >= 0)
             return new Date(parseInt(str.replace(/\/+Date\(([\d+-]+)\)\/+/, '$1')));
-        else
+        else {
             return new Date(str);
+        }
     else
         return str;
 };
@@ -149,6 +152,7 @@ var getCurrentSiteRootPath = function () {
             result = prePath + postPath;
         }
     }
+    console.log("..............."+result.endsWith('/') ? result : result + '/');
     return result.endsWith('/')?result:result+'/';
 }
 
@@ -161,13 +165,13 @@ var jspAlertMsg = function (jcontainer, optins, callback) {
     var settings = {
         title: "訊息",
         size: undefined,//{ width: 'auto', height: 150, max-width, min-width, max-height },
-        autoclose: 5000,
+        //autoclose: 5000,
         overflow: 'hidden',
         theme: 'warning',
         position: "center",
         controls: { buttons: 'closeonly', iconfont: 'font-awesome' },
         content: "訊息",
-        classes: 'modal-lg'
+        classes: 'modal-lg modal-dialog-centered'
     };
     $.extend(settings, optins);
     //var jpMsg = jcontainer.jsPanel(settings);
@@ -184,8 +188,9 @@ var jspAlertMsg = function (jcontainer, optins, callback) {
 
     var $_content = $_modal.find('.modal-content');
     var $_header = undefined;
+    
     if (bv >= 5)
-        $_header =  $('<div class="modal-header"><h4 class="modal-title" >' + settings.title + '</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>').appendTo($_content);
+        $_header = $('<div class="modal-header"><h4 class="modal-title" >' + settings.title + '</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>').appendTo($_content);
     else
         $_header = $('<div class="modal-header"><h4 class="modal-title pull-left float-left" >' + settings.title + '</h4><button type="button" class="close pull-right float-right btn-close" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>').appendTo($_content);
     var $_body = $('<div class="modal-body">').appendTo($_content);
@@ -219,6 +224,7 @@ var jspConfirmYesNo = function (jcontainer, optins, callback) {
         theme: 'warning',
         position: "center",
         controls: { buttons: 'closeonly', iconfont: 'font-awesome' },
+        classes: 'modal-lg modal-dialog-centered',
         content: "請確認",
         toolbarFooter: [
                    {
@@ -239,7 +245,7 @@ var jspConfirmYesNo = function (jcontainer, optins, callback) {
     //var jpMsg = jcontainer.jsPanel(settings);
     //return jpMsg;
 
-    var $_modal = $('<div class="modal fade" tabindex="-1" role="dialog" data-show="true"><div class="modal-dialog ' + settings.classes + '" role="document"><div class="modal-content"></div></div></div>').appendTo(jcontainer);
+    var $_modal = $('<div class="modal fade" data-bs-backdrop="static" tabindex="-1" role="dialog" data-show="true"><div class="modal-dialog ' + settings.classes + '" role="document"><div class="modal-content"></div></div></div>').appendTo(jcontainer);
     if (settings.size) {
         for (var _p in settings.size) {
             $_modal.find('.modal-dialog').css(_p, settings.size[_p]);
@@ -254,7 +260,7 @@ var jspConfirmYesNo = function (jcontainer, optins, callback) {
         $_header = $('<div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4 class="modal-title" id="myModalLabel">' + settings.title + '</h4></div>').appendTo($_content);
     var $_body = $('<div class="modal-body">').appendTo($_content);
     var $_footer = $('<div class="modal-footer">').appendTo($_content);
-    var $_confirmbtn = $('<button type="button" class="btn btn-primary btn-sm"> 確 定 </button>').appendTo($_footer);
+    var $_confirmbtn = $('<button type="button" class="btn btn-warning" data-bs-dismiss="modal"> 同 意 </button>').appendTo($_footer);
     var $_closebtn = $('<button type="button" class="btn btn-default btn-outline-dark  取 消  btn-sm" data-dismiss="modal" data-bs-dismiss="modal"> 取 消 </button>').appendTo($_footer);
     
     if (typeof settings.content === 'string')
@@ -309,9 +315,16 @@ var geguid = function () {
 var OpenNewWindowByPost = function (url, paras, target, config) {
     var f = '<form method="post" action="' + url + '" target="' + target + '" onSubmit="alert(\'ghjhg\');window.open(\'\', \'foo\', \'width=450,height=300,status=yes,resizable=yes,scrollbars=yes\')">';
     if (paras) {
-        $.each(paras, function (idx, para) {
-            f += '<input type="hidden"  name="' + para.key + '" id="' + para.key + '" value="' + para.value + '">'
-        });
+        if ($.isArray(paras)) {
+            $.each(paras, function (idx, para) {
+                f += '<input type="hidden"  name="' + para.key + '" id="' + para.key + '" value="' + para.value + '">'
+            });
+        }
+        else {
+            for (var k in paras) {
+                f += '<input type="hidden"  name="' + k + '" id="' + k + '" value="' + paras[k] + '">'
+            }
+        }
     }
     f += '</form>';
 
@@ -383,8 +396,6 @@ var _getJavaScript = function (_url, _callback) {
 $.fn.show_busyIndicator = function (options) {
     // Sample Result based on the input.
     var _icon = ($.AppConfigOptions && $.AppConfigOptions.default_loading) ? $.AppConfigOptions.default_loading : { icon: window.helper.misc.getCurrentSiteRootPath() + "Scripts/gis/images/loading/loading_black.gif", size: "0.9em" };
-    //var _icon = ($.AppConfigOptions && $.AppConfigOptions.default_loading) ? $.AppConfigOptions.default_loading : { icon: window.helper.misc.getScriptPath("gis/helper") + "gis/images/loading/loading_black.gif", size: "0.9em" };
-    //console.log(window.helper.misc.getCurrentSiteRootPath());
     $.each(this, function (idx, _target) {
         var settings = $.extend({ content: "資料處理中", timeout: 60000, background_color: undefined, loading: _icon }, options);
 
@@ -402,13 +413,10 @@ $.fn.show_busyIndicator = function (options) {
             busyobj.attr("data-busy-count", parseInt(busyobj.attr("data-busy-count")) + 1);
             busyobj.find('> label > .msg-contont').html(settings.content);
             busyobj.find('img').attr('src', settings.loading.icon);
-            
         }
         else {
             busyobj = $('<span class="busy-indicator-s"><label ><span class="msg-contont">' + settings.content + '</span>' +
                 '<img src="' + settings.loading.icon + '" style="height:' + settings.loading.size + (typeof settings.loading.size === 'string' ? '' : 'px') + '" /></label></span>');
-            //busyobj = $('<span class="busy-indicator-s"><label >' + settings.content + 
-            //               '<img src="' + settings.loading.icon + '" style="height:' + settings.loading.size + (typeof settings.loading.size === 'string' ? '' : 'px') + '" /></label></span>');
 
             busyobj.attr("data-busy-count", 1);
             current.append(busyobj);
@@ -1433,18 +1441,34 @@ $.toggleSliderPanel = function (classmode, $panel, defaultshow, $othertrigger) {
     }
 
     var genBootstrapAccordion = function ($_container, _id, _classes, _heads, _contents) {
-        var id = _id || 'panel' + helper.misc.geguid();
-        var $_panelGroup = $('<div class="panel-group '+(_classes?_classes:'')+'" id="' + id + '" role="tablist" aria-multiselectable="true">');
+        var id = _id || 'accordion_' + helper.misc.geguid();
+        var $_accordion = $('<div class="accordion'+(_classes?+' '+_classes:'')+'" id="' + id + '">');
         
         for (var _idx = 0; _idx < _heads.length; _idx++) {
-            var $_panel = $('<div class="panel panel-default">').appendTo($_panelGroup);
-            $('<div class="panel-heading" role="tab"><h4 class="panel-title"><a role="button" data-toggle="collapse" data-bs-toggle="collapse" data-parent="#' + id + '" href="#content' + _idx + '-' + id + '" aria-expanded="false" aria-controls="content' + _idx + '-' + id + '">' + _heads[_idx] + '</a></h4></div>').appendTo($_panel);
-
-            $('<div id="content'+_idx+'-' + id + '" class="panel-collapse collapse '+(_idx==0?'in show':'')+'" role="tabpanel" aria-labelledby="content-' + id + '"><div class="panel-body">'+_contents[_idx]+'</div></div>').appendTo($_panel);
+            var $_item = $('<div class="accordion-item">').appendTo($_accordion);
+            var _hid = 'h_' + _idx + '_' + id;
+            var _cid = 'c_' + _idx + '_' + id;
+            $('<div class="accordion-header" id="' + _hid + '"><button class="accordion-button' + (_idx == 0 ? '' :' collapsed')+'" type="button" data-bs-toggle="collapse" data-bs-target="#' + _cid + '" aria-expanded="' + (_idx == 0 ? 'true' : 'false') + '" aria-controls="' + _cid + '">' + _heads[_idx] +'</button></div>').appendTo($_item);
+            $('<div id="' + _cid + '" class="accordion-collapse collapse' + (_idx == 0 ? ' show' : '') + '" aria-labelledby="' + _hid + '" data-bs-parent="#' + id + '"><div class="accordion-body">' + _contents[_idx]+'</div></div>').appendTo($_item);
+            //$('<div id="content' + _idx + '-' + id + '" class="panel-collapse collapse ' + (_idx == 0 ? 'in show' : '') + '" role="tabpanel" aria-labelledby="content-' + id + '"><div class="panel-body">' + _contents[_idx] + '</div></div>').appendTo($_item);
         }
         if ($_container)
-            $_panelGroup.appendTo($_container);
-        return $_panelGroup;
+            $_accordion.appendTo($_container);
+        return $_accordion;
+
+        //old 20230531
+        //var id = _id || 'panel' + helper.misc.geguid();
+        //var $_panelGroup = $('<div class="panel-group ' + (_classes ? _classes : '') + '" id="' + id + '" role="tablist" aria-multiselectable="true">');
+
+        //for (var _idx = 0; _idx < _heads.length; _idx++) {
+        //    var $_panel = $('<div class="panel panel-default">').appendTo($_panelGroup);
+        //    $('<div class="panel-heading" role="tab"><h4 class="panel-title"><a role="button" data-toggle="collapse" data-bs-toggle="collapse" data-parent="#' + id + '" href="#content' + _idx + '-' + id + '" aria-expanded="false" aria-controls="content' + _idx + '-' + id + '">' + _heads[_idx] + '</a></h4></div>').appendTo($_panel);
+
+        //    $('<div id="content' + _idx + '-' + id + '" class="panel-collapse collapse ' + (_idx == 0 ? 'in show' : '') + '" role="tabpanel" aria-labelledby="content-' + id + '"><div class="panel-body">' + _contents[_idx] + '</div></div>').appendTo($_panel);
+        //}
+        //if ($_container)
+        //    $_panelGroup.appendTo($_container);
+        //return $_panelGroup;
     }
 
     var genBootstrapCarousel = function ($_container, _id, _classes, _contents, _contentCaptions) {
@@ -1523,7 +1547,7 @@ $.toggleSliderPanel = function (classmode, $panel, defaultshow, $othertrigger) {
         options = options || {mergeCDATA: false,xmlns: false,attrsAsObject: false,childrenAsArray: false};
         if (!window.xmlToJSON) {
             var jsp = (getScriptPath("gis/helper") || getScriptPath("gis/Main")) + "gis";
-            getJavaScripts(['/other/xmlToJSON.js'], function () {
+            getJavaScripts([getCurrentSiteRootPath()+'other/xmlToJSON.js'], function () {
                 callback(xmlToJSON.parseString(xmlstr, options));
             })
         }
@@ -1594,8 +1618,10 @@ $.toggleSliderPanel = function (classmode, $panel, defaultshow, $othertrigger) {
                     window.currentCacheDatas[key].waits.push(callback);
                     getData(url, function (d) { //呼叫非cache
                         window.currentCacheDatas[key].data = d;
-                        for (var i = 0; i < window.currentCacheDatas[key].waits.length; i++)
-                            window.currentCacheDatas[key].waits[i](d);
+                        for (var i = 0; i < window.currentCacheDatas[key].waits.length; i++) {
+                            if (window.currentCacheDatas[key].waits[i])
+                                window.currentCacheDatas[key].waits[i](d);
+                        }
                         delete window.currentCacheDatas[key].waits;
                     }, option);
                 }
@@ -1610,16 +1636,20 @@ $.toggleSliderPanel = function (classmode, $panel, defaultshow, $othertrigger) {
         return obj == undefined? obj: JSON.parse(JSON.stringify(obj));
     }
     var getValueByPath = function (obj, filepath, pathsplite) {
-        
-        if (!obj)
-            return undefined;
-        if (pathsplite == undefined)
-            pathsplite = '.';
-        var ps = filepath.split(pathsplite);
-        var v = obj;
-        for (var i = 0; i < ps.length; i++)
-            v = v[ps[i]];
-        return v;
+
+        try {
+            if (!obj)
+                return undefined;
+            if (pathsplite == undefined)
+                pathsplite = '.';
+            var ps = filepath.split(pathsplite);
+            var v = obj;
+            for (var i = 0; i < ps.length; i++)
+                v = v[ps[i]];
+            return v;
+        } catch (e) {
+            console.log('getValueByPath Error:'+filepath+'>>'+ JSON.stringify(obj));
+        }
     }
 
     var browerSupportInputRange = function () {

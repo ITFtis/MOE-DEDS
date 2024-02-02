@@ -11,30 +11,30 @@
         this.settings = { };
         this.currentevent = undefined;
         this.rainInfo = {
-            title: '雨量站', total: '0',
-            legends: ['images/pin/雨量站-r.png', 'images/pin/雨量站-o.png', 'images/pin/雨量站-y.png', 'images/pin/雨量站-g.png'],
+            title: '雨量站', total: '-',
+            legends: ['images/pin/雨量_超大豪雨.png', 'images/pin/雨量_大豪雨.png', 'images/pin/雨量_豪雨.png', 'images/pin/雨量_大雨.png'],
             snames: ['超大豪雨', '大豪雨', '豪雨', '大雨'],
             counts: ['0', '0', '0', '0']
         }
         this.waterInfo = {
-            title: '水位站', total: '0',
+            title: '水位站', total: '-',
             legends: ['images/pin/水位站-r.png', 'images/pin/水位站-o.png', 'images/pin/水位站-y.png'],
             snames: ['一級', '二級', '三級'],
             counts: ['0', '0', '0']
         }
         this.fsInfo = {
-            title: '淹水感測器', total: '0',
-            legends: ['images/pin/fsensor_50.png', 'images/pin/fsensor_30.png', 'images/pin/fsensor_10.png'],
-            snames: ['50公分↑', '30公分↑', '10公分↑'],
-            counts: ['0', '0', '0']
+            title: '淹水感測器', total: '-',
+            legends: ['images/pin/fsensor_50.png', 'images/pin/fsensor_30.png'],
+            snames: ['50公分↑', '30公分↑'],
+            counts: ['0', '0']
         }
         this.disasterInfo = {
-            title: 'EMIC災情', total: '0',
+            title: 'EMIC災情', total: '-',
             //legends: ['images/pin/flood_50.png', 'images/pin/flood_30.png', 'images/pin/flood_10.png'],
             //snames: ['50公分↑', '30公分↑', '10公分↑'],
-            legends: ['images/pin/災情_未處理.png', 'images/pin/災情_處理中.png', 'images/pin/災情_已處理.png'],
-            snames: ['未處理', '處理中', '已處理'],
-            counts: ['0', '0', '0']
+            legends: ['images/pin/災情_未處理.png', 'images/pin/災情_處理中.png'],
+            snames: ['未處理', '處理中'],
+            counts: ['0', '0']
         }
     };
     pluginclass.prototype = {
@@ -137,7 +137,7 @@
                     t++;
                 });
             }
-            this._setSatInfo(this.$_f_sta_c, $.extend(this.fsInfo, { total: c10+c30+c50, counts: [c50, c30, c10] }));
+            this._setSatInfo(this.$_f_sta_c, $.extend(this.fsInfo, { total: c30+c50, counts: [c50, c30] }));
         },
         setEmicData: function (ds) {
             var s1 = 0, s2 = 0, s3 = 0;
@@ -145,13 +145,13 @@
                 $.each(ds, function () {
                     if (this.CASE_STATUS == "處理中")
                         s2++;
-                    else if ((this.CASE_STATUS == "已處理"))
-                        s3++;
+                    else if ((this.CASE_STATUS == "已處理")) {
+                    }
                     else
                         s1++;
                 });
             }
-            this._setSatInfo(this.$_d_sta_c, $.extend(this.disasterInfo, { total: s1 + s2 + s3, counts: [s1, s2, s3] }));
+            this._setSatInfo(this.$_d_sta_c, $.extend(this.disasterInfo, { total: s1 + s2 , counts: [s1, s2] }));
         }
         //setDisasterData: function (ds) {
         //    var t = 0,c0_10=0, c10 = 0, c30 = 0, c50 = 0;

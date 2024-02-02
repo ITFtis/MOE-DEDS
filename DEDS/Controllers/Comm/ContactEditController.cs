@@ -14,7 +14,7 @@ using System.Web.Mvc;
 
 namespace DEDS.Controllers.Comm
 {
-    [Dou.Misc.Attr.MenuDef(Id = "ContactEdit", Name = "通聯造冊管理", MenuPath = "通聯資料", Action = "Index", Func = Dou.Misc.Attr.FuncEnum.None, AllowAnonymous = false)]
+    [Dou.Misc.Attr.MenuDef(Id = "ContactEdit", Name = "通聯造冊管理", MenuPath = "通聯資料", Action = "Index", Index = 2, Func = Dou.Misc.Attr.FuncEnum.None, AllowAnonymous = false)]
     public class ContactEditController : Dou.Controllers.AGenericModelController<Tabulation>
     {
         public DouModelContextExt Db = new DouModelContextExt();
@@ -42,11 +42,11 @@ namespace DEDS.Controllers.Comm
                 var iquery = base.GetDataDBObject(dbEntity, paras);
                 string UserID = Dou.Context.CurrentUser<User>().Id;
                 string PWD = Dou.Context.CurrentUser<User>().Password;
-                bool IsManager = Dou.Context.CurrentUser<User>().IsManager; 
+                bool IsManager = Dou.Context.CurrentUser<User>().IsManager;
                 if (!IsManager)
                 {
-                    List<LoginInfo> Info = fun.GetInfo(UserID, PWD);
-                    string CityID = Info[0].CityId.ToString(); // 取得登錄者的部門ID
+                    //List<LoginInfo> Info = fun.GetInfo(UserID, PWD);
+                    string CityID = fun.GetInfo(UserID, PWD); // 取得登錄者的部門ID
                     iquery = iquery.Where(s => s.CityID == CityID).OrderBy(e => e.Act ? 0 : 1).ThenBy(w => w.Sort).ToList();
                     var result = new List<Tabulation>();
                     foreach (var item in iquery)
@@ -118,7 +118,7 @@ namespace DEDS.Controllers.Comm
         {
             List<UserBasic> result = new List<UserBasic> { BaseList.Where(q => q.UID == UID).FirstOrDefault() };
             return result;
-        }
+        }       
 
     }
 }
