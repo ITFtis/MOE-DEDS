@@ -218,7 +218,47 @@ namespace DEDS.Controllers.Comm
                             var fontrun = fontP.CreateRun();
                             fontrun.FontFamily = "標楷體";
                             fontrun.FontSize = 12;
+
+                            if (i == 0)
+                            {
+                                CT_TblWidth cellWidth = newCell.GetCTTc().AddNewTcPr().AddNewTcW();
+                                cellWidth.type = ST_TblWidth.dxa;
+                                cellWidth.w = "1300";
+                            }
+                            else if (i == 1)
+                            {
+                                CT_TblWidth cellWidth = newCell.GetCTTc().AddNewTcPr().AddNewTcW();
+                                cellWidth.type = ST_TblWidth.dxa;
+                                cellWidth.w = "850";
+                            }
+                            else if (i == 2)
+                            {
+                                CT_TblWidth cellWidth = newCell.GetCTTc().AddNewTcPr().AddNewTcW();
+                                cellWidth.type = ST_TblWidth.dxa;
+                                cellWidth.w = "1400";
+                            }
+                            else if (i == 3)
+                            {
+                                CT_TblWidth cellWidth = newCell.GetCTTc().AddNewTcPr().AddNewTcW();
+                                cellWidth.type = ST_TblWidth.dxa;
+                                cellWidth.w = "700";
+                                //fontrun.SetText("姓名");
+                            }
+                            else if (i == 4)
+                            {
+                                CT_TblWidth cellWidth = newCell.GetCTTc().AddNewTcPr().AddNewTcW();
+                                cellWidth.type = ST_TblWidth.dxa;
+                                cellWidth.w = "1400";
+                            }
+                            else if (i == 5)
+                            {
+                                CT_TblWidth cellWidth = newCell.GetCTTc().AddNewTcPr().AddNewTcW();
+                                cellWidth.type = ST_TblWidth.dxa;
+                                cellWidth.w = "3200";
+                            }
+
                             fontrun.SetText(Table.Rows[0].GetTableCells()[i].GetText());
+
                             newCell.RemoveParagraph(0);
                         }
                     }
