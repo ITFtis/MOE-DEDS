@@ -42,6 +42,7 @@ namespace DEDS.Controllers.Comm
             var CategoryIdList = GetCategoryIdList();
             var BaseList = Db.UserBasic.ToList(); // 基本資料表            
             var TabulationList = Db.Tabulation.Where(q => q.Act == true).ToList();
+            ////var TabulationList = Db.Tabulation.Where(q => q.Act == true).Take(30).ToList();
 
             var PositionList = fun.GetPosition();
 
@@ -347,7 +348,8 @@ namespace DEDS.Controllers.Comm
                                     }
                                     else
                                     {
-                                        fontrun.SetText(PositionName);
+                                        ////fontrun.SetText(PositionName);
+                                        fontrun.SetText(PositionName.PadRight(5, ' '));
                                     }
                                     break;
                                 case 1:
