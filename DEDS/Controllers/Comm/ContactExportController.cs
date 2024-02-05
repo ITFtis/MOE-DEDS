@@ -134,6 +134,7 @@ namespace DEDS.Controllers.Comm
             title.IsBold = true;
             title.SetText("目    錄");
 
+
             string[] dotNum = {
                 "...........................................",
                 ".......................................",
@@ -167,12 +168,12 @@ namespace DEDS.Controllers.Comm
                 "................... ......................",
                 "................. ......................"
             };
-            int[] page = { 4, 4, 4, 4, 4, 5, 5, 5, 6, 8, 10, 11, 13, 15, 17, 18, 20, 21, 23, 24, 26, 28, 29, 31, 32, 34, 36, 37, 39, 41, 42 };
+            int[] page = { 4, 4, 4, 4, 4, 5, 5, 5, 6, 9, 11, 12, 14, 16, 18, 19, 21, 23, 25, 26, 28, 30, 32, 33, 35, 37, 38, 40, 42, 44, 45 };
             int index = 0;
             foreach (var item in CategoryIdList)
             {
                 if (item.Max == "-")
-                {                    
+                {
                     blank = newDoc.CreateParagraph();
                     title = blank.CreateRun();
                     title.FontFamily = "標楷體";
@@ -183,6 +184,8 @@ namespace DEDS.Controllers.Comm
             }
             title.AddBreak();
 
+            //硬刻 表頭表格換頁
+            int[] breaktablenum = { 5, 9, 14, 21, 28, 34, 41, 55, 75, 82, 89, 96, 103, 110, 117, 124, 131, 138, 145, 151, 158, 165, 172, 179, 186, 193, 200, 207, 214, 221, 228, 240, 247, 262, 270 };
             for (int sheetNum = 1; sheetNum <= CategoryIdList.Count; sheetNum++)
             {
                 var tquery = TabulationList.Where(w => w.CategoryId == CategoryIdList[sheetNum - 1].CategoryId).OrderBy(x => x.Sort).ToList();
@@ -192,7 +195,7 @@ namespace DEDS.Controllers.Comm
                 if (CategoryIdList[sheetNum - 1].Max == "-")
                 {
                     AA.Style = "Heading1";
-                }                
+                }
                 var newRun = AA.CreateRun();
                 newRun.AppendText(CategoryIdList[sheetNum - 1].Name);
                 newRun.FontFamily = "標楷體";
@@ -234,7 +237,7 @@ namespace DEDS.Controllers.Comm
                             switch (i)
                             {
                                 case 0:
-                                    if (PositionName.Count() >= 5 && PositionName.Count() < 10)
+                                    if (PositionName.Count() > 5 && PositionName.Count() <= 10)
                                     {
                                         fontrun.SetText(PositionName.Substring(0, 5));
                                         var newrun = newCell.AddParagraph().CreateRun();
@@ -242,7 +245,7 @@ namespace DEDS.Controllers.Comm
                                         newrun.FontSize = 12;
                                         newrun.SetText(PositionName.Substring(5));
                                     }
-                                    else if (PositionName.Count() >= 10 && PositionName.Count() < 15)
+                                    else if (PositionName.Count() > 10 && PositionName.Count() <= 15)
                                     {
                                         fontrun.SetText(PositionName.Substring(0, 5));
                                         var newrun = newCell.AddParagraph().CreateRun();
@@ -254,7 +257,7 @@ namespace DEDS.Controllers.Comm
                                         newrun.FontSize = 12;
                                         newrun.SetText(PositionName.Substring(10));
                                     }
-                                    else if (PositionName.Count() >= 15 && PositionName.Count() < 20)
+                                    else if (PositionName.Count() > 15 && PositionName.Count() <= 20)
                                     {
                                         fontrun.SetText(PositionName.Substring(0, 5));
                                         var newrun = newCell.AddParagraph().CreateRun();
@@ -270,7 +273,7 @@ namespace DEDS.Controllers.Comm
                                         newrun.FontSize = 12;
                                         newrun.SetText(PositionName.Substring(15));
                                     }
-                                    else if (PositionName.Count() >= 20 && PositionName.Count() < 25)
+                                    else if (PositionName.Count() > 20 && PositionName.Count() <= 25)
                                     {
                                         fontrun.SetText(PositionName.Substring(0, 5));
                                         var newrun = newCell.AddParagraph().CreateRun();
@@ -290,7 +293,7 @@ namespace DEDS.Controllers.Comm
                                         newrun.FontSize = 12;
                                         newrun.SetText(PositionName.Substring(20));
                                     }
-                                    else if (PositionName.Count() >= 25 && PositionName.Count() < 30)
+                                    else if (PositionName.Count() > 25 && PositionName.Count() <= 30)
                                     {
                                         fontrun.SetText(PositionName.Substring(0, 5));
                                         var newrun = newCell.AddParagraph().CreateRun();
@@ -314,7 +317,7 @@ namespace DEDS.Controllers.Comm
                                         newrun.FontSize = 12;
                                         newrun.SetText(PositionName.Substring(25));
                                     }
-                                    else if (PositionName.Count() >= 30)
+                                    else if (PositionName.Count() > 30)
                                     {
                                         fontrun.SetText(PositionName.Substring(0, 5));
                                         var newrun = newCell.AddParagraph().CreateRun();
@@ -490,7 +493,15 @@ namespace DEDS.Controllers.Comm
                     //newRow.RemoveCell(0);
                 }
                 //targetTable.RemoveRow(0);
-                newDoc.CreateParagraph();
+                if (breaktablenum.Contains(sheetNum))
+                {
+                    newDoc.CreateParagraph().CreateRun().AddBreak();
+                }
+                else
+                {
+                    newDoc.CreateParagraph();
+                }
+
             }
 
             XWPFStyles styleF = newDoc.CreateStyles();
@@ -513,6 +524,8 @@ namespace DEDS.Controllers.Comm
             paragraph.GetCTP().AddNewR().AddNewFldChar().fldCharType = ST_FldCharType.separate;
             paragraph.GetCTP().AddNewR().AddNewFldChar().fldCharType = ST_FldCharType.end;
 
+
+
             string text = Dou.Context.CurrentUser<User>().Id + " 僅限公務使用";
             string filepath = Server.MapPath("../") + "Data/Comm/Export/" + Dou.Context.CurrentUser<User>().Id;
             //新增文字浮水印
@@ -524,7 +537,7 @@ namespace DEDS.Controllers.Comm
                 Directory.CreateDirectory(filepath);
             }
 
-            
+
 
             FileStream file = new FileStream(filepath + "/Contact.docx", FileMode.Create, FileAccess.Write);
             newDoc.Write(file);
