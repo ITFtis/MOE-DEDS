@@ -185,8 +185,8 @@ namespace DEDS.Controllers.Comm
             }
             title.AddBreak();
 
-            //硬刻 表頭表格換頁
-            int[] breaktablenum = { 5, 9, 14, 21, 28, 34, 41, 55, 75, 82, 89, 96, 103, 110, 117, 124, 131, 138, 145, 151, 158, 165, 172, 179, 186, 193, 200, 207, 214, 221, 228, 240, 247, 262, 270 };
+            //硬刻 表頭表格換頁            
+            int[] breaktablenum = { 5, 9, 16, 23, 30, 36, 43, 57, 64, 70, 77, 84, 91, 98, 105, 112, 119, 126, 133, 140, 147, 153, 160, 167, 174, 181, 188, 195, 202, 209, 216, 223, 229, 249, 264, 272 };
             for (int sheetNum = 1; sheetNum <= CategoryIdList.Count; sheetNum++)
             {
                 var tquery = TabulationList.Where(w => w.CategoryId == CategoryIdList[sheetNum - 1].CategoryId).OrderBy(x => x.Sort).ToList();
@@ -199,6 +199,7 @@ namespace DEDS.Controllers.Comm
                 }
                 var newRun = AA.CreateRun();
                 newRun.AppendText(CategoryIdList[sheetNum - 1].Name);
+                //newRun.AppendText(CategoryIdList[sheetNum - 1].Name + "(" + sheetNum.ToString() + ")");
                 newRun.FontFamily = "標楷體";
                 newRun.FontSize = 12;
                 // 創建一個Table
