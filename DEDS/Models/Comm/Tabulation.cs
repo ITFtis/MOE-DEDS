@@ -76,6 +76,17 @@ namespace DEDS.Models.Comm
             set;
         }
 
+        [ColumnDef(Display = "排序")]
+        public int Order 
+        { 
+            get
+            {
+                DEDS.Controllers.Comm.ContactExportController c = new Controllers.Comm.ContactExportController();
+                var vs = c.GetCategoryIdList();
+                var v = vs.Where(a => a.CategoryId == this.CategoryId).FirstOrDefault();                
 
+                return v == null ? 0 : v.Order;
+            }
+        }
     }
 }

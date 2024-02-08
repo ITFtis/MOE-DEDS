@@ -15,6 +15,7 @@ using iTextSharp.text.pdf;
 using iTextSharp.text;
 using Dou.Misc;
 using Dou.Controllers;
+using System.Web.UI.WebControls.WebParts;
 
 namespace DEDS.Controllers.Comm
 {
@@ -41,8 +42,11 @@ namespace DEDS.Controllers.Comm
             // 準備資料進行核對
             var CategoryIdList = GetCategoryIdList();
             var BaseList = Db.UserBasic.ToList(); // 基本資料表            
-            var TabulationList = Db.Tabulation.Where(q => q.Act == true).ToList();
-            ////var TabulationList = Db.Tabulation.Where(q => q.Act == true).Take(30).ToList();
+            var TabulationList = Db.Tabulation.Where(q => q.Act == true)
+                                    .AsEnumerable().OrderBy(b => b.Order).ToList();
+            ////var TabulationList = Db.Tabulation.Where(q => q.Act == true)
+            ////                        .AsEnumerable().OrderBy(b => b.Order)                                    
+            ////                        .ToList().Take(300);
 
             var PositionList = fun.GetPosition();
 
@@ -137,16 +141,16 @@ namespace DEDS.Controllers.Comm
 
 
             string[] dotNum = {
-                "...........................................",
-                ".......................................",
-                "...........................................",
+                "..........................................",
+                "......................................",
+                "..........................................",
                 ".............................",
+                "....................................",
                 ".....................................",
-                ".....................................",
-                "...........................",
-                "...........................",
-                "..",
-                ".............................................",
+                "..........................",
+                ".........................",
+                "",
+                "............................................",
                 "..........................................",
                 "..........................................",
                 "..........................................",
@@ -179,17 +183,157 @@ namespace DEDS.Controllers.Comm
                     title = blank.CreateRun();
                     title.FontFamily = "標楷體";
                     title.FontSize = 12;
-                    title.SetText(item.Name + dotNum[index] + page[index]);
+                    //title.SetText(item.Name + dotNum[index] + string.Format("[{0}]", item.CategoryId));
+                    title.SetText(item.Name + dotNum[index] + string.Format("[CG1]", item.CategoryId));
                     index++;
                 }
             }
             title.AddBreak();
 
+            newDoc.FindAndReplaceText("[CG1]", "11");
+
             //硬刻 表頭表格換頁            
-            int[] breaktablenum = { 5, 9, 16, 23, 30, 36, 43, 57, 64, 70, 77, 84, 91, 98, 105, 112, 119, 126, 133, 140, 147, 153, 160, 167, 174, 181, 188, 195, 202, 209, 216, 223, 229, 249, 264, 272 };
+            ////int[] breaktablenum = { 5, 9, 16, 23, 30, 36, 43, 57, 64, 70, 77, 84, 91, 98, 105, 112, 119, 126, 133, 140, 147, 153, 160, 167, 174, 181, 188, 195, 202, 209, 216, 223, 229, 249, 264, 272 };            
+            int countBG = 0; //大標題總計
+            int countRow = 0;//當下頁(Row總計)            
             for (int sheetNum = 1; sheetNum <= CategoryIdList.Count; sheetNum++)
             {
                 var tquery = TabulationList.Where(w => w.CategoryId == CategoryIdList[sheetNum - 1].CategoryId).OrderBy(x => x.Sort).ToList();
+
+                //自動換列：Table高度
+                int tabelRow = 0;//該筆Table(Row總計)
+                for (int MemberNum = 0; MemberNum < (tquery.Count() + 1); MemberNum++)
+                {
+                    if (MemberNum == 0)
+                    {                        
+                    }
+                    else
+                    {
+                        var bquery = BaseList.Where(w => w.UID == tquery[MemberNum - 1].UID).FirstOrDefault();
+                        var PositionName = fun.GetPositionName(PositionList, bquery.PositionId);
+
+                        if (PositionName == null)
+                        {
+                            Logger.Log.For(this).Error("PositionName：職稱為Null：");
+                            continue;
+                        }
+
+                        int maxRow = 0;    //cell內最多的row數量
+                        int cRow = 0;       //目前cell的row數量
+                        for (int i = 0; i < 7; i++)
+                        {
+                            cRow = 1;
+                            switch (i)
+                            {
+                                case 0:
+                                    if (PositionName.Count() > 5 && PositionName.Count() <= 10)
+                                    {
+                                        cRow = 2;
+                                    }
+                                    else if (PositionName.Count() > 10 && PositionName.Count() <= 15)
+                                    {
+                                        cRow = 3;
+                                    }
+                                    else if (PositionName.Count() > 15 && PositionName.Count() <= 20)
+                                    {
+                                        cRow = 4;
+                                    }
+                                    else if (PositionName.Count() > 20 && PositionName.Count() <= 25)
+                                    {
+                                        cRow = 5;
+                                    }
+                                    else if (PositionName.Count() > 25 && PositionName.Count() <= 30)
+                                    {
+                                        cRow = 6;
+                                    }
+                                    else if (PositionName.Count() > 30)
+                                    {
+                                        cRow = 7;
+                                    }
+                                    else
+                                    {                                        
+                                        //fontrun.SetText(PositionName.PadRight(5, ' '));
+                                        cRow = 1;
+                                    }
+                                    break;                                
+                                case 6:
+                                    if (bquery.Note != null)
+                                    {
+                                        if (bquery.Note.Count() >= 5 && bquery.Note.Count() < 10)
+                                        {
+                                            cRow = 2;
+                                        }
+                                        else if (bquery.Note.Count() >= 10 && bquery.Note.Count() < 15)
+                                        {
+                                            cRow = 3;
+                                        }
+                                        else if (bquery.Note.Count() >= 15 && bquery.Note.Count() < 20)
+                                        {
+                                            cRow = 4;
+                                        }
+                                        else if (bquery.Note.Count() >= 20 && bquery.Note.Count() < 25)
+                                        {
+                                            cRow = 5;
+                                        }
+                                        else if (bquery.Note.Count() >= 25 && bquery.Note.Count() < 30)
+                                        {
+                                            cRow = 6;
+                                        }
+                                        else if (bquery.Note.Count() >= 30)
+                                        {
+                                            cRow = 7;
+                                        }
+                                        else
+                                        {
+                                            //fontrun.SetText(bquery.Note);
+                                            cRow = 1;
+                                        }
+                                    }
+                                    break;
+                            }
+
+                            if (maxRow < cRow)
+                            {
+                                maxRow = cRow;
+                            }
+                        }
+
+                        tabelRow += maxRow; //資料表數量(資料列)                                                
+                        maxRow = 0;
+                    }
+                }
+
+                //有資料列
+                int xxxxxxx = sheetNum;
+                if (tabelRow > 0)
+                {
+                    tabelRow = tabelRow + 1; //資料表數量(欄位列 + 資料列)
+
+                    //自動換列：Table高度
+                    countBG++;
+
+                    countRow = countRow + tabelRow;
+                    
+                    int BGHight = 405;
+                    int relHeight = (countBG * BGHight) + (countRow * 250) + ((countBG - 1) * BGHight); //大標題高度 + (資料表高度) + 結尾列
+
+                    ////正祥換頁判斷式
+                    ////A4（橫向）：W = 11906 H = 16838
+                    ////A4（縱向）：W = 16838 H = 11906
+                    ////A5 ： W = 8390 H = 11906
+                    ////A6 ： W = 5953 H = 8390
+                    int wordHeight = 11906;
+                    if (wordHeight - relHeight < BGHight)  //融下大標題高度(BGHight)
+                    {
+                        newDoc.CreateParagraph().CreateRun().AddBreak();
+                        //defalut
+                        countRow = tabelRow;
+                        countBG = 1;
+                    }
+                }
+
+                //*** End 自動換列：Table高度
+
                 // 表格標題
                 var AA = newDoc.CreateParagraph();
                 //需要加入目錄的表格標題才設定樣式
@@ -198,8 +342,8 @@ namespace DEDS.Controllers.Comm
                     AA.Style = "Heading1";
                 }
                 var newRun = AA.CreateRun();
-                newRun.AppendText(CategoryIdList[sheetNum - 1].Name);
-                //newRun.AppendText(CategoryIdList[sheetNum - 1].Name + "(" + sheetNum.ToString() + ")");
+                //newRun.AppendText(CategoryIdList[sheetNum - 1].Name);
+                newRun.AppendText(CategoryIdList[sheetNum - 1].Name + "(" + sheetNum.ToString() + ")");
                 newRun.FontFamily = "標楷體";
                 newRun.FontSize = 12;
                 // 創建一個Table
@@ -267,6 +411,10 @@ namespace DEDS.Controllers.Comm
                     {
                         var bquery = BaseList.Where(w => w.UID == tquery[MemberNum - 1].UID).FirstOrDefault();
                         var PositionName = fun.GetPositionName(PositionList, bquery.PositionId);
+
+                        if (PositionName == null)
+                            continue;
+                        
                         newRow.Height = 250;
                         for (int i = 0; i < 7; i++)
                         {
@@ -536,14 +684,18 @@ namespace DEDS.Controllers.Comm
                     //newRow.RemoveCell(0);
                 }
                 //targetTable.RemoveRow(0);
-                if (breaktablenum.Contains(sheetNum))
-                {
-                    newDoc.CreateParagraph().CreateRun().AddBreak();
-                }
-                else
-                {
-                    newDoc.CreateParagraph();
-                }
+
+                ////承億換頁判斷式
+                ////if (breaktablenum.Contains(sheetNum))
+                ////{
+                ////    newDoc.CreateParagraph().CreateRun().AddBreak();
+                ////}
+                ////else
+                ////{
+                ////    newDoc.CreateParagraph();
+                ////}
+
+                newDoc.CreateParagraph();
 
             }
 
@@ -661,15 +813,19 @@ namespace DEDS.Controllers.Comm
         {
             var UnitList = fun.GetUnit();
             List<Category> Result = new List<Category>();
+            int order = 0;
+
             foreach (var item in UnitList)
             {
                 foreach (var eachitem in item.Category)
                 {
+                    order++;
                     Result.Add(new Category
                     {
                         CategoryId = eachitem.CategoryId,
                         Name = eachitem.Name,
-                        Max = eachitem.Max
+                        Max = eachitem.Max,
+                        Order = order,
                     });
                 }
 
@@ -691,6 +847,8 @@ namespace DEDS.Controllers.Comm
             public string Name { get; set; }
 
             public string Max { get; set; }
+
+            public int Order { get; set; }
         }
 
     }
