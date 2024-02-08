@@ -173,7 +173,7 @@ namespace DEDS.Controllers.Comm
                 "................... ......................",
                 "................. ......................"
             };
-            int[] page = { 4, 4, 4, 4, 4, 5, 5, 5, 6, 9, 10, 12, 14, 16, 17, 19, 21, 23, 24, 26, 28, 30, 31, 33, 35, 36, 38, 40, 42, 44, 45 };
+            ////int[] page = { 4, 4, 4, 4, 4, 5, 5, 5, 6, 9, 10, 12, 14, 16, 17, 19, 21, 23, 24, 26, 28, 30, 31, 33, 35, 36, 38, 40, 42, 44, 45 };
             int index = 0;
             foreach (var item in CategoryIdList)
             {
@@ -194,7 +194,8 @@ namespace DEDS.Controllers.Comm
             ////int[] breaktablenum = { 5, 9, 16, 23, 30, 36, 43, 57, 64, 70, 77, 84, 91, 98, 105, 112, 119, 126, 133, 140, 147, 153, 160, 167, 174, 181, 188, 195, 202, 209, 216, 223, 229, 249, 264, 272 };            
             int pageNumber = 4;//目錄後的page編號
             int countBG = 0; //大標題總計
-            int countRow = 0;//當下頁(Row總計)            
+            int countRow = 0;//當下頁(Row總計)
+            int preHight = 0;//前一個高度                             
             for (int sheetNum = 1; sheetNum <= CategoryIdList.Count; sheetNum++)
             {
                 var tquery = TabulationList.Where(w => w.CategoryId == CategoryIdList[sheetNum - 1].CategoryId).OrderBy(x => x.Sort).ToList();
@@ -323,10 +324,26 @@ namespace DEDS.Controllers.Comm
                     {
                         newDoc.CreateParagraph().CreateRun().AddBreak();
                         //defalut
-                        pageNumber++;
+                        if (preHight / wordHeight > 1)
+                        {
+                            //資料表數量太多
+                            while (wordHeight - preHight < BGHight)
+                            {
+                                pageNumber++;
+                                preHight = preHight - wordHeight;
+                            }
+                            pageNumber++;
+                        }
+                        else
+                        {
+                            pageNumber++;
+                        }
+                                                
                         countRow = tabelRow;
                         countBG = 1;
                     }
+
+                    preHight = (countBG * BGHight) + (countRow * 250) + ((countBG - 1) * BGHight); //大標題高度 + (資料表高度) + 結尾列
                     newDoc.FindAndReplaceText(string.Format("[{0}]", CategoryIdList[sheetNum - 1].CategoryId), pageNumber.ToString());
                 }
                 
