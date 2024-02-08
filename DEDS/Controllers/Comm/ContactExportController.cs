@@ -141,17 +141,17 @@ namespace DEDS.Controllers.Comm
 
 
             string[] dotNum = {
-                "..........................................",
-                "......................................",
-                "..........................................",
+                "...........................................",
+                ".......................................",
+                "...........................................",
                 ".............................",
-                "....................................",
                 ".....................................",
-                "..........................",
+                ".....................................",
+                "...........................",
                 ".........................",
-                "",
-                "............................................",
-                "..........................................",
+                ".",
+                ".............................................",
+                "...........................................",
                 "..........................................",
                 "..........................................",
                 "........................ ..................",
@@ -184,23 +184,22 @@ namespace DEDS.Controllers.Comm
                     title.FontFamily = "標楷體";
                     title.FontSize = 12;
                     //title.SetText(item.Name + dotNum[index] + string.Format("[{0}]", item.CategoryId));
-                    title.SetText(item.Name + dotNum[index] + string.Format("[CG1]", item.CategoryId));
+                    title.SetText(item.Name + dotNum[index] + string.Format("[{0}]", item.CategoryId));
                     index++;
                 }
             }
             title.AddBreak();
 
-            newDoc.FindAndReplaceText("[CG1]", "11");
-
             //硬刻 表頭表格換頁            
             ////int[] breaktablenum = { 5, 9, 16, 23, 30, 36, 43, 57, 64, 70, 77, 84, 91, 98, 105, 112, 119, 126, 133, 140, 147, 153, 160, 167, 174, 181, 188, 195, 202, 209, 216, 223, 229, 249, 264, 272 };            
+            int pageNumber = 4;//目錄後的page編號
             int countBG = 0; //大標題總計
             int countRow = 0;//當下頁(Row總計)            
             for (int sheetNum = 1; sheetNum <= CategoryIdList.Count; sheetNum++)
             {
                 var tquery = TabulationList.Where(w => w.CategoryId == CategoryIdList[sheetNum - 1].CategoryId).OrderBy(x => x.Sort).ToList();
 
-                //自動換列：Table高度
+                #region  自動換列：Table高度
                 int tabelRow = 0;//該筆Table(Row總計)
                 for (int MemberNum = 0; MemberNum < (tquery.Count() + 1); MemberNum++)
                 {
@@ -308,10 +307,7 @@ namespace DEDS.Controllers.Comm
                 if (tabelRow > 0)
                 {
                     tabelRow = tabelRow + 1; //資料表數量(欄位列 + 資料列)
-
-                    //自動換列：Table高度
                     countBG++;
-
                     countRow = countRow + tabelRow;
                     
                     int BGHight = 405;
@@ -322,17 +318,19 @@ namespace DEDS.Controllers.Comm
                     ////A4（縱向）：W = 16838 H = 11906
                     ////A5 ： W = 8390 H = 11906
                     ////A6 ： W = 5953 H = 8390
-                    int wordHeight = 11906;
+                    int wordHeight = 11906;                    
                     if (wordHeight - relHeight < BGHight)  //融下大標題高度(BGHight)
                     {
                         newDoc.CreateParagraph().CreateRun().AddBreak();
                         //defalut
+                        pageNumber++;
                         countRow = tabelRow;
                         countBG = 1;
                     }
+                    newDoc.FindAndReplaceText(string.Format("[{0}]", CategoryIdList[sheetNum - 1].CategoryId), pageNumber.ToString());
                 }
-
-                //*** End 自動換列：Table高度
+                
+                #endregion
 
                 // 表格標題
                 var AA = newDoc.CreateParagraph();
