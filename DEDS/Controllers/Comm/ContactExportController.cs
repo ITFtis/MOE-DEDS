@@ -340,8 +340,8 @@ namespace DEDS.Controllers.Comm
                     AA.Style = "Heading1";
                 }
                 var newRun = AA.CreateRun();
-                //newRun.AppendText(CategoryIdList[sheetNum - 1].Name);
-                newRun.AppendText(CategoryIdList[sheetNum - 1].Name + "(" + sheetNum.ToString() + ")");
+                newRun.AppendText(CategoryIdList[sheetNum - 1].Name);
+                //newRun.AppendText(CategoryIdList[sheetNum - 1].Name + "(" + sheetNum.ToString() + ")");
                 newRun.FontFamily = "標楷體";
                 newRun.FontSize = 12;
                 // 創建一個Table
