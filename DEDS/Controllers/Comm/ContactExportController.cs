@@ -16,6 +16,7 @@ using iTextSharp.text;
 using Dou.Misc;
 using Dou.Controllers;
 using System.Web.UI.WebControls.WebParts;
+using NPOI.Util;
 
 namespace DEDS.Controllers.Comm
 {
@@ -196,17 +197,21 @@ namespace DEDS.Controllers.Comm
             int pageNumber = 4;//目錄後的page編號
             int countBG = 0; //大標題總計
             int countRow = 0;//當下頁(Row總計)
-            int preHight = 0;//前一個高度                             
+            int[] logRowLists;//紀錄Row有幾列
+
+            ////int preHight = 0;//前一個高度 xxxxxxxxx                            
             for (int sheetNum = 1; sheetNum <= CategoryIdList.Count; sheetNum++)
             {
                 var tquery = TabulationList.Where(w => w.CategoryId == CategoryIdList[sheetNum - 1].CategoryId).OrderBy(x => x.Sort).ToList();
 
                 #region  自動換列：Table高度
                 int tabelRow = 0;//該筆Table(Row總計)
+                logRowLists = new int[(tquery.Count() + 1)];
                 for (int MemberNum = 0; MemberNum < (tquery.Count() + 1); MemberNum++)
                 {
                     if (MemberNum == 0)
-                    {                        
+                    {
+                        logRowLists[MemberNum] = 0;
                     }
                     else
                     {
@@ -299,6 +304,7 @@ namespace DEDS.Controllers.Comm
                             }
                         }
 
+                        logRowLists[MemberNum] = maxRow;
                         tabelRow += maxRow; //資料表數量(資料列)                                                
                         maxRow = 0;
                     }
@@ -324,27 +330,45 @@ namespace DEDS.Controllers.Comm
                     if (wordHeight - relHeight < BGHight)  //融下大標題高度(BGHight)
                     {
                         newDoc.CreateParagraph().CreateRun().AddBreak();
-                        //defalut
-                        if (preHight / wordHeight > 1)
+                        ////單一資料表數量超過1頁(注意：單一列row data的cell有跨頁，如標題、備註)
+                        ////tempHeight:第1頁要扣掉大標題高度
+                        int tempHeight = (wordHeight - BGHight);
+                        if (tabelRow * 250 > tempHeight)
                         {
-                            //資料表數量太多
-                            while (wordHeight - preHight < BGHight)
+                            int sumH = 0;
+                            for (int MemberNum = 0; MemberNum < logRowLists.Count(); MemberNum++)
                             {
-                                pageNumber++;
-                                preHight = preHight - wordHeight;
+                                if (MemberNum == 0)
+                                {
+                                }
+                                else
+                                {
+
+                                    sumH = sumH + (logRowLists[MemberNum] * 255);  //資料列高度 + 5 格線(高度)
+                                    if (sumH >= tempHeight)
+                                    {
+                                        var bquery = BaseList.Where(w => w.UID == tquery[MemberNum - 1].UID).FirstOrDefault();                                       
+                                        bquery.Name = bquery.Name + "[\\r\\n]";  //資料呈現(才執行換行)
+
+
+                                        tempHeight = wordHeight;
+                                        sumH = 255 + (logRowLists[MemberNum] * 255);  //多一行標頭 + (資料列高度 + 5 格線(高度))
+                                        pageNumber++;
+                                    }
+                                }
                             }
-                            pageNumber++;
                         }
                         else
                         {
+                            ////defalut                            
                             pageNumber++;
                         }
-                                                
+
                         countRow = tabelRow;
                         countBG = 1;
                     }
 
-                    preHight = (countBG * BGHight) + (countRow * 250) + ((countBG - 1) * BGHight); //大標題高度 + (資料表高度) + 結尾列
+                    ////preHight = (countBG * BGHight) + (countRow * 250) + ((countBG - 1) * BGHight); //大標題高度 + (資料表高度) + 結尾列  xxxxxxxxx
                     newDoc.FindAndReplaceText(string.Format("[{0}]", CategoryIdList[sheetNum - 1].CategoryId), pageNumber.ToString());
                 }
                 
@@ -363,11 +387,12 @@ namespace DEDS.Controllers.Comm
                 newRun.FontFamily = "標楷體";
                 newRun.FontSize = 12;
                 // 創建一個Table
-                XWPFTable targetTable = newDoc.CreateTable(tquery.Count() + 1, 7);
+                XWPFTable targetTable = newDoc.CreateTable(tquery.Count() + 10, 7);
                 targetTable.Width = 5000; //設定表格寬度
+                int tnum = 0;//儲存格插入row
                 for (int MemberNum = 0; MemberNum < (tquery.Count() + 1); MemberNum++)
                 {
-                    XWPFTableRow newRow = targetTable.GetRow(MemberNum);
+                    XWPFTableRow newRow = targetTable.GetRow(MemberNum + tnum);
                     if (MemberNum == 0)
                     {
                         for (int i = 0; i < 7; i++)
@@ -436,6 +461,31 @@ namespace DEDS.Controllers.Comm
                                 //找不到對應職稱，跳下一個cell
                                 if (PositionName == null)
                                     continue;
+
+                                if (bquery.Name.IndexOf("[\\r\\n]") > -1)
+                                {
+                                    //儲存格多資料，換列
+
+                                    //(a)換列
+                                    var pretb = targetTable.GetRow(MemberNum + tnum - 1);
+                                    pretb.GetCell(0).AddParagraph().CreateRun().AddBreak(BreakType.PAGE);
+
+                                    //(b)標題
+                                    var tb = targetTable.GetRow(0);
+                                    XWPFTableRow trow = new XWPFTableRow(tb.GetCTRow().Copy(), targetTable);                                    
+                                    newRow.GetCell(0).SetParagraph(trow.GetCell(0).Paragraphs[0]);
+                                    newRow.GetCell(1).SetParagraph(trow.GetCell(1).Paragraphs[0]);
+                                    newRow.GetCell(2).SetParagraph(trow.GetCell(2).Paragraphs[0]);
+                                    newRow.GetCell(3).SetParagraph(trow.GetCell(3).Paragraphs[0]);
+                                    newRow.GetCell(4).SetParagraph(trow.GetCell(4).Paragraphs[0]);
+                                    newRow.GetCell(5).SetParagraph(trow.GetCell(5).Paragraphs[0]);
+                                    newRow.GetCell(6).SetParagraph(trow.GetCell(6).Paragraphs[0]);
+
+                                    tnum++;
+                                    newRow = targetTable.GetRow(MemberNum + tnum);
+
+                                    bquery.Name = bquery.Name.Replace("[\\r\\n]", "");
+                                }
                             }
 
                             XWPFTableCell newCell = newRow.GetCell(i);
@@ -703,6 +753,15 @@ namespace DEDS.Controllers.Comm
                     }
                     //newRow.RemoveCell(0);
                 }
+
+                //刪除多餘row
+                for (int i = targetTable.Rows.Count - 1; i >= 0; i--)
+                {
+                    int MemberNum = tquery.Count() + 1;
+                    if (i >= (MemberNum + tnum))
+                    targetTable.RemoveRow(i);
+                }
+
                 //targetTable.RemoveRow(0);
 
                 ////承億換頁判斷式
