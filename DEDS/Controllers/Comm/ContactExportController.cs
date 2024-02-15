@@ -764,7 +764,9 @@ namespace DEDS.Controllers.Comm
             Document doc = app.Documents.Open(filepath + "/Contact.docx");
             // 轉換為 PDF
             doc.ExportAsFixedFormat(filepath + "/Contact.pdf", WdExportFormat.wdExportFormatPDF);
-            doc.Close();
+            //doc.Close();
+            ((Microsoft.Office.Interop.Word._Document)doc).Close(false);
+            ((Microsoft.Office.Interop.Word._Application)app).Quit(false);
 
             //新增浮水印
             string outFilePath = filepath + "/Contact_Watermark.pdf";
