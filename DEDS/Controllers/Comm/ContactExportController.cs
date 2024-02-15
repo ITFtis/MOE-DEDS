@@ -427,13 +427,17 @@ namespace DEDS.Controllers.Comm
                     {
                         var bquery = BaseList.Where(w => w.UID == tquery[MemberNum - 1].UID).FirstOrDefault();
                         var PositionName = fun.GetPositionName(PositionList, bquery.PositionId);
-
-                        if (PositionName == null)
-                            continue;
-                        
+                                                
                         newRow.Height = 250;
                         for (int i = 0; i < 7; i++)
                         {
+                            if (i == 0)
+                            {
+                                //找不到對應職稱，跳下一個cell
+                                if (PositionName == null)
+                                    continue;
+                            }
+
                             XWPFTableCell newCell = newRow.GetCell(i);
                             var fontP = newCell.AddParagraph();
                             fontP.IsWordWrapped = true;
