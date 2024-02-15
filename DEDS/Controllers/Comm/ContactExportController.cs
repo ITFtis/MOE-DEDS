@@ -195,6 +195,7 @@ namespace DEDS.Controllers.Comm
             //硬刻 表頭表格換頁            
             ////int[] breaktablenum = { 5, 9, 16, 23, 30, 36, 43, 57, 64, 70, 77, 84, 91, 98, 105, 112, 119, 126, 133, 140, 147, 153, 160, 167, 174, 181, 188, 195, 202, 209, 216, 223, 229, 249, 264, 272 };            
             int pageNumber = 4;//目錄後的page編號
+            int pagePreNumberAdd = 0;//前一個Table換頁數量
             int countBG = 0; //大標題總計
             int countRow = 0;//當下頁(Row總計)
             int[] logRowLists;//紀錄Row有幾列
@@ -328,13 +329,15 @@ namespace DEDS.Controllers.Comm
                     ////A6 ： W = 5953 H = 8390
                     int wordHeight = 11906;                    
                     if (wordHeight - relHeight < BGHight)  //融下大標題高度(BGHight)
-                    {
-                        newDoc.CreateParagraph().CreateRun().AddBreak();
+                    {                        
+                        newDoc.CreateParagraph().CreateRun().AddBreak();                        
                         ////單一資料表數量超過1頁(注意：單一列row data的cell有跨頁，如標題、備註)
                         ////tempHeight:第1頁要扣掉大標題高度
                         int tempHeight = (wordHeight - BGHight);
                         if (tabelRow * 250 > tempHeight)
                         {
+                            pageNumber++;
+
                             int sumH = 0;
                             for (int MemberNum = 0; MemberNum < logRowLists.Count(); MemberNum++)
                             {
@@ -353,14 +356,14 @@ namespace DEDS.Controllers.Comm
 
                                         tempHeight = wordHeight;
                                         sumH = 255 + (logRowLists[MemberNum] * 255);  //多一行標頭 + (資料列高度 + 5 格線(高度))
-                                        pageNumber++;
+                                        pagePreNumberAdd++;
                                     }
                                 }
                             }
                         }
                         else
                         {
-                            ////defalut                            
+                            ////defalut
                             pageNumber++;
                         }
 
@@ -368,8 +371,10 @@ namespace DEDS.Controllers.Comm
                         countBG = 1;
                     }
 
-                    ////preHight = (countBG * BGHight) + (countRow * 250) + ((countBG - 1) * BGHight); //大標題高度 + (資料表高度) + 結尾列  xxxxxxxxx
+                    ////preHight = (countBG * BGHight) + (countRow * 250) + ((countBG - 1) * BGHight); //大標題高度 + (資料表高度) + 結尾列  xxxxxxxxx                    
                     newDoc.FindAndReplaceText(string.Format("[{0}]", CategoryIdList[sheetNum - 1].CategoryId), pageNumber.ToString());
+                    pageNumber = pageNumber + pagePreNumberAdd;
+                    pagePreNumberAdd = 0;
                 }
                 
                 #endregion
