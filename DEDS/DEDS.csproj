@@ -457,6 +457,7 @@
     <Content Include="Data\incineration.json" />
     <Content Include="Data\landfill.json" />
     <Content Include="Data\人口密集圖.kmz" />
+    <Content Include="Data\Comm\DocDot.json" />
     <None Include="Scripts\jquery-3.6.4.intellisense.js" />
     <Content Include="Scripts\Dou\Dou.js" />
     <Content Include="Scripts\gis\b3\css\bootstrap.css" />

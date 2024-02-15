@@ -307,6 +307,18 @@ namespace DEDS.Models.Comm
             }
         }
 
+        public static List<DocDot> GetDocDot()
+        {
+
+            lock (LockGetAllDep)
+            {
+                //No catch(不影響效能下,方便調整測試)
+                var r = DouHelper.Misc.DeSerializeObjectLoadJsonFile<IEnumerable<DocDot>>(System.IO.Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath(("~/Data/Comm")), "DocDot.json"));
+                var Result = r.ToList();
+                return Result;
+            }
+        }
+
         public List<Position> GetPosition()
         {
             lock (LockGetAllDep)
@@ -351,6 +363,13 @@ namespace DEDS.Models.Comm
         public string CityId { get; set; }
         public string Sector { get; set; }
         public List<Category> Category { get; set; }
+    }
+
+    public class DocDot
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }        
+        public string[] Dot { get; set; }
     }
 
     public class LoginInfo
