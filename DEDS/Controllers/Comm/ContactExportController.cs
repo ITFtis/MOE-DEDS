@@ -17,6 +17,7 @@ using Dou.Misc;
 using Dou.Controllers;
 using System.Web.UI.WebControls.WebParts;
 using NPOI.Util;
+using System.Data.Entity.Infrastructure;
 
 namespace DEDS.Controllers.Comm
 {
@@ -266,27 +267,27 @@ namespace DEDS.Controllers.Comm
                                 case 6:
                                     if (bquery.Note != null)
                                     {
-                                        if (bquery.Note.Count() >= 5 && bquery.Note.Count() < 10)
+                                        if (bquery.Note.Count() >= 5 && bquery.Note.Count() <= 10)
                                         {
                                             cRow = 2;
                                         }
-                                        else if (bquery.Note.Count() >= 10 && bquery.Note.Count() < 15)
+                                        else if (bquery.Note.Count() >= 10 && bquery.Note.Count() <= 15)
                                         {
                                             cRow = 3;
                                         }
-                                        else if (bquery.Note.Count() >= 15 && bquery.Note.Count() < 20)
+                                        else if (bquery.Note.Count() >= 15 && bquery.Note.Count() <= 20)
                                         {
                                             cRow = 4;
                                         }
-                                        else if (bquery.Note.Count() >= 20 && bquery.Note.Count() < 25)
+                                        else if (bquery.Note.Count() >= 20 && bquery.Note.Count() <= 25)
                                         {
                                             cRow = 5;
                                         }
-                                        else if (bquery.Note.Count() >= 25 && bquery.Note.Count() < 30)
+                                        else if (bquery.Note.Count() >= 25 && bquery.Note.Count() <= 30)
                                         {
                                             cRow = 6;
                                         }
-                                        else if (bquery.Note.Count() >= 30)
+                                        else if (bquery.Note.Count() > 30)
                                         {
                                             cRow = 7;
                                         }
@@ -330,15 +331,17 @@ namespace DEDS.Controllers.Comm
                     int wordHeight = 11906;                    
                     if (wordHeight - relHeight < BGHight)  //融下大標題高度(BGHight)
                     {                        
-                        newDoc.CreateParagraph().CreateRun().AddBreak();                        
+                        newDoc.CreateParagraph().CreateRun().AddBreak();
                         ////單一資料表數量超過1頁(注意：單一列row data的cell有跨頁，如標題、備註)
-                        ////tempHeight:第1頁要扣掉大標題高度
-                        int tempHeight = (wordHeight - BGHight);
-                        if (tabelRow * 250 > tempHeight)
+                        ////tempHeight:第1頁要扣掉大標題高度 - 標題高度
+                        int th = 250;
+                        int tempHeight = (wordHeight - BGHight);                        
+                        if ((tabelRow - 1) * th > tempHeight)           //tableRow含th欄位
                         {
                             pageNumber++;
 
                             int sumH = 0;
+                            int presumH = 0;
                             for (int MemberNum = 0; MemberNum < logRowLists.Count(); MemberNum++)
                             {
                                 if (MemberNum == 0)
@@ -346,18 +349,99 @@ namespace DEDS.Controllers.Comm
                                 }
                                 else
                                 {
+                                    ////string test1 = string.Join(",", logRowLists);  //test
 
-                                    sumH = sumH + (logRowLists[MemberNum] * 255);  //資料列高度 + 5 格線(高度)
-                                    if (sumH >= tempHeight)
+                                    //sumH = sumH + (logRowLists[MemberNum] * th);
+                                    //if (sumH >= tempHeight - 100)
+                                    //{
+                                    //    var bquery = BaseList.Where(w => w.UID == tquery[MemberNum - 1].UID).FirstOrDefault();
+
+                                    //    //換列數量(1個"[", 表示1列)
+                                    //    string brNum = "";
+                                    //    for (int ss = 0; ss <= (logRowLists[MemberNum]); ss++)
+                                    //    {
+                                    //        brNum += "[";
+                                    //    }
+
+                                    //    while (sumH <= tempHeight)
+                                    //    {
+                                    //        brNum += "[";
+                                    //        sumH = sumH + th;
+                                    //    }
+
+                                    //    bquery.Name = bquery.Name + "\n" + brNum;  //資料呈現(才執行換行)
+                                    //    bquery.Name = bquery.Name + "a"; //test
+
+                                    //    //ini
+                                    //    tempHeight = wordHeight - th;          //多一行標頭
+                                    //    sumH = (logRowLists[MemberNum] * th);  //(資料列高度 + 5 格線(高度))
+                                    //    pagePreNumberAdd++;
+                                    //}
+                                    //else
+                                    //不夠放入下一列新資料
+                                    if (tempHeight <= presumH + (logRowLists[MemberNum - 1] * th))
                                     {
-                                        var bquery = BaseList.Where(w => w.UID == tquery[MemberNum - 1].UID).FirstOrDefault();                                       
-                                        bquery.Name = bquery.Name + "[\\r\\n]";  //資料呈現(才執行換行)
+                                        var bquery = BaseList.Where(w => w.UID == tquery[MemberNum - 2].UID).FirstOrDefault();
+                                        
+                                        ////while (sumH <= tempHeight)
+                                        ////{
+                                        ////    brNum += "[";
+                                        ////    sumH = sumH + th;
+                                        ////}
 
+                                        int lin = 0;
+                                        if (presumH + (logRowLists[MemberNum - 1] + logRowLists[MemberNum] * th) <= tempHeight)
+                                        {
+                                            //剛好塞滿，不用換列
+                                            tempHeight = wordHeight;    //多一行標頭
+                                        }
+                                        else
+                                        {
+                                            //換列數量(1個"[", 表示1列)
+                                            string brNum = "";
+                                            for (int ss = 0; ss <= (logRowLists[MemberNum - 1]); ss++)
+                                            {
+                                                brNum += "[";
+                                            }
 
-                                        tempHeight = wordHeight;
-                                        sumH = 255 + (logRowLists[MemberNum] * 255);  //多一行標頭 + (資料列高度 + 5 格線(高度))
+                                            for (; sumH <= tempHeight; lin++)
+                                            {
+                                                //buffer換列
+                                                int buffer = 10;
+                                                if (
+                                                    (tempHeight - sumH) > th 
+                                                    || (tempHeight - sumH) > 0 && (tempHeight - sumH) < buffer
+                                                   )
+                                                {
+                                                    brNum += "[";
+                                                }
+                                                sumH = sumH + th;
+                                            }
+
+                                            bquery.Name = bquery.Name + "\n" + brNum;  //資料呈現(才執行換行)
+                                            bquery.Name = bquery.Name + "a"; //test
+
+                                            tempHeight = wordHeight - th;    //多一行標頭
+                                        }
+
+                                        //ini
+                                        if (lin == (logRowLists[MemberNum]))
+                                        {
+                                            sumH = 0;
+                                        }
+                                        else
+                                        {
+                                            sumH = (logRowLists[MemberNum] * th);
+                                        }
+
                                         pagePreNumberAdd++;
                                     }
+                                    else
+                                    {
+                                        sumH = sumH + (logRowLists[MemberNum] * th);
+                                    }
+
+                                    presumH = sumH;
                                 }
                             }
                         }
@@ -447,6 +531,12 @@ namespace DEDS.Controllers.Comm
                                 cellWidth.type = ST_TblWidth.dxa;
                                 cellWidth.w = "3200";
                             }
+                            else if (i == 6)
+                            {
+                                CT_TblWidth cellWidth = newCell.GetCTTc().AddNewTcPr().AddNewTcW();
+                                cellWidth.type = ST_TblWidth.dxa;
+                                cellWidth.w = "1300";
+                            }
 
                             fontrun.SetText(Table.Rows[0].GetTableCells()[i].GetText());
 
@@ -467,17 +557,22 @@ namespace DEDS.Controllers.Comm
                                 if (PositionName == null)
                                     continue;
 
-                                if (bquery.Name.IndexOf("[\\r\\n]") > -1)
+                                if (bquery.Name.IndexOf("[") > -1)
                                 {
                                     //儲存格多資料，換列
 
                                     //(a)換列
                                     var pretb = targetTable.GetRow(MemberNum + tnum - 1);
-                                    pretb.GetCell(0).AddParagraph().CreateRun().AddBreak(BreakType.PAGE);
+                                    int n = bquery.Name.Where(a => a == '[').Count();
+                                    for (int ss = 0; ss < n; ss++)
+                                    {                                        
+                                        pretb.GetCell(1).AddParagraph().CreateRun().AddBreak(BreakType.PAGE);                                        
+                                    }
 
                                     //(b)標題
                                     var tb = targetTable.GetRow(0);
                                     XWPFTableRow trow = new XWPFTableRow(tb.GetCTRow().Copy(), targetTable);                                    
+                                    newRow.Height = newRow.Height;
                                     newRow.GetCell(0).SetParagraph(trow.GetCell(0).Paragraphs[0]);
                                     newRow.GetCell(1).SetParagraph(trow.GetCell(1).Paragraphs[0]);
                                     newRow.GetCell(2).SetParagraph(trow.GetCell(2).Paragraphs[0]);
@@ -489,7 +584,7 @@ namespace DEDS.Controllers.Comm
                                     tnum++;
                                     newRow = targetTable.GetRow(MemberNum + tnum);
 
-                                    bquery.Name = bquery.Name.Replace("[\\r\\n]", "");
+                                    bquery.Name = bquery.Name.Replace("[", "");
                                 }
                             }
 
@@ -638,7 +733,7 @@ namespace DEDS.Controllers.Comm
                                 case 6:
                                     if (bquery.Note != null)
                                     {
-                                        if (bquery.Note.Count() >= 5 && bquery.Note.Count() < 10)
+                                        if (bquery.Note.Count() >= 5 && bquery.Note.Count() <= 10)
                                         {
                                             fontrun.SetText(bquery.Note.Substring(0, 5));
                                             var newrun = newCell.AddParagraph().CreateRun();
@@ -646,7 +741,7 @@ namespace DEDS.Controllers.Comm
                                             newrun.FontSize = 12;
                                             newrun.SetText(bquery.Note.Substring(5));
                                         }
-                                        else if (bquery.Note.Count() >= 10 && bquery.Note.Count() < 15)
+                                        else if (bquery.Note.Count() >= 10 && bquery.Note.Count() <= 15)
                                         {
                                             fontrun.SetText(bquery.Note.Substring(0, 5));
                                             var newrun = newCell.AddParagraph().CreateRun();
@@ -658,7 +753,7 @@ namespace DEDS.Controllers.Comm
                                             newrun.FontSize = 12;
                                             newrun.SetText(bquery.Note.Substring(10));
                                         }
-                                        else if (bquery.Note.Count() >= 15 && bquery.Note.Count() < 20)
+                                        else if (bquery.Note.Count() >= 15 && bquery.Note.Count() <= 20)
                                         {
                                             fontrun.SetText(bquery.Note.Substring(0, 5));
                                             var newrun = newCell.AddParagraph().CreateRun();
@@ -674,7 +769,7 @@ namespace DEDS.Controllers.Comm
                                             newrun.FontSize = 12;
                                             newrun.SetText(bquery.Note.Substring(15));
                                         }
-                                        else if (bquery.Note.Count() >= 20 && bquery.Note.Count() < 25)
+                                        else if (bquery.Note.Count() >= 20 && bquery.Note.Count() <= 25)
                                         {
                                             fontrun.SetText(bquery.Note.Substring(0, 5));
                                             var newrun = newCell.AddParagraph().CreateRun();
@@ -694,7 +789,7 @@ namespace DEDS.Controllers.Comm
                                             newrun.FontSize = 12;
                                             newrun.SetText(bquery.Note.Substring(20));
                                         }
-                                        else if (bquery.Note.Count() >= 25 && bquery.Note.Count() < 30)
+                                        else if (bquery.Note.Count() >= 25 && bquery.Note.Count() <= 30)
                                         {
                                             fontrun.SetText(bquery.Note.Substring(0, 5));
                                             var newrun = newCell.AddParagraph().CreateRun();
@@ -718,7 +813,7 @@ namespace DEDS.Controllers.Comm
                                             newrun.FontSize = 12;
                                             newrun.SetText(bquery.Note.Substring(25));
                                         }
-                                        else if (bquery.Note.Count() >= 30)
+                                        else if (bquery.Note.Count() > 30)
                                         {
                                             fontrun.SetText(bquery.Note.Substring(0, 5));
                                             var newrun = newCell.AddParagraph().CreateRun();
