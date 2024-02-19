@@ -18,6 +18,7 @@ using Dou.Controllers;
 using System.Web.UI.WebControls.WebParts;
 using NPOI.Util;
 using System.Data.Entity.Infrastructure;
+using Google.Protobuf.WellKnownTypes;
 
 namespace DEDS.Controllers.Comm
 {
@@ -336,7 +337,7 @@ namespace DEDS.Controllers.Comm
                         ////tempHeight:第1頁要扣掉大標題高度 - 標題高度
                         int th = 250;
                         //int brth = 200;  //換行高度
-                        int tempHeight = (wordHeight - BGHight);// - th
+                        int tempHeight = (wordHeight - BGHight - th);// 
                         if ((tabelRow - 1) * th > tempHeight)           //tableRow含th欄位
                         {
                             pageNumber++;
@@ -367,14 +368,28 @@ namespace DEDS.Controllers.Comm
                                         }
                                         //sumH = sumH + (logRowLists[MemberNum - 1] * th);
 
-                                        int lin = 0;
-                                        int buffer = 100;  //換頁高度buffer
-                                        for (; sumH <= tempHeight + buffer; lin++)
+                                        int lin = 1;
+                                        for (; (sumH <= tempHeight); lin++)
                                         {
                                             //提供cell換列次數，方能換頁
                                             brNum += "[";
 
                                             sumH = sumH + th;// brth;
+                                        }                                        
+
+                                        if(lin == 0 || lin >= (logRowLists[MemberNum]))
+                                        {
+                                            //剛好塞滿，不用多標頭
+                                            tempHeight = wordHeight;
+                                            brNum += "{";
+
+                                            //tempHeight = wordHeight - th;    //多一行標頭
+                                            sumH = 0;
+                                        }
+                                        else
+                                        {
+                                            tempHeight = wordHeight - th;    //多一行標頭
+                                            sumH = (logRowLists[MemberNum - 1] * th);
                                         }
 
                                         bquery.Name = bquery.Name + "\n" + brNum + "a";  //test 資料呈現(才執行換行)                                            
@@ -392,16 +407,17 @@ namespace DEDS.Controllers.Comm
                                         ////    sumH = (logRowLists[MemberNum] * th);                                            
                                         ////}
 
-                                        sumH = (logRowLists[MemberNum] * th);
-                                        tempHeight = wordHeight - th;    //多一行標頭
+                                        presumH = sumH;
+
                                         pagePreNumberAdd++;
                                     }
                                     else
                                     {
                                         sumH = sumH + (logRowLists[MemberNum - 1] * th);
+                                        presumH = sumH;
                                     }
 
-                                    presumH = sumH;
+                                    
                                 }
                             }
                         }
@@ -526,26 +542,39 @@ namespace DEDS.Controllers.Comm
                                     int n = bquery.Name.Where(a => a == '[').Count();
                                     for (int ss = 0; ss < n; ss++)
                                     {
-                                        pretb.GetCell(1).AddParagraph().CreateRun().SetText("辦理");
-                                        //pretb.GetCell(1).AddParagraph().CreateRun().AddBreak(BreakType.PAGE);                                        
+                                        //pretb.GetCell(1).AddParagraph().CreateRun().SetText("辦理");
+                                        //pretb.GetCell(1).AddParagraph().CreateRun().AddBreak(BreakType.PAGE);
+                                        
+                                        XWPFTableCell pgCell = pretb.GetCell(1);
+                                        var pgFont = pgCell.AddParagraph();
+                                        pgFont.IsWordWrapped = true;
+                                        pgFont.Alignment = ParagraphAlignment.CENTER;
+                                        var pgRun = pgFont.CreateRun();
+                                        pgRun.FontFamily = "標楷體";
+                                        pgRun.FontSize = 12;
+
+                                        pgRun.SetText("辦理");
                                     }
 
                                     //(b)標題
-                                    var tb = targetTable.GetRow(0);
-                                    XWPFTableRow trow = new XWPFTableRow(tb.GetCTRow().Copy(), targetTable);                                    
-                                    newRow.Height = newRow.Height;
-                                    newRow.GetCell(0).SetParagraph(trow.GetCell(0).Paragraphs[0]);
-                                    newRow.GetCell(1).SetParagraph(trow.GetCell(1).Paragraphs[0]);
-                                    newRow.GetCell(2).SetParagraph(trow.GetCell(2).Paragraphs[0]);
-                                    newRow.GetCell(3).SetParagraph(trow.GetCell(3).Paragraphs[0]);
-                                    newRow.GetCell(4).SetParagraph(trow.GetCell(4).Paragraphs[0]);
-                                    newRow.GetCell(5).SetParagraph(trow.GetCell(5).Paragraphs[0]);
-                                    newRow.GetCell(6).SetParagraph(trow.GetCell(6).Paragraphs[0]);
+                                    if (bquery.Name.IndexOf("{") == -1)
+                                    {
+                                        var tb = targetTable.GetRow(0);
+                                        XWPFTableRow trow = new XWPFTableRow(tb.GetCTRow().Copy(), targetTable);
+                                        newRow.Height = newRow.Height;
+                                        newRow.GetCell(0).SetParagraph(trow.GetCell(0).Paragraphs[0]);
+                                        newRow.GetCell(1).SetParagraph(trow.GetCell(1).Paragraphs[0]);
+                                        newRow.GetCell(2).SetParagraph(trow.GetCell(2).Paragraphs[0]);
+                                        newRow.GetCell(3).SetParagraph(trow.GetCell(3).Paragraphs[0]);
+                                        newRow.GetCell(4).SetParagraph(trow.GetCell(4).Paragraphs[0]);
+                                        newRow.GetCell(5).SetParagraph(trow.GetCell(5).Paragraphs[0]);
+                                        newRow.GetCell(6).SetParagraph(trow.GetCell(6).Paragraphs[0]);
 
-                                    tnum++;
-                                    newRow = targetTable.GetRow(MemberNum + tnum);
+                                        tnum++;
+                                        newRow = targetTable.GetRow(MemberNum + tnum);
+                                    }
 
-                                    bquery.Name = bquery.Name.Replace("[", "");
+                                    bquery.Name = bquery.Name.Replace("[", "").Replace("{", "");
                                 }
                             }
 
