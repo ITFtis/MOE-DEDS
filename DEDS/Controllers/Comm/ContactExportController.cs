@@ -335,7 +335,8 @@ namespace DEDS.Controllers.Comm
                         ////單一資料表數量超過1頁(注意：單一列row data的cell有跨頁，如標題、備註)
                         ////tempHeight:第1頁要扣掉大標題高度 - 標題高度
                         int th = 250;
-                        int tempHeight = (wordHeight - BGHight - th);                        
+                        //int brth = 200;  //換行高度
+                        int tempHeight = (wordHeight - BGHight);// - th
                         if ((tabelRow - 1) * th > tempHeight)           //tableRow含th欄位
                         {
                             pageNumber++;
@@ -349,10 +350,12 @@ namespace DEDS.Controllers.Comm
                                 {
                                 }
                                 else
-                                {
-                                    //不夠放入下一列新資料
-                                    if (presumH + (logRowLists[MemberNum - 1] + logRowLists[MemberNum] * th) >= tempHeight)
+                                {                                    
+                                    //驗證是否能存入下下一列資料
+                                    int h = presumH + ((logRowLists[MemberNum - 1] + logRowLists[MemberNum]) * th);
+                                    if(h >= tempHeight)
                                     {
+                                        //上一位user
                                         var bquery = BaseList.Where(w => w.UID == tquery[MemberNum - 2].UID).FirstOrDefault();
 
                                         //換列數量(1個"[", 表示1列)
@@ -360,36 +363,37 @@ namespace DEDS.Controllers.Comm
                                         for (int ss = 0; ss < (logRowLists[MemberNum - 1]); ss++)
                                         {
                                             brNum += "[";
+                                            sumH += th;//brth;
                                         }
-                                        sumH = sumH + (logRowLists[MemberNum - 1] * th);
+                                        //sumH = sumH + (logRowLists[MemberNum - 1] * th);
 
                                         int lin = 0;
-                                        for (; sumH <= tempHeight; lin++)
+                                        int buffer = 100;  //換頁高度buffer
+                                        for (; sumH <= tempHeight + buffer; lin++)
                                         {
                                             //提供cell換列次數，方能換頁
-                                            if ((tempHeight - sumH) > 0)
-                                            {
-                                                brNum += "[";
-                                            }
-                                            sumH = sumH + th;
+                                            brNum += "[";
+
+                                            sumH = sumH + th;// brth;
                                         }
 
                                         bquery.Name = bquery.Name + "\n" + brNum + "a";  //test 資料呈現(才執行換行)                                            
 
                                         //ini
-                                        if (lin == (logRowLists[MemberNum]))
-                                        {
-                                            //剛好塞滿，不用換列
-                                            tempHeight = wordHeight;
+                                        ////if (lin >= (logRowLists[MemberNum]))
+                                        ////{
+                                        ////    //////剛好塞滿，不用換列
+                                        ////    ////tempHeight = wordHeight;
 
-                                            sumH = 0;
-                                        }
-                                        else
-                                        {
-                                            sumH = (logRowLists[MemberNum] * th);
-                                            tempHeight = wordHeight - th;    //多一行標頭
-                                        }                                        
+                                        ////    sumH = 0;
+                                        ////}
+                                        ////else
+                                        ////{
+                                        ////    sumH = (logRowLists[MemberNum] * th);                                            
+                                        ////}
 
+                                        sumH = (logRowLists[MemberNum] * th);
+                                        tempHeight = wordHeight - th;    //多一行標頭
                                         pagePreNumberAdd++;
                                     }
                                     else
@@ -521,8 +525,9 @@ namespace DEDS.Controllers.Comm
                                     var pretb = targetTable.GetRow(MemberNum + tnum - 1);
                                     int n = bquery.Name.Where(a => a == '[').Count();
                                     for (int ss = 0; ss < n; ss++)
-                                    {                                        
-                                        pretb.GetCell(1).AddParagraph().CreateRun().AddBreak(BreakType.PAGE);                                        
+                                    {
+                                        pretb.GetCell(1).AddParagraph().CreateRun().SetText("辦理");
+                                        //pretb.GetCell(1).AddParagraph().CreateRun().AddBreak(BreakType.PAGE);                                        
                                     }
 
                                     //(b)標題
