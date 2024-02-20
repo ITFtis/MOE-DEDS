@@ -368,7 +368,7 @@ namespace DEDS.Controllers.Comm
                                         }
                                         //sumH = sumH + (logRowLists[MemberNum - 1] * th);
 
-                                        int lin = 1;
+                                        int lin = 0;
                                         for (; (sumH <= tempHeight); lin++)
                                         {
                                             //提供cell換列次數，方能換頁
@@ -389,7 +389,12 @@ namespace DEDS.Controllers.Comm
                                         else
                                         {
                                             tempHeight = wordHeight - th;    //多一行標頭
-                                            sumH = (logRowLists[MemberNum - 1] * th);
+                                            //sumH = (logRowLists[MemberNum - 1] * th);
+                                            
+                                            //reset 仿製logRowLists[0]
+                                            logRowLists[MemberNum - 2] = 0;
+                                            MemberNum--;
+                                            sumH = 0;
                                         }
 
                                         bquery.Name = bquery.Name + "\n" + brNum + "a";  //test 資料呈現(才執行換行)                                            
