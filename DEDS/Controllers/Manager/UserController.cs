@@ -55,10 +55,11 @@ namespace DEDS.Controllers.Manager
                 string err = "";
                 try
                 {
-                    if (String.IsNullOrWhiteSpace(token))
-                    {
-                        ischeck = false;
-                    }
+                    ////暫時關閉recaptcha驗證 正祥：20240220
+                    ////if (String.IsNullOrWhiteSpace(token))
+                    ////{
+                    ////    ischeck = false;
+                    ////}
                     //else ////這邊在會內效能很慢，第一次IIS啟動後第一次驗證要約90秒
                     //    ischeck = createAssessmentAsync(token);
                 }

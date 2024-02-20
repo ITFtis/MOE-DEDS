@@ -19,9 +19,9 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/dou/js")
-    <script src="https://www.google.com/recaptcha/enterprise.js?render=@ViewBag.recaptchaSiteKey"></script>
+    @*<script src="https://www.google.com/recaptcha/enterprise.js?render=@ViewBag.recaptchaSiteKey"></script>*@
     
-    <script>
+    @*<script>
         function checkRecaptcha(e) {
             e.preventDefault();
             grecaptcha.enterprise.ready(async () => {
@@ -36,7 +36,7 @@
                 // See https://cloud.google.com/recaptcha-enterprise/docs/create-assessment
             });
         }
-    </script>
+    </script>*@
     <script>$.AppConfigOptions = { default_loading: '@Url.Content("~/Scripts/gis/images/loading/loading_black.gif")' };</script>
     <style>
         body {
@@ -208,7 +208,7 @@
             $("#Password").attr('type', $(this).hasClass('glyphicon-eye-close') ? 'password' : 'text');
             $(this).closest('.form-group').find('input').focus();
         })
-        $('.btn-success').on('click', checkRecaptcha);
+        ////$('.btn-success').on('click', checkRecaptcha);
         //setInterval(function () {
         //    console.log('aaaaaaaaaaa');
         //    $('.btn-success').trigger("click");
