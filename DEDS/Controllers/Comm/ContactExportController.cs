@@ -331,8 +331,12 @@ namespace DEDS.Controllers.Comm
                     ////A6 ： W = 5953 H = 8390
                     int wordHeight = 11906;                    
                     if (wordHeight - relHeight < BGHight)  //融下大標題高度(BGHight)
-                    {                        
-                        newDoc.CreateParagraph().CreateRun().AddBreak();
+                    {
+                        if (countBG != 1)
+                        {
+                            newDoc.CreateParagraph().CreateRun().AddBreak();
+                        }
+
                         ////單一資料表數量超過1頁(注意：單一列row data的cell有跨頁，如標題、備註)
                         ////tempHeight:第1頁要扣掉大標題高度 - 標題高度
                         int th = 250;
@@ -366,8 +370,9 @@ namespace DEDS.Controllers.Comm
                                         var bquery = BaseList.Where(w => w.UID == tquery[MemberNum - 2].UID).FirstOrDefault();
 
                                         //換頁 => 拆新Table判斷"["
-                                        string brNum = "[";                                   
-                                        bquery.Name = bquery.Name + "a" + "\n" + brNum ;  //test 資料呈現(才執行換行)                                            
+                                        string brNum = "[";
+                                        //bquery.Name = bquery.Name + "a" + "\n" + brNum ;  //test 資料呈現(才執行換行)
+                                        bquery.Name = bquery.Name + "\n" + brNum ;
 
                                         //reset 仿製logRowLists[0]
                                         logRowLists[MemberNum - 2] = 0;
@@ -898,12 +903,12 @@ namespace DEDS.Controllers.Comm
                 if (moreType == 2)
                 {
                     countRow = tcountrow;
-                    countBG = 1;
+                    countBG = 0;
                 }
                 else if (moreType == 3)
                 {
                     countRow = 0;
-                    countBG = 1;
+                    countBG = 0;
                 }
 
                 //targetTable.RemoveRow(0);
