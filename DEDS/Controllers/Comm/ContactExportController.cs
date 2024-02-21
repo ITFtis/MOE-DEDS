@@ -235,6 +235,9 @@ namespace DEDS.Controllers.Comm
                             switch (i)
                             {
                                 case 0:
+                                    //限定30字內
+                                    PositionName = PositionName.Length > 30 ? PositionName.Substring(0, 30) : PositionName;
+
                                     if (PositionName.Count() > 5 && PositionName.Count() <= 10)
                                     {
                                         cRow = 2;
@@ -268,6 +271,9 @@ namespace DEDS.Controllers.Comm
                                 case 6:
                                     if (bquery.Note != null)
                                     {
+                                        //限定30字內
+                                        bquery.Note = bquery.Note.Length > 30 ? bquery.Note.Substring(0, 30) : bquery.Note;
+
                                         if (bquery.Note.Count() >= 5 && bquery.Note.Count() <= 10)
                                         {
                                             cRow = 2;
@@ -634,6 +640,9 @@ namespace DEDS.Controllers.Comm
                             switch (i)
                             {
                                 case 0:
+                                    //限定30字內
+                                    PositionName = PositionName.Length > 30 ? PositionName.Substring(0, 30) : PositionName;
+
                                     if (PositionName.Count() > 5 && PositionName.Count() <= 10)
                                     {
                                         fontrun.SetText(PositionName.Substring(0, 5));
@@ -770,6 +779,9 @@ namespace DEDS.Controllers.Comm
                                 case 6:
                                     if (bquery.Note != null)
                                     {
+                                        //限定30字內
+                                        bquery.Note = bquery.Note.Length > 30 ? bquery.Note.Substring(0, 30) : bquery.Note;
+
                                         if (bquery.Note.Count() >= 5 && bquery.Note.Count() <= 10)
                                         {
                                             fontrun.SetText(bquery.Note.Substring(0, 5));
