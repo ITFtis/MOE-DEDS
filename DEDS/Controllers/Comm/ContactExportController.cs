@@ -427,18 +427,13 @@ namespace DEDS.Controllers.Comm
                 XWPFTable targetTable = newDoc.CreateTable(tquery.Count() + 10, 7);
                 targetTable.Width = 5000; //設定表格寬度
                 int moreType = 1; //moreType:1.單一筆資料表不換頁 2.單一筆資料表換頁 => tnum筆資料 3.單一筆資料表換頁 => 0資料)
-                int tnum = 0;//儲存格插入row
+                int tnum = 0;//儲存格插入row index
+                int tcountrow = 0;//儲存格插入row count
 
-                XWPFParagraph t0 = null;
-                XWPFParagraph t1 = null;
-                XWPFParagraph t2 = null;
-                XWPFParagraph t3 = null;
-                XWPFParagraph t4 = null;
-                XWPFParagraph t5 = null;
-                XWPFParagraph t6 = null;
                 for (int MemberNum = 0; MemberNum < (tquery.Count() + 1); MemberNum++)
                 {
                     XWPFTableRow newRow = targetTable.GetRow(tnum);
+                    tcountrow += logRowLists[MemberNum];
                     tnum++;
 
                     if (MemberNum == 0)
@@ -502,17 +497,7 @@ namespace DEDS.Controllers.Comm
 
                             newCell.RemoveParagraph(0);
                         }
-                        #endregion
-                        
-                        //標題設定(自動長出)
-                        XWPFTableRow trow = new XWPFTableRow(newRow.GetCTRow().Copy(), targetTable);
-                        t0 = trow.GetCell(0).Paragraphs[0];
-                        t1 = trow.GetCell(1).Paragraphs[0];
-                        t2 = trow.GetCell(2).Paragraphs[0];
-                        t3 = trow.GetCell(3).Paragraphs[0];
-                        t4 = trow.GetCell(4).Paragraphs[0];
-                        t5 = trow.GetCell(5).Paragraphs[0];
-                        t6 = trow.GetCell(6).Paragraphs[0];                        
+                        #endregion                                             
                     }
                     else
                     {
@@ -534,9 +519,9 @@ namespace DEDS.Controllers.Comm
 
                             //要有下一筆資料才換頁
                             //moreType:1.單一筆資料表不換頁 2.單一筆資料表換頁 => tnum筆資料 3.單一筆資料表換頁 => 0資料)
-                            if (MemberNum + 1 < logRowLists.Count())
+                            if (MemberNum < logRowLists.Count())
                             {
-                                newDoc.CreateParagraph().CreateRun().AddBreak();
+                                newDoc.CreateParagraph().CreateRun().AddBreak();                                
                                 moreType = 2;
                             }
                             else
@@ -549,6 +534,7 @@ namespace DEDS.Controllers.Comm
 
                             tnum = 0;
                             newRow = targetTable.GetRow(tnum);
+                            tcountrow = logRowLists[MemberNum];
                             tnum++;
 
                             //var pretb = targetTable.GetRow(MemberNum + tnum - 1);
@@ -618,13 +604,6 @@ namespace DEDS.Controllers.Comm
                                 newCell.RemoveParagraph(0);
                             }
                             #endregion
-                            newRow.GetCell(0).SetParagraph(t0);
-                            newRow.GetCell(1).SetParagraph(t1);
-                            newRow.GetCell(2).SetParagraph(t2);
-                            newRow.GetCell(3).SetParagraph(t3);
-                            newRow.GetCell(4).SetParagraph(t4);
-                            newRow.GetCell(5).SetParagraph(t5);
-                            newRow.GetCell(6).SetParagraph(t6);
 
                             newRow = targetTable.GetRow(tnum);
                             tnum++;
@@ -918,11 +897,13 @@ namespace DEDS.Controllers.Comm
                 //moreType:1.單一筆資料表不換頁 2.單一筆資料表換頁 => tnum筆資料 3.單一筆資料表換頁 => 0資料)
                 if (moreType == 2)
                 {
-                    countRow = tnum;
+                    countRow = tcountrow;
+                    countBG = 1;
                 }
                 else if (moreType == 3)
                 {
                     countRow = 0;
+                    countBG = 1;
                 }
 
                 //targetTable.RemoveRow(0);
