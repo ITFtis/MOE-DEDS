@@ -426,7 +426,7 @@ namespace DEDS.Controllers.Comm
                 // 創建一個Table
                 XWPFTable targetTable = newDoc.CreateTable(tquery.Count() + 10, 7);
                 targetTable.Width = 5000; //設定表格寬度
-                bool endDone = false;//新頁是否有資料筆數
+                int moreType = 1; //moreType:1.單一筆資料表不換頁 2.單一筆資料表換頁 => tnum筆資料 3.單一筆資料表換頁 => 0資料)
                 int tnum = 0;//儲存格插入row
 
                 XWPFParagraph t0 = null;
@@ -533,13 +533,15 @@ namespace DEDS.Controllers.Comm
                             }
 
                             //要有下一筆資料才換頁
+                            //moreType:1.單一筆資料表不換頁 2.單一筆資料表換頁 => tnum筆資料 3.單一筆資料表換頁 => 0資料)
                             if (MemberNum + 1 < logRowLists.Count())
                             {
                                 newDoc.CreateParagraph().CreateRun().AddBreak();
+                                moreType = 2;
                             }
                             else
                             {
-                                endDone = true;
+                                moreType = 3;
                             }
 
                             targetTable = newDoc.CreateTable(tquery.Count() + 10, 7);
@@ -913,13 +915,14 @@ namespace DEDS.Controllers.Comm
                 }
 
                 //新頁第一個表資料數量  (在寫入word那段)
-                if (endDone)
+                //moreType:1.單一筆資料表不換頁 2.單一筆資料表換頁 => tnum筆資料 3.單一筆資料表換頁 => 0資料)
+                if (moreType == 2)
+                {
+                    countRow = tnum;
+                }
+                else if (moreType == 3)
                 {
                     countRow = 0;
-                }
-                else
-                {
-                    countRow = tnum - 1;
                 }
 
                 //targetTable.RemoveRow(0);
