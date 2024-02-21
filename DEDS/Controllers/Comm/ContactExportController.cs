@@ -388,14 +388,18 @@ namespace DEDS.Controllers.Comm
                                     
                                 }
                             }
+
+                            //新頁第一個表資料數量  (在寫入word那段)
+                            ////countRow = tabelRow;
                         }
                         else
                         {
+                            //新頁第一個表資料數量
+                            countRow = tabelRow;
+
                             ////defalut
                             pageNumber++;
-                        }
-
-                        countRow = tabelRow;
+                        }                        
                         countBG = 1;
                     }
 
@@ -422,6 +426,7 @@ namespace DEDS.Controllers.Comm
                 // 創建一個Table
                 XWPFTable targetTable = newDoc.CreateTable(tquery.Count() + 10, 7);
                 targetTable.Width = 5000; //設定表格寬度
+                bool endDone = false;//新頁是否有資料筆數
                 int tnum = 0;//儲存格插入row
 
                 XWPFParagraph t0 = null;
@@ -527,7 +532,15 @@ namespace DEDS.Controllers.Comm
                                     targetTable.RemoveRow(i);
                             }
 
-                            newDoc.CreateParagraph().CreateRun().AddBreak();                            
+                            //要有下一筆資料才換頁
+                            if (MemberNum + 1 < logRowLists.Count())
+                            {
+                                newDoc.CreateParagraph().CreateRun().AddBreak();
+                            }
+                            else
+                            {
+                                endDone = true;
+                            }
 
                             targetTable = newDoc.CreateTable(tquery.Count() + 10, 7);
                             targetTable.Width = 5000; //設定表格寬度                            
@@ -897,6 +910,16 @@ namespace DEDS.Controllers.Comm
                 {
                     if (i >= tnum)
                         targetTable.RemoveRow(i);
+                }
+
+                //新頁第一個表資料數量  (在寫入word那段)
+                if (endDone)
+                {
+                    countRow = 0;
+                }
+                else
+                {
+                    countRow = tnum - 1;
                 }
 
                 //targetTable.RemoveRow(0);
