@@ -6,6 +6,6 @@
 	"CWBDayRainfallUrl": "https://cwaopendata.s3.ap-northeast-1.amazonaws.com/Observation/O-A0040-003.kmz",
 	"CWBRadUrl": "https://qpeplus.cwa.gov.tw/static/data/grid_0.01deg/cref/",
 	"CWBQpf1h": "https://qpeplus.cwa.gov.tw/static/data/grid/qpfqpe_060min/",
-	"OldSysUserLoginApi": "https://newemis.epa.gov.tw/EPAAPI/ContactAccount"
+	"OldSysUserLoginApi": "https://newemis.moenv.gov.tw/EPAAPI/ContactAccount"
 
 }
