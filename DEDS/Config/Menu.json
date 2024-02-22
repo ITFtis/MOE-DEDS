@@ -1,4 +1,4 @@
-[
+﻿[
   {
     "Name": "通聯造冊查詢",
     "MenuPath": "通聯資料",
@@ -140,7 +140,7 @@
     "TypeId": "Dou.Misc.Attr.MenuDefAttribute, Dou, Version=1.1.0.0, Culture=neutral, PublicKeyToken=null"
   },
   {
-    "Url": "https://newemis.epa.gov.tw/Home/Login",
+    "Url": "https://newemis.moenv.gov.tw/Home/Login",
     "Name": "EMIS",
     "MenuPath": "災情決策",
     "FullMenuPath": "災情決策/EMIS",
