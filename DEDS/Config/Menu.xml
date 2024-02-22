@@ -1,68 +1,5 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <ArrayOfMenuDefAttribute xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <MenuDefAttribute xsi:type="HtmlIFrameMenuDefAttribute">
-    <Name>工服案</Name>
-    <MenuPath>業務系統</MenuPath>
-    <Index>1</Index>
-    <AllowAnonymous>false</AllowAnonymous>
-    <Func>None</Func>
-    <IsOnlyPath>false</IsOnlyPath>
-    <IsPromptUI>true</IsPromptUI>
-    <FromAppend>true</FromAppend>
-    <Target>_self</Target>
-    <ActionController>HtmlIFrame</ActionController>
-    <Action>IFrame</Action>
-    <ExportCSV>false</ExportCSV>
-    <Id>IS</Id>
-    <Url>https://pj.ftis.org.tw/is</Url>
-  </MenuDefAttribute>
-  <MenuDefAttribute xsi:type="HtmlIFrameMenuDefAttribute">
-    <Name>工服資料簡易查詢</Name>
-    <MenuPath>業務系統</MenuPath>
-    <Index>1</Index>
-    <AllowAnonymous>false</AllowAnonymous>
-    <Func>None</Func>
-    <IsOnlyPath>false</IsOnlyPath>
-    <IsPromptUI>false</IsPromptUI>
-    <FromAppend>true</FromAppend>
-    <Target>ISQ</Target>
-    <ActionController>HtmlIframeOtherMainLayout</ActionController>
-    <Action>IFrame</Action>
-    <ExportCSV>false</ExportCSV>
-    <Id>ISQ</Id>
-    <Url>https://pj4.ftis.org.tw/WorkForm</Url>
-  </MenuDefAttribute>
-  <MenuDefAttribute xsi:type="HtmlIFrameMenuDefAttribute">
-    <Name>人員基本資料管理</Name>
-    <MenuPath>會內系統</MenuPath>
-    <Index>1</Index>
-    <AllowAnonymous>false</AllowAnonymous>
-    <Func>None</Func>
-    <IsOnlyPath>false</IsOnlyPath>
-    <IsPromptUI>true</IsPromptUI>
-    <FromAppend>true</FromAppend>
-    <Target>HrEmp</Target>
-    <ActionController>HtmlIFrame</ActionController>
-    <Action>IFrame</Action>
-    <ExportCSV>false</ExportCSV>
-    <Id>HrEmp</Id>
-    <Url>https://pj.ftis.org.tw/FtisEmpManage</Url>
-  </MenuDefAttribute>
-  <MenuDefAttribute>
-    <Name>角色管理</Name>
-    <MenuPath>系統管理</MenuPath>
-    <Index>1</Index>
-    <AllowAnonymous>false</AllowAnonymous>
-    <Func>ALL</Func>
-    <IsOnlyPath>false</IsOnlyPath>
-    <IsPromptUI>false</IsPromptUI>
-    <FromAppend>false</FromAppend>
-    <Target>Role</Target>
-    <ActionController>Role</ActionController>
-    <Action>Index</Action>
-    <ExportCSV>false</ExportCSV>
-    <Id>Role</Id>
-  </MenuDefAttribute>
   <MenuDefAttribute>
     <Name>決策支援圖台</Name>
     <MenuPath>災情決策</MenuPath>
@@ -93,53 +30,20 @@
     <ExportCSV>false</ExportCSV>
     <Id>災情決策</Id>
   </MenuDefAttribute>
-  <MenuDefAttribute xsi:type="HtmlIFrameMenuDefAttribute">
-    <Name>座位表查詢</Name>
-    <MenuPath>會內系統</MenuPath>
-    <Index>2</Index>
+  <MenuDefAttribute>
+    <Name>角色管理</Name>
+    <MenuPath>系統管理</MenuPath>
+    <Index>1</Index>
     <AllowAnonymous>false</AllowAnonymous>
-    <Func>None</Func>
+    <Func>ALL</Func>
     <IsOnlyPath>false</IsOnlyPath>
     <IsPromptUI>false</IsPromptUI>
-    <FromAppend>true</FromAppend>
-    <Target>EmpSeat1</Target>
-    <ActionController>HtmlIFrame</ActionController>
-    <Action>IFrame</Action>
+    <FromAppend>false</FromAppend>
+    <Target>Role</Target>
+    <ActionController>Role</ActionController>
+    <Action>Index</Action>
     <ExportCSV>false</ExportCSV>
-    <Id>EmpSeat1</Id>
-    <Url>https://pj4.ftis.org.tw/SEAT/SEAT/SEAT</Url>
-  </MenuDefAttribute>
-  <MenuDefAttribute xsi:type="HtmlIFrameMenuDefAttribute">
-    <Name>座位表管理</Name>
-    <MenuPath>會內系統</MenuPath>
-    <Index>2</Index>
-    <AllowAnonymous>false</AllowAnonymous>
-    <Func>None</Func>
-    <IsOnlyPath>false</IsOnlyPath>
-    <IsPromptUI>false</IsPromptUI>
-    <FromAppend>true</FromAppend>
-    <Target>EmpSeat2</Target>
-    <ActionController>HtmlIFrame</ActionController>
-    <Action>IFrame</Action>
-    <ExportCSV>false</ExportCSV>
-    <Id>EmpSeat2</Id>
-    <Url>https://pj4.ftis.org.tw/SEAT/Customization/Customization</Url>
-  </MenuDefAttribute>
-  <MenuDefAttribute xsi:type="HtmlIFrameMenuDefAttribute">
-    <Name>座位表查詢(新視窗)</Name>
-    <MenuPath>會內系統</MenuPath>
-    <Index>2</Index>
-    <AllowAnonymous>false</AllowAnonymous>
-    <Func>None</Func>
-    <IsOnlyPath>false</IsOnlyPath>
-    <IsPromptUI>true</IsPromptUI>
-    <FromAppend>true</FromAppend>
-    <Target>EmpSeat3</Target>
-    <ActionController>HtmlIFrame</ActionController>
-    <Action>IFrame</Action>
-    <ExportCSV>false</ExportCSV>
-    <Id>EmpSeat3</Id>
-    <Url>https://pj4.ftis.org.tw/SEAT/SEAT/SEAT</Url>
+    <Id>Role</Id>
   </MenuDefAttribute>
   <MenuDefAttribute xsi:type="HtmlIFrameMenuDefAttribute">
     <Name>EMIS</Name>
@@ -155,7 +59,7 @@
     <Action>IFrame</Action>
     <ExportCSV>false</ExportCSV>
     <Id>Mss</Id>
-    <Url>https://newemis.epa.gov.tw/Home/Login</Url>
+    <Url>https://newemis.moenv.gov.tw/Home/Login</Url>
   </MenuDefAttribute>
   <MenuDefAttribute>
     <Name>記錄查詢</Name>
@@ -202,86 +106,6 @@
     <Action>Index</Action>
     <ExportCSV>false</ExportCSV>
     <Id>StorageManage</Id>
-  </MenuDefAttribute>
-  <MenuDefAttribute xsi:type="HtmlIFrameMenuDefAttribute">
-    <Name>資產管理系統</Name>
-    <MenuPath>會內系統</MenuPath>
-    <Index>6</Index>
-    <AllowAnonymous>false</AllowAnonymous>
-    <Func>None</Func>
-    <IsOnlyPath>false</IsOnlyPath>
-    <IsPromptUI>true</IsPromptUI>
-    <FromAppend>true</FromAppend>
-    <Target>AssetSys</Target>
-    <ActionController>HtmlIFrame</ActionController>
-    <Action>IFrame</Action>
-    <ExportCSV>false</ExportCSV>
-    <Id>AssetSys</Id>
-    <Url>https://pj3.ftis.org.tw/AssetSys</Url>
-  </MenuDefAttribute>
-  <MenuDefAttribute xsi:type="HtmlIFrameMenuDefAttribute">
-    <Name>百老匯</Name>
-    <MenuPath>會內系統</MenuPath>
-    <Index>9</Index>
-    <AllowAnonymous>false</AllowAnonymous>
-    <Func>None</Func>
-    <IsOnlyPath>false</IsOnlyPath>
-    <IsPromptUI>true</IsPromptUI>
-    <FromAppend>true</FromAppend>
-    <Target>ChatGPT</Target>
-    <ActionController>HtmlIFrame</ActionController>
-    <Action>IFrame</Action>
-    <ExportCSV>false</ExportCSV>
-    <Id>ChatGPT</Id>
-    <Url>https://pj.ftis.org.tw/CHAT/ChatHistory</Url>
-  </MenuDefAttribute>
-  <MenuDefAttribute xsi:type="HtmlIFrameMenuDefAttribute">
-    <Name>財務系統</Name>
-    <MenuPath>會內系統</MenuPath>
-    <Index>9</Index>
-    <AllowAnonymous>false</AllowAnonymous>
-    <Func>None</Func>
-    <IsOnlyPath>false</IsOnlyPath>
-    <IsPromptUI>true</IsPromptUI>
-    <FromAppend>true</FromAppend>
-    <Target>FBSys</Target>
-    <ActionController>HtmlIFrame</ActionController>
-    <Action>IFrame</Action>
-    <ExportCSV>false</ExportCSV>
-    <Id>FBSys</Id>
-    <Url>https://pj3.ftis.org.tw/FBsys/User/Login?ad=true</Url>
-  </MenuDefAttribute>
-  <MenuDefAttribute xsi:type="HtmlIFrameMenuDefAttribute">
-    <Name>線上管理系統</Name>
-    <MenuPath>會內系統</MenuPath>
-    <Index>99</Index>
-    <AllowAnonymous>false</AllowAnonymous>
-    <Func>None</Func>
-    <IsOnlyPath>false</IsOnlyPath>
-    <IsPromptUI>false</IsPromptUI>
-    <FromAppend>true</FromAppend>
-    <Target>OldMis</Target>
-    <ActionController>HtmlIFrame</ActionController>
-    <Action>IFrame</Action>
-    <ExportCSV>false</ExportCSV>
-    <Id>OldMis</Id>
-    <Url>https://mis.ftis.org.tw/</Url>
-  </MenuDefAttribute>
-  <MenuDefAttribute xsi:type="HtmlIFrameMenuDefAttribute">
-    <Name>抽獎活動系統</Name>
-    <MenuPath>會內系統</MenuPath>
-    <Index>99</Index>
-    <AllowAnonymous>false</AllowAnonymous>
-    <Func>None</Func>
-    <IsOnlyPath>false</IsOnlyPath>
-    <IsPromptUI>true</IsPromptUI>
-    <FromAppend>true</FromAppend>
-    <Target>Lottery</Target>
-    <ActionController>HtmlIFrame</ActionController>
-    <Action>IFrame</Action>
-    <ExportCSV>false</ExportCSV>
-    <Id>Lottery</Id>
-    <Url>https://pj3.ftis.org.tw/DrawGame/</Url>
   </MenuDefAttribute>
   <MenuDefAttribute>
     <Name>使用者管理</Name>
