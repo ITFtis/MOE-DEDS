@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace DEDS.Controllers.Prj
 {
-    [HtmlIFrameMenuDef(Id = "Mss", Name = "EMIS", MenuPath = "災情決策", Index = 3, Url = "https://newemis.epa.gov.tw/Home/Login", IsPromptUI =true)]
+    [HtmlIFrameMenuDef(Id = "Mss", Name = "EMIS", MenuPath = "災情決策", Index = 3, Url = "https://newemis.moenv.gov.tw/Home/Login", IsPromptUI =true)]
     public class MSSController : Controller
     {
         // GET: MSS
