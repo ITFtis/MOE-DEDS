@@ -12,10 +12,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using static Google.Rpc.Context.AttributeContext.Types;
+using static NPOI.HSSF.Util.HSSFColor;
 
 namespace DEDS.Controllers.Manager
 {
@@ -104,6 +106,10 @@ namespace DEDS.Controllers.Manager
                                 Enabled = true,
                                 IsManager = false,
                                 Unit = OldsysInfo.CityId.ToString(),
+                                Mobile = OldsysInfo.MobilePhone.ToString(),
+                                Tel = OldsysInfo.OfficePhone.ToString(),
+                                EMail = OldsysInfo.Email.ToString(),
+                                Organize = OldsysInfo.Duty == null ? "" : OldsysInfo.Duty.ToString(),
                                 RoleUsers = new RoleUser[] { new RoleUser { RoleId = defaultRoleId, UserId = user.Id } }.ToList()
                             };
                             this.AddDBObject(GetModelEntity(), new User[] { u });
@@ -264,6 +270,7 @@ namespace DEDS.Controllers.Manager
             public object MobilePhone { get; set; }
             public string OfficePhone { get; set; }
             public string Email { get; set; }
+            public string Duty { get; set; }
         }
     }
 }
