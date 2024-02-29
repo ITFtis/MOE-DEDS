@@ -165,10 +165,10 @@ var paintCityColumnChart = function () {
     const getData = data => data.map(point => ({
         name: point[0],
         y: point[1].amount,
-        '固體': point[1].固體+'公斤',
-        '液體': point[1].液體 + '公升',
-        '乳劑': point[1].乳劑 + '公升',
-        '油劑': point[1].油劑 + '公升',
+        '固體': parseFloat(point[1].固體.toFixed(2)) +'公斤',
+        '液體': parseFloat(point[1].液體.toFixed(2)) + '公升',
+        '乳劑': parseFloat(point[1].乳劑.toFixed(2)) + '公升',
+        '油劑': parseFloat(point[1].油劑.toFixed(2)) + '公升',
         color: colors[cidx++ % colors.length]
     }));
 
