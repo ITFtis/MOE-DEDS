@@ -15,7 +15,7 @@ var citystaInit = function () {
     });
     //var $_county = $(".sta-county .county-data");
     //vehicleTypes = ts;
-    
+
     //清單options
     var douoptions = {
         rootParentContainer: '.table-container',
@@ -48,6 +48,14 @@ var citystaInit = function () {
     for (var k in usetype) {
         $('<option value="' + k + '">' + usetype[k] + '</option>').appendTo($_utypeselect);
     }
+
+    var $back = $('<button id="btnExport" class="btn btn-secondary">匯出Excel</button>');
+    $back.appendTo($_tool);
+
+    $('#btnExport').click(function () {
+        alert('開發中');
+    });
+
     $_tablecount = $('<div class="table-count"><label>共 </label><label class="t-count">-</label><label> 筆</label>').appendTo($_tool).find('.t-count');
 
     //使用狀況選單event
