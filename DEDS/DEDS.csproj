@@ -380,6 +380,7 @@
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\loading.css" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="Content\prj\citysta\B-Disinfectant.css" />
     <Content Include="Content\prj\citysta\disinfectant.css" />
     <Content Include="Content\prj\citysta\disinfector.css" />
     <Content Include="Content\prj\map.css" />

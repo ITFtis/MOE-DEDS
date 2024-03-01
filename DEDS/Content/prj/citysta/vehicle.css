@@ -79,8 +79,9 @@ body > hr, body >footer{
     color: white;
 }
 .display-container .sta-county {
-    flex-grow:1;
-    padding:.4rem 1rem;
+    overflow: auto;
+    flex-grow: 1;
+    padding: .4rem 1rem;
 }
 .display-container .sta-county .county-title {
     width: 100%;

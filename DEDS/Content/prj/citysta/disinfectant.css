@@ -141,8 +141,8 @@ body {
 }
     @media (max-width: 1680px) {
         body {
-            --left-container-width: 75%;
-            --right-container-width: 25%;
+            --left-container-width: 60%;
+            --right-container-width: 40%;
         }
     }
 
