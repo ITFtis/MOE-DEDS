@@ -19,8 +19,7 @@
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
-    <IISExpressSSLPort>
-    </IISExpressSSLPort>
+    <IISExpressSSLPort>44319</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -450,6 +449,7 @@
     <Content Include="Scripts\prj\citysta\disinfector.js" />
     <Content Include="Scripts\prj\citysta\vehicle.js" />
     <Content Include="Scripts\prj\citysta\disinfectant.js" />
+    <Content Include="Scripts\tableHTMLExport.js" />
     <Content Include="XMLFile1.xml" />
     <Content Include="Config\DouMenuExt.json" />
     <Content Include="Data\Comm\Position.json" />

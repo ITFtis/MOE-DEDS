@@ -49,18 +49,17 @@ var citystaInit = function () {
         $('<option value="' + k + '">' + usetype[k] + '</option>').appendTo($_utypeselect);
     }
 
-    ////var $back = $('<button id="btnExport" class="btn btn-secondary">匯出Excel</button>');
-    ////$back.appendTo($_tool);
+    var $btnExport = $('<button id="btnExport" class="btn btn-secondary">匯出Excel</button>');
+    $btnExport.appendTo($_tool);
 
-    ////$('#btnExport').click(function () {
-    ////    //alert('開發中');
-    ////    var $_t = $("<table>").css('position', 'fixed').css('top', '-300px').css('opacity', 0).appendTo($('body'));
-    ////    current._paintTable($_t, false);
-    ////    helper.misc.tableToExcel($_t, '積淹水災情統計', '積淹水災情統計');
-    ////    setTimeout(function () {
-    ////        $_t.remove();
-    ////    }, 1000);
-    ////});
+    //$('.table-container > table')
+    $('#btnExport').click(function () {
+        var date = new Date().DateFormat("yyyyMMddHHmmss");        
+        $('.table-container table').last().tableHTMLExport({
+            type: 'csv',
+            filename: '消毒藥劑清單_' + date + '.csv',
+        });
+    });
 
     $_tablecount = $('<div class="table-count"><label>共 </label><label class="t-count">-</label><label> 筆</label>').appendTo($_tool).find('.t-count');
 
