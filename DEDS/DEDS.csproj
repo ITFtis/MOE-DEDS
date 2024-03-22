@@ -555,6 +555,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Data\Comm\Export\" />
+    <Folder Include="Docs\" />
     <Folder Include="Views\HisSpatial\" />
     <Folder Include="Views\HtmlIframeOtherMainLayout\" />
     <Folder Include="Views\ManagerPath\" />
