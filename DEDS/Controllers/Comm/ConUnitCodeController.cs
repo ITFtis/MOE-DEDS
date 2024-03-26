@@ -42,5 +42,23 @@ namespace DEDS.Controllers.Comm
 
             return query;
         }
+
+        protected override void AddDBObject(IModelEntity<ConUnitCode> dbEntity, IEnumerable<ConUnitCode> objs)
+        {
+            base.AddDBObject(dbEntity, objs);
+            ConUnitCodeItems.Reset();
+        }
+
+        protected override void UpdateDBObject(IModelEntity<ConUnitCode> dbEntity, IEnumerable<ConUnitCode> objs)
+        {
+            base.UpdateDBObject(dbEntity, objs);
+            ConUnitCodeItems.Reset();
+        }
+
+        protected override void DeleteDBObject(IModelEntity<ConUnitCode> dbEntity, IEnumerable<ConUnitCode> objs)
+        {
+            base.DeleteDBObject(dbEntity, objs);
+            ConUnitCodeItems.Reset();
+        }
     }
 }
