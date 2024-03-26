@@ -25,6 +25,13 @@ namespace DEDS.Models.Manager
         public string Unit { set; get; }
         [ColumnDef(Display = "部門", Index = 24)]
         public string SubUnit { set; get; }
+
+        [Display(Name = "緊急應變單位")]
+        [ColumnDef(EditType = EditType.Select, SelectItemsClassNamespace = DEDS.Models.Comm.ConUnitCodeItems.AssemblyQualifiedName,
+                    Filter = false, FilterAssign = FilterAssignType.Equal,
+                    Index = 25)]
+        public string ConUnit { get; set; }
+
         [ColumnDef(Display = "手機", Index = 26)]
         public string Mobile { set; get; }
         [ColumnDef(Display = "電話", Index = 28)]
@@ -37,12 +44,7 @@ namespace DEDS.Models.Manager
         //public bool IsManager { set; get; }
 
         [ColumnDef(Display = "權責人員", Required = true, EditType = EditType.Select, SelectItems = "{\"true\":\"是\",\"false\":\"否\"}", DefaultValue = "false")]
-        public bool IsManager { get; set; }
-
-        [Display(Name = "緊急應變單位")]
-        [ColumnDef(EditType = EditType.Select, SelectItemsClassNamespace = DEDS.Models.Comm.ConUnitCodeItems.AssemblyQualifiedName,
-                    Filter = false, FilterAssign = FilterAssignType.Equal)]
-        public string ConUnit { get; set; }
+        public bool IsManager { get; set; }        
     }
 
     public class ALLCityIDSelectItems : Dou.Misc.Attr.SelectItemsClass
