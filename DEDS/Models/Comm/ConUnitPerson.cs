@@ -1,0 +1,84 @@
+﻿using Dou.Misc.Attr;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Web;
+
+namespace DEDS.Models.Comm
+{
+    /// <summary>
+    /// 緊急應變單位人員
+    /// </summary>
+    [Table("ConUnitPerson")]
+    public class ConUnitPerson
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [ColumnDef(Visible = false, VisibleEdit = false)]
+        public int Id { get; set; }
+
+        [Display(Name = "應變單位")]
+        [ColumnDef(EditType = EditType.Select, SelectItemsClassNamespace = DEDS.Models.Comm.ConUnitCodeItems.AssemblyQualifiedName,
+                    Filter = true, FilterAssign = FilterAssignType.Equal)]
+        public string ConUnit { get; set; }
+
+        [Display(Name = "姓名")]
+        [StringLength(50)]
+        public string Name { get; set; }
+
+        [Display(Name = "職稱")]
+        [StringLength(50)]
+        public string Position { get; set; }
+
+        [Display(Name = "總機分機")]
+        [StringLength(50)]
+        public string Tel { get; set; }
+
+        [Display(Name = "行動電話")]
+        [StringLength(50)]
+        public string Mobile { get; set; }
+
+        [Display(Name = "住家電話")]
+        [StringLength(50)]
+        public string HTel { get; set; }
+
+        [Display(Name = "備註")]
+        [StringLength(200)]
+        [ColumnDef(EditType = EditType.TextArea)]
+        public string Remark { get; set; }
+
+        [Display(Name = "建檔日期")]
+        [ColumnDef(VisibleEdit = false)]
+        public DateTime? BDate { get; set; }
+
+        [Display(Name = "建檔人員Id")]
+        [ColumnDef(Visible = false, VisibleEdit = false)]
+        [StringLength(24)]
+        public string BId { get; set; }
+
+        [Display(Name = "建檔人姓名")]
+        [ColumnDef(VisibleEdit = false)]
+        [StringLength(50)]
+        public string BName { get; set; }
+
+        [Display(Name = "修改日期")]
+        [ColumnDef(Visible = false, VisibleEdit = false)]
+        public DateTime? UDate { get; set; }
+
+        [Display(Name = "修改人員Id")]
+        [ColumnDef(Visible = false, VisibleEdit = false)]
+        [StringLength(24)]
+        public string UId { get; set; }
+
+        [Display(Name = "修改人姓名")]
+        [ColumnDef(Visible = false, VisibleEdit = false)]
+        [StringLength(50)]
+        public string UName { get; set; }
+
+        [Display(Name = "確認日期")]
+        [ColumnDef(VisibleEdit = false)]
+        public DateTime? ConfirmDate { get; set; }
+    }
+}

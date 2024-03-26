@@ -333,6 +333,8 @@
     <Compile Include="Controllers\Comm\ContactController.cs" />
     <Compile Include="Controllers\Comm\ContactEditController.cs" />
     <Compile Include="Controllers\Comm\ContactExportController.cs" />
+    <Compile Include="Controllers\Comm\ConUnitCodeController.cs" />
+    <Compile Include="Controllers\Comm\ConUnitPersonController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HtmlIframeOtherMainLayoutController.cs" />
     <Compile Include="Controllers\Manager\LoggerController.cs" />
@@ -350,6 +352,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Comm\ConUnitCode.cs" />
+    <Compile Include="Models\Comm\ConUnitPerson.cs" />
     <Compile Include="Models\Comm\Tabulation.cs" />
     <Compile Include="Models\Comm\UserBasic.cs" />
     <Compile Include="Models\Comm\UserBasicHis.cs" />
@@ -358,6 +362,7 @@
     <Compile Include="Models\Manager\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="_core\Constant.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Config\Log4netConfig.xml" />
@@ -449,6 +454,7 @@
     <Content Include="Scripts\prj\citysta\disinfector.js" />
     <Content Include="Scripts\prj\citysta\vehicle.js" />
     <Content Include="Scripts\prj\citysta\disinfectant.js" />
+    <Content Include="Scripts\prj\webshow\conunitperson.js" />
     <Content Include="Scripts\tableHTMLExport.js" />
     <Content Include="XMLFile1.xml" />
     <Content Include="Config\DouMenuExt.json" />
@@ -551,11 +557,13 @@
     <Content Include="Views\Shared\MenuPartial.cshtml" />
     <Content Include="Views\Contact\Index.cshtml" />
     <Content Include="Views\ContactExport\index.cshtml" />
+    <Content Include="Views\ConUnitPerson\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Data\Comm\Export\" />
     <Folder Include="Docs\" />
+    <Folder Include="Views\ConUnitCode\" />
     <Folder Include="Views\HisSpatial\" />
     <Folder Include="Views\HtmlIframeOtherMainLayout\" />
     <Folder Include="Views\ManagerPath\" />

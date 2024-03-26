@@ -1,4 +1,5 @@
 ﻿using DEDS.Models;
+using DEDS.Models.Comm;
 using DEDS.Models.Manager;
 using Dou.Misc;
 using Dou.Models;
@@ -138,6 +139,9 @@ namespace DEDS.Controllers.Manager
                     }
                 }
             }
+
+            //更換帳號清cache
+            ConUnitCodeItems.Reset();
 
             return base.DouLogin(user, returnUrl, redirectLogin);
         }

@@ -17,6 +17,11 @@
     "IsOnlyPath": true
   },
   {
+    "Name": "緊急應變",
+    "Index": 7,
+    "IsOnlyPath": true
+  },
+  {
     "Name": "系統管理",
     "Index": 999,
     "IsOnlyPath": true,

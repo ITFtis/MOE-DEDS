@@ -18,7 +18,9 @@ namespace DEDS.Models
         public virtual DbSet<Comm.Tabulation> Tabulation { get; set; }
         public virtual DbSet<Comm.UserBasic> UserBasic { get; set; }
         public virtual DbSet<Comm.UserBasicHis> UserBasicHis { get; set; }
+        public virtual DbSet<Comm.ConUnitPerson> ConUnitPerson { get; set; }
 
+        public virtual DbSet<Comm.ConUnitCode> ConUnitCode { get; set; }
 
     }
 }

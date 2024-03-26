@@ -3,6 +3,7 @@ using Dou.Misc.Attr;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
@@ -37,7 +38,11 @@ namespace DEDS.Models.Manager
 
         [ColumnDef(Display = "權責人員", Required = true, EditType = EditType.Select, SelectItems = "{\"true\":\"是\",\"false\":\"否\"}", DefaultValue = "false")]
         public bool IsManager { get; set; }
-       
+
+        [Display(Name = "緊急應變單位")]
+        [ColumnDef(EditType = EditType.Select, SelectItemsClassNamespace = DEDS.Models.Comm.ConUnitCodeItems.AssemblyQualifiedName,
+                    Filter = false, FilterAssign = FilterAssignType.Equal)]
+        public string ConUnit { get; set; }
     }
 
     public class ALLCityIDSelectItems : Dou.Misc.Attr.SelectItemsClass
