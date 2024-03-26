@@ -19,6 +19,7 @@ namespace DEDS.Models.Comm
         [ColumnDef(Visible = false, VisibleEdit = false)]
         public int Id { get; set; }
 
+        [Required]
         [Display(Name = "應變單位")]
         [ColumnDef(EditType = EditType.Select, SelectItemsClassNamespace = DEDS.Models.Comm.ConUnitCodeItems.AssemblyQualifiedName,
                     Filter = true, FilterAssign = FilterAssignType.Equal)]
@@ -43,6 +44,10 @@ namespace DEDS.Models.Comm
         [Display(Name = "住家電話")]
         [StringLength(50)]
         public string HTel { get; set; }
+
+        [ColumnDef(Display = "EMail")]
+        [StringLength(100)]
+        public string EMail { set; get; }
 
         [Display(Name = "備註")]
         [StringLength(200)]
