@@ -1,6 +1,7 @@
 ﻿using DEDS.Models;
 using DEDS.Models.Comm;
 using Dou.Controllers;
+using Dou.Misc;
 using Dou.Models.DB;
 using System;
 using System.Collections.Generic;
@@ -54,6 +55,17 @@ namespace DEDS.Controllers.Comm
             f.UName = Dou.Context.CurrentUserBase.Name;
 
             base.UpdateDBObject(dbEntity, objs);
+        }
+
+        public override DataManagerOptions GetDataManagerOptions()
+        {
+            var opts = base.GetDataManagerOptions();
+
+            //全部欄位排序
+            foreach (var field in opts.fields)
+                field.sortable = true;
+
+            return opts;
         }
 
         public ActionResult UpdateConfirm(List<int> Ids)
