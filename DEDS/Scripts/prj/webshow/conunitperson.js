@@ -49,4 +49,9 @@
     douoptions.appendCustomToolbars = [a];
 
     var $_masterTable = $("#_table").DouEditableTable(douoptions); //初始dou table
+
+    //必填(只有一個選項)
+    if ($('.filter-toolbar-plus [data-fn="ConUnit"] option').length == 2) {
+        $('.filter-toolbar-plus [data-fn="ConUnit"] option[value=""]').remove();
+    }
 })
