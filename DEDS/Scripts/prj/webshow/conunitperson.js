@@ -48,6 +48,12 @@
 
     douoptions.appendCustomToolbars = [a];
 
+    douoptions.afterAddServerData = function (row, callback) {
+        $_masterTable.douTable('destroy');
+        jspAlertMsg($("body"), { autoclose: 2000, content: '新增資料完成!!', classes: 'modal-sm' },
+            function () { location.reload(); });
+    }
+
     var $_masterTable = $("#_table").DouEditableTable(douoptions); //初始dou table
 
     //必填(只有一個選項)

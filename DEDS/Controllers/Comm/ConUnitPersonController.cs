@@ -32,6 +32,18 @@ namespace DEDS.Controllers.Comm
             //預設條件
             query = query.Where(a => ConUnitCodeItems.ConUnitCodes.Any(b => b.Code == a.ConUnit));
 
+            KeyValueParams ksort = paras.FirstOrDefault((KeyValueParams s) => s.key == "sort");
+            KeyValueParams korder = paras.FirstOrDefault((KeyValueParams s) => s.key == "order");
+            //分頁排序
+            if (ksort.value != null && korder.value != null)
+            {
+            }
+            else
+            {
+                //預設排序                
+                query = query.OrderBy(a => a.ConUnitSort).ThenBy(a => a.PSort);
+            }
+
             return query;
         }
 

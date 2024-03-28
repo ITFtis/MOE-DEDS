@@ -55,7 +55,7 @@ namespace DEDS.Models.Comm
         public string Remark { get; set; }
 
         [Display(Name = "建檔日期")]
-        [ColumnDef(VisibleEdit = false)]
+        [ColumnDef(Visible = false, VisibleEdit = false)]
         public DateTime? BDate { get; set; }
 
         [Display(Name = "建檔人員Id")]
@@ -64,7 +64,7 @@ namespace DEDS.Models.Comm
         public string BId { get; set; }
 
         [Display(Name = "建檔人姓名")]
-        [ColumnDef(VisibleEdit = false)]
+        [ColumnDef(Visible = false, VisibleEdit = false)]
         [StringLength(50)]
         public string BName { get; set; }
 
@@ -85,5 +85,19 @@ namespace DEDS.Models.Comm
         [Display(Name = "確認日期")]
         [ColumnDef(VisibleEdit = false)]
         public DateTime? ConfirmDate { get; set; }
+
+        [Display(Name = "單位人排序")]
+        public int? PSort { get; set; }
+
+        [Display(Name = "應變單位排序")]
+        [ColumnDef(Visible = false, VisibleEdit = false)]
+        public int ConUnitSort
+        {
+            get
+            {
+                var code = ConUnitCodeItems.ConUnitCodes.Where(a => a.Code == this.ConUnit).FirstOrDefault();
+                return code == null ? 0 : code.Sort;                
+            }
+        }
     }
 }
