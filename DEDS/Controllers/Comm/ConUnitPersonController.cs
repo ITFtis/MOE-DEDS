@@ -75,7 +75,10 @@ namespace DEDS.Controllers.Comm
 
             //全部欄位排序
             foreach (var field in opts.fields)
+            {
                 field.sortable = true;
+                field.align = "left";
+            }
 
             return opts;
         }

@@ -18,12 +18,18 @@ namespace DEDS.Models.Comm
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [ColumnDef(Visible = false, VisibleEdit = false)]
         public int Id { get; set; }
-
+        
         [Required]
         [Display(Name = "應變單位")]
         [ColumnDef(EditType = EditType.Select, SelectItemsClassNamespace = DEDS.Models.Comm.ConUnitCodeItems.AssemblyQualifiedName,
                     Filter = true, FilterAssign = FilterAssignType.Equal)]
         public string ConUnit { get; set; }
+
+        [Required]
+        [Display(Name = "身分")]
+        [ColumnDef(EditType = EditType.Select, SelectItemsClassNamespace = DEDS.CodeByGetConTypeItems.AssemblyQualifiedName,
+                    Filter = true, FilterAssign = FilterAssignType.Equal)]
+        public int ConType { get; set; }
 
         [Display(Name = "姓名")]
         [StringLength(50)]
@@ -86,7 +92,10 @@ namespace DEDS.Models.Comm
         [ColumnDef(VisibleEdit = false)]
         public DateTime? ConfirmDate { get; set; }
 
-        [Display(Name = "單位人排序")]
+        /// <summary>
+        /// 單位人排序
+        /// </summary>
+        [Display(Name = "人排序")]
         public int? PSort { get; set; }
 
         [Display(Name = "應變單位排序")]
