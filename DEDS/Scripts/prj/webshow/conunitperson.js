@@ -54,6 +54,37 @@
             function () { location.reload(); });
     }
 
+    douoptions.afterCreateEditDataForm = function ($container, row) {
+        //加提示字
+        var $p1 = $('div[data-field=ConUnit]').find('label');
+        var remind = '<span class="text-danger fw-lighter ms-2">*</span>';
+        $(remind).appendTo($p1);
+
+        var $p2 = $('div[data-field=ConType]').find('label');
+        var remind = '<span class="text-danger fw-lighter ms-2">*</span>';
+        $(remind).appendTo($p2);
+
+        var $p3 = $('div[data-field=Name]').find('label');
+        var remind = '<span class="text-danger fw-lighter ms-2">*</span>';
+        $(remind).appendTo($p3);
+
+        var $p4 = $('div[data-field=Position]').find('label');
+        var remind = '<span class="text-danger fw-lighter ms-2">*</span>';
+        $(remind).appendTo($p4);
+
+        var $p5 = $('div[data-field=Tel]').find('label');
+        var remind = '<span class="text-danger fw-lighter ms-2">*</span>';
+        $(remind).appendTo($p5);
+
+        var $p6 = $('div[data-field=Mobile]').find('label');
+        var remind = '<span class="text-danger fw-lighter ms-2">*</span>';
+        $(remind).appendTo($p6);
+
+        var $p7 = $('div[data-field=EMail]').find('label');
+        var remind = '<span class="text-danger fw-lighter ms-2">*</span>';
+        $(remind).appendTo($p7);
+    }
+
     var $_masterTable = $("#_table").DouEditableTable(douoptions); //初始dou table
 
     //必填(只有一個選項)

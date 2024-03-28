@@ -31,18 +31,22 @@ namespace DEDS.Models.Comm
                     Filter = true, FilterAssign = FilterAssignType.Equal)]
         public int ConType { get; set; }
 
+        [Required]
         [Display(Name = "姓名")]
         [StringLength(50)]
         public string Name { get; set; }
 
+        [Required]
         [Display(Name = "職稱")]
         [StringLength(50)]
         public string Position { get; set; }
 
+        [Required]
         [Display(Name = "總機分機")]
         [StringLength(50)]
         public string Tel { get; set; }
 
+        [Required]
         [Display(Name = "行動電話")]
         [StringLength(50)]
         public string Mobile { get; set; }
@@ -51,6 +55,7 @@ namespace DEDS.Models.Comm
         [StringLength(50)]
         public string HTel { get; set; }
 
+        [Required]
         [ColumnDef(Display = "EMail")]
         [StringLength(100)]
         public string EMail { set; get; }
