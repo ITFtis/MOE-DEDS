@@ -11,7 +11,7 @@ using System.Web.Mvc;
 
 namespace DEDS.Controllers.Comm
 {
-    [Dou.Misc.Attr.MenuDef(Id = "ConUnitPerson", Name = "應變人員清冊", MenuPath = "緊急應變", Action = "Index", Index = 2, Func = Dou.Misc.Attr.FuncEnum.ALL, AllowAnonymous = false)]
+    [Dou.Misc.Attr.MenuDef(Id = "ConUnitPerson", Name = "應變人員清冊", MenuPath = "幕僚/窗口", Action = "Index", Index = 2, Func = Dou.Misc.Attr.FuncEnum.ALL, AllowAnonymous = false)]
     public class ConUnitPersonController : Dou.Controllers.AGenericModelController<ConUnitPerson>
     {
         // GET: ConUnitPerson

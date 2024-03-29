@@ -101,8 +101,8 @@
   },
   {
     "Name": "應變單位代碼",
-    "MenuPath": "緊急應變",
-    "FullMenuPath": "緊急應變/應變單位代碼",
+    "MenuPath": "幕僚/窗口",
+    "FullMenuPath": "幕僚/窗口/應變單位代碼",
     "Index": 1,
     "Desc": null,
     "AllowAnonymous": false,
@@ -161,8 +161,8 @@
   },
   {
     "Name": "應變人員清冊",
-    "MenuPath": "緊急應變",
-    "FullMenuPath": "緊急應變/應變人員清冊",
+    "MenuPath": "幕僚/窗口",
+    "FullMenuPath": "幕僚/窗口/應變人員清冊",
     "Index": 2,
     "Desc": null,
     "AllowAnonymous": false,
@@ -341,9 +341,9 @@
     "TypeId": "Dou.Misc.Attr.MenuDefAttribute, Dou, Version=1.1.0.0, Culture=neutral, PublicKeyToken=null"
   },
   {
-    "Name": "緊急應變",
+    "Name": "幕僚/窗口",
     "MenuPath": "",
-    "FullMenuPath": "緊急應變",
+    "FullMenuPath": "幕僚/窗口",
     "Index": 7,
     "Desc": null,
     "AllowAnonymous": false,
@@ -352,11 +352,11 @@
     "IsOnlyPath": true,
     "IsPromptUI": false,
     "FromAppend": false,
-    "Target": "緊急應變",
+    "Target": "幕僚/窗口",
     "ActionController": null,
     "Action": null,
     "ExportCSV": false,
-    "Id": "緊急應變",
+    "Id": "幕僚/窗口",
     "Remark": null,
     "TypeId": "Dou.Misc.Attr.MenuDefAttribute, Dou, Version=1.1.0.0, Culture=neutral, PublicKeyToken=null"
   },

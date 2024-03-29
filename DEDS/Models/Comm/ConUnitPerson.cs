@@ -48,7 +48,7 @@ namespace DEDS.Models.Comm
 
         [Required]
         [Display(Name = "行動電話")]
-        [StringLength(50)]
+        [StringLength(10)]
         public string Mobile { get; set; }
 
         [Display(Name = "住家電話")]
