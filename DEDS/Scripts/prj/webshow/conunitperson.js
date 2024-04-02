@@ -97,7 +97,7 @@
     var $_masterTable = $("#_table").DouEditableTable(douoptions); //初始dou table
 
     //文字
-    $('.bootstrap-table .btn-toolbar .btn-add-data-manager').text('新增人員');
+    $('.bootstrap-table .btn-toolbar .btn-add-data-manager').text('人員新增');
 
     //必填(只有一個選項)
     if ($('.filter-toolbar-plus [data-fn="ConUnit"] option').length == 2) {
