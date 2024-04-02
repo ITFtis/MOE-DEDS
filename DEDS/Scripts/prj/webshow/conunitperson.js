@@ -10,7 +10,7 @@
     }
 
     var a = {};
-    a.item = '<span class="btn btn-secondary glyphicon glyphicon-download-alt"> 確認資料</span>';
+    a.item = '<span class="btn btn-secondary glyphicon glyphicon-download-alt"> 檢核確認</span>';
     a.event = 'click .glyphicon-download-alt';
     a.callback = function importQdate(a, b, c, d) {
 
@@ -85,7 +85,19 @@
         $(remind).appendTo($p7);
     }
 
+    douoptions.tableOptions.onLoadSuccess = function (datas) {
+        //文字
+        $('.bootstrap-table .fixed-table-container .btn-update-data-manager').text('編輯');
+        $('.bootstrap-table .fixed-table-container .btn-update-data-manager').removeClass('glyphicon-pencil');
+
+        $('.bootstrap-table .fixed-table-container .btn-delete-data-manager').text('刪除');
+        $('.bootstrap-table .fixed-table-container .btn-delete-data-manager').removeClass('glyphicon-trash');
+    }
+
     var $_masterTable = $("#_table").DouEditableTable(douoptions); //初始dou table
+
+    //文字
+    $('.bootstrap-table .btn-toolbar .btn-add-data-manager').text('新增人員');
 
     //必填(只有一個選項)
     if ($('.filter-toolbar-plus [data-fn="ConUnit"] option').length == 2) {
