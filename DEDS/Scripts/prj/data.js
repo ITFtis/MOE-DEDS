@@ -2,7 +2,8 @@
 //if (!app.siteRoot)
 //    app.siteRoot = helper.misc.getScriptPath("Scripts/gis/Main").indexOf('localhost') >= 0 ? "http://140.116.66.35/SGDS/" : helper.misc.getScriptPath("Scripts/gis/Main");
 app.CSgdsRoot = "https://www.dprcflood.org.tw/SGDS/";
-app.epaapi = 'https://pj.ftis.org.tw/EPAAPI/';
+//app.epaapi = 'https://pj.ftis.org.tw/EPAAPI/';
+app.epaapi = EPAAPI == '' ? 'https://pj.ftis.org.tw/EPAAPI/' : EPAAPI;
 
 //app.siteRoot = 'https://pj.ftis.org.tw/DEDS/'
 

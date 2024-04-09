@@ -13,6 +13,8 @@
     <script>
         window.app = window.app || {};
         app.siteRoot = "@Url.Content("~/")";
+
+        var EPAAPI = '@AppConfig.EPAAPI';
     </script>
     @if (ViewBag.HasGis != null && ViewBag.HasGis)
     {
