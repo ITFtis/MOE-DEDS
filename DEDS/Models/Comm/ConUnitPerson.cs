@@ -33,6 +33,7 @@ namespace DEDS.Models.Comm
 
         [Required]
         [Display(Name = "姓名")]
+        [ColumnDef(Filter = true, FilterAssign = FilterAssignType.Contains)]
         [StringLength(50)]
         public string Name { get; set; }
 
