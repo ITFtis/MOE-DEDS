@@ -88,10 +88,11 @@
     douoptions.tableOptions.onLoadSuccess = function (datas) {
         //文字
         $('.bootstrap-table .fixed-table-container .btn-update-data-manager').text('編輯');
-        $('.bootstrap-table .fixed-table-container .btn-update-data-manager').removeClass('glyphicon-pencil');
+        $('.bootstrap-table .fixed-table-container .btn-update-data-manager').removeClass('glyphicon-pencil');        
+        $('.bootstrap-table .fixed-table-container .btn-update-data-manager').addClass('text-white bg-primary');
 
         $('.bootstrap-table .fixed-table-container .btn-delete-data-manager').text('刪除');
-        $('.bootstrap-table .fixed-table-container .btn-delete-data-manager').removeClass('glyphicon-trash');
+        $('.bootstrap-table .fixed-table-container .btn-delete-data-manager').removeClass('glyphicon-trash');        
     }
 
     var $_masterTable = $("#_table").DouEditableTable(douoptions); //初始dou table
