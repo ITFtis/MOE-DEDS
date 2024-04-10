@@ -98,9 +98,9 @@ namespace DEDS.Models.Comm
         public DateTime? ConfirmDate { get; set; }
 
         /// <summary>
-        /// 單位人排序
+        /// 人員排序
         /// </summary>
-        [Display(Name = "人排序")]
+        [Display(Name = "人員排序")]
         public int? PSort { get; set; }
 
         [Display(Name = "應變單位排序")]
