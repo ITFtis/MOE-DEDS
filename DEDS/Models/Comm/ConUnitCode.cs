@@ -26,7 +26,34 @@ namespace DEDS.Models.Comm
         public string Name { get; set; }
 
         [Display(Name = "排序")]
-        public int Sort { get; set; }       
+        public int Sort { get; set; }
+
+        static object lockGetAllDatas = new object();
+        public static IEnumerable<ConUnitCode> GetAllDatas(int cachetimer = 0)
+        {
+            if (cachetimer == 0) cachetimer = Constant.cacheTime;
+
+            string key = "DEDS.Models.Comm.ConUnitCode";
+            var allData = DouHelper.Misc.GetCache<IEnumerable<ConUnitCode>>(cachetimer, key);
+            lock (lockGetAllDatas)
+            {
+                if (allData == null)
+                {
+                    Dou.Models.DB.IModelEntity<ConUnitCode> modle = new Dou.Models.DB.ModelEntity<ConUnitCode>(new DouModelContextExt());
+                    allData = modle.GetAll().OrderBy(a => a.Sort).ToArray();
+
+                    DouHelper.Misc.AddCache(allData, key);
+                }
+            }
+
+            return allData;
+        }
+
+        public static void ResetGetAllDatas()
+        {
+            string key = "DEDS.Models.Comm.ConUnitCode";
+            Misc.ClearCache(key);
+        }
     }
 
     public class ConUnitCodeItems : Dou.Misc.Attr.SelectItemsClass
@@ -40,26 +67,32 @@ namespace DEDS.Models.Comm
             {
                 if (_conUnitCode == null)
                 {
-                    using (var db = new DouModelContextExt())
-                    {
-                        string ConUnit = Dou.Context.CurrentUser<User>().ConUnit;
-                        bool IsManager = Dou.Context.CurrentUser<User>().IsManager;
+                    string ConUnit = Dou.Context.CurrentUser<User>().ConUnit;
+                    bool IsManager = Dou.Context.CurrentUser<User>().IsManager;
 
-                        var datas = db.ConUnitCode.AsEnumerable();
-                        if (IsManager)
+                    var datas = ConUnitCode.GetAllDatas();
+                    if (IsManager)
+                    {
+                    }
+                    else if (ConUnit != null)
+                    {
+                        //環境部(23)檢視所有單位資料，但只能修改自己
+                        string unit = Dou.Context.CurrentUser<User>().Unit;
+                        if (unit == "23")
                         {
-                        }
-                        else if (ConUnit != null)
-                        {
-                            datas = datas.Where(a => a.Code == ConUnit);
+                            //全部
                         }
                         else
                         {
-                            datas = datas.Take(0);
+                            datas = datas.Where(a => a.Code == ConUnit);
                         }
-
-                        _conUnitCode = datas.OrderBy(a => a.Sort).ToArray();
                     }
+                    else
+                    {
+                        datas = datas.Take(0);
+                    }
+
+                    _conUnitCode = datas.OrderBy(a => a.Sort).ToArray();
                 }
                 return _conUnitCode;
             }

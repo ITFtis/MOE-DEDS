@@ -93,6 +93,14 @@
 
         $('.bootstrap-table .fixed-table-container .btn-delete-data-manager').text('刪除');
         $('.bootstrap-table .fixed-table-container .btn-delete-data-manager').removeClass('glyphicon-trash');        
+
+        //其它單位只能檢視
+        //////datas[0].ConUnit
+        $.each($('.bootstrap-table.conunitpersoncontroller table.table tbody tr'), function (index, value) {
+            if (ConUnitName != '' && ConUnitName != $(this).find('.dou-field-ConUnit').text()) {
+                $(this).find('.btn-update-data-manager').hide();
+            }
+        });
     }
 
     var $_masterTable = $("#_table").DouEditableTable(douoptions); //初始dou table

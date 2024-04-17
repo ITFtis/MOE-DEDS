@@ -1,7 +1,12 @@
-﻿<script src="~/Scripts/prj/webshow/conunitperson.js?v=20240410001"></script>
+﻿<script src="~/Scripts/prj/webshow/conunitperson.js?v=20240417001"></script>
 @using Dou.Misc.Extension
 @Html.MenuMap()
 @Html.DataManagerOptionsJavascript(null, "douoptions")
 
 <table id="_table"></table>
 
+<script>
+    //其它單位只能檢視
+    var ConUnitName = '@ViewBag.ConUnitName';
+    var IsOthersView = '@ViewBag.IsOthersView'.toLowerCase() == 'true';
+</script>

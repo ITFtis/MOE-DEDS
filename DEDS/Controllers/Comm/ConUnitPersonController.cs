@@ -17,6 +17,31 @@ namespace DEDS.Controllers.Comm
         // GET: ConUnitPerson
         public ActionResult Index()
         {
+            var user = Dou.Context.CurrentUser<DEDS.Models.Manager.User>();
+
+            //環境部(23)檢視所有單位資料，但只能修改自己
+            string unit = Dou.Context.CurrentUser<DEDS.Models.Manager.User>().Unit;            
+            if (unit == "23")
+            {
+                //全部
+                ViewBag.IsView = false;
+            }
+            else
+            {
+                ViewBag.IsView = true;
+            }
+
+            //admin最大權限
+            if (!user.IsManager)
+            {
+                string conUnit = user.ConUnit;
+                var v = DEDS.Models.Comm.ConUnitCodeItems.ConUnitCodes.Where(a => a.Code == conUnit).FirstOrDefault();
+                if (v != null)
+                {
+                    ViewBag.ConUnitName = v.Name;
+                }
+            }
+
             return View();
         }
 
