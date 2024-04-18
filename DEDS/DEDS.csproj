@@ -362,9 +362,15 @@
     <Compile Include="Models\Manager\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="_core\APIClass\ArrayOfCountyXY.cs" />
+    <Compile Include="_core\APIClass\ArrayOfFloodEvent.cs" />
+    <Compile Include="_core\APIClass\FHYResultOfFHYCityData.cs" />
+    <Compile Include="_core\APIClass\FHYResultOfFHYFloodSensorInfo.cs" />
+    <Compile Include="_core\APIClass\FHYResultOfFHYFloodSensorStation.cs" />
     <Compile Include="_core\AppConfig.cs" />
     <Compile Include="_core\Code.cs" />
     <Compile Include="_core\Constant.cs" />
+    <Compile Include="_core\XmlHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Config\Log4netConfig.xml" />

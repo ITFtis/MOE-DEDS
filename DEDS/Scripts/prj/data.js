@@ -17,11 +17,11 @@ app.epaapi = EPAAPI == '' ? 'https://pj.ftis.org.tw/EPAAPI/' : EPAAPI;
     window.countyXY = undefined;
 
     var getData = function (url, paras, callback, option) {
-        var _ajaxoptions = $.extend({
+        var _ajaxoptions = $.extend({            
             url: url,
             type: "GET",
             dataType: "json",
-            contentType: "application/json; charset=utf-8", //加contentType IE有問題，但放在server同一domain是OK的
+            //contentType: "application/json; charset=utf-8", //加contentType IE有問題，但放在server同一domain是OK的
             //async: _async,
             data: paras
         }, option);
@@ -44,9 +44,11 @@ app.epaapi = EPAAPI == '' ? 'https://pj.ftis.org.tw/EPAAPI/' : EPAAPI;
             //    window.countyXY = cs;
             //})
             $.BasePinCtrl.helper.ajaxGeneralRequest({
-                url: app.CSgdsRoot + "WS/FloodComputeWS.asmx/Countys ",
+                //url: app.CSgdsRoot + "WS/FloodComputeWS.asmx/Countys",                
+                url: app.siteRoot + "RtHydro/MidProxy",
+                data: { urlAPI: app.CSgdsRoot + "WS/FloodComputeWS.asmx/Countys" },
                 dataType: "json",
-                contentType: "application/json; charset=utf-8",
+                //contentType: "application/json; charset=utf-8",
                 type: "POST",
                 async: async
             }, function (d) {
@@ -71,9 +73,11 @@ app.epaapi = EPAAPI == '' ? 'https://pj.ftis.org.tw/EPAAPI/' : EPAAPI;
     var getLandUseType = function () {
         if (!window.landUseType) {
             $.BasePinCtrl.helper.ajaxGeneralRequest({
-                url: app.CSgdsRoot + "WS/FloodComputeWS.asmx/LandUseType ",
+                //url: app.CSgdsRoot + "WS/FloodComputeWS.asmx/LandUseType ",
+                url: app.siteRoot + "RtHydro/MidProxy",
+                data: { urlAPI: app.CSgdsRoot + "WS/FloodComputeWS.asmx/LandUseType" },
                 dataType: "json",
-                contentType: "application/json; charset=utf-8",
+                //contentType: "application/json; charset=utf-8",
                 type: "POST",
                 async: false
             }, function (d) {
@@ -86,9 +90,11 @@ app.epaapi = EPAAPI == '' ? 'https://pj.ftis.org.tw/EPAAPI/' : EPAAPI;
     var getEMISWATER_TYPE = function () {
         if (!window.EMISWATER_TYPE) {
             $.BasePinCtrl.helper.ajaxGeneralRequest({
-                url: app.CSgdsRoot + "WS/FloodComputeWS.asmx/wsEMISWATER_TYPE ",
+                //url: app.CSgdsRoot + "WS/FloodComputeWS.asmx/wsEMISWATER_TYPE ",
+                url: app.siteRoot + "RtHydro/MidProxy",
+                data: { urlAPI: app.CSgdsRoot + "WS/FloodComputeWS.asmx/wsEMISWATER_TYPE" },
                 dataType: "json",
-                contentType: "application/json; charset=utf-8",
+                //contentType: "application/json; charset=utf-8",
                 type: "POST"
             }, function (d) {
                 window.EMISWATER_TYPE = d.d;
@@ -102,9 +108,11 @@ app.epaapi = EPAAPI == '' ? 'https://pj.ftis.org.tw/EPAAPI/' : EPAAPI;
         //if (async==undefined) async = true;
         if (!window.floodEvents) {
             $.BasePinCtrl.helper.ajaxGeneralRequest({
-                url: app.CSgdsRoot + "WS/FloodComputeWS.asmx/FloodEvents ",
+                //url: app.CSgdsRoot + "WS/FloodComputeWS.asmx/FloodEvents ",
+                url: app.siteRoot + "RtHydro/MidProxy",
+                data: { urlAPI: app.CSgdsRoot + "WS/FloodComputeWS.asmx/FloodEvents" },
                 dataType: "json",
-                contentType: "application/json; charset=utf-8",
+                //contentType: "application/json; charset=utf-8",
                 type: "POST",
                 //async: async
             }, function (d) {
@@ -117,9 +125,11 @@ app.epaapi = EPAAPI == '' ? 'https://pj.ftis.org.tw/EPAAPI/' : EPAAPI;
     var loadWraEvents = function (callback) {
         if (!window.waEvents) {
             $.BasePinCtrl.helper.ajaxGeneralRequest({
-                url: app.CSgdsRoot + "WS/FloodComputeWS.asmx/WraEvents  ",
+                //url: app.CSgdsRoot + "WS/FloodComputeWS.asmx/WraEvents  ",
+                url: app.siteRoot + "RtHydro/MidProxy",
+                data: { urlAPI: app.CSgdsRoot + "WS/FloodComputeWS.asmx/WraEvents" },
                 dataType: "json",
-                contentType: "application/json; charset=utf-8",
+                //contentType: "application/json; charset=utf-8",
                 type: "POST"
             }, function (d) {
                 window.waEvents = d.d;
@@ -139,9 +149,11 @@ app.epaapi = EPAAPI == '' ? 'https://pj.ftis.org.tw/EPAAPI/' : EPAAPI;
         if (_cd.CREATE_DATE) _cd.CREATE_DATE = JsonDateStr2Datetime(_cd.CREATE_DATE);
         if (_cd.MODIFY_DATE) _cd.MODIFY_DATE = JsonDateStr2Datetime(_cd.MODIFY_DATE);
         $.BasePinCtrl.helper.ajaxGeneralRequest({
-            url: app.CSgdsRoot + "WS/FloodComputeWS.asmx/GetDEMCalculateData",
+            //url: app.CSgdsRoot + "WS/FloodComputeWS.asmx/GetDEMCalculateData",
+            url: app.siteRoot + "RtHydro/MidProxy",
+            data: { urlAPI: app.CSgdsRoot + "WS/FloodComputeWS.asmx/GetDEMCalculateData" },
             dataType: "json",
-            contentType: "application/json; charset=utf-8",
+            //contentType: "application/json; charset=utf-8",
             type: "POST",
             data: JSON.stringify({ computeDistance: 500, ds: _cd })
         }, function (d) {
@@ -151,9 +163,11 @@ app.epaapi = EPAAPI == '' ? 'https://pj.ftis.org.tw/EPAAPI/' : EPAAPI;
     //雨量站頻率分析資料
     var rainFrequencyData = function (stno, callback) {
         $.BasePinCtrl.helper.ajaxGeneralRequest({
-            url: app.CSgdsRoot + "WS/FloodComputeWS.asmx/RainFrequencyData",
+            //url: app.CSgdsRoot + "WS/FloodComputeWS.asmx/RainFrequencyData",
+            url: app.siteRoot + "RtHydro/MidProxy",
+            data: { urlAPI: app.CSgdsRoot + "WS/FloodComputeWS.asmx/RainFrequencyData" },
             dataType: "json",
-            contentType: "application/json; charset=utf-8",
+            //contentType: "application/json; charset=utf-8",
             type: "POST",
             data: JSON.stringify({ stno: stno })
         }, function (d) {
@@ -283,9 +297,11 @@ app.epaapi = EPAAPI == '' ? 'https://pj.ftis.org.tw/EPAAPI/' : EPAAPI;
     //
     var estimateFloodingComputeForLightweightDatas = function (floodings, callback) {
         $.BasePinCtrl.helper.ajaxGeneralRequest({
-            url: app.CSgdsRoot + "WS/FloodComputeWS.asmx/EstimateFlooding",
+            //url: app.CSgdsRoot + "WS/FloodComputeWS.asmx/EstimateFlooding",
+            url: app.siteRoot + "RtHydro/MidProxy",
+            data: { urlAPI: app.CSgdsRoot + "WS/FloodComputeWS.asmx/EstimateFlooding" },
             dataType: "json",
-            contentType: "application/json; charset=utf-8",
+            //contentType: "application/json; charset=utf-8",
             type: "POST",
             data: JSON.stringify({ floodings: floodings})
         }, function (d) {
@@ -310,9 +326,11 @@ app.epaapi = EPAAPI == '' ? 'https://pj.ftis.org.tw/EPAAPI/' : EPAAPI;
     //取淹水演算結果
     var loadFloodComputeForLightweightDatas = function (st, et, countyID, datatype, callback) {
         $.BasePinCtrl.helper.ajaxGeneralRequest({
-            url: app.CSgdsRoot + "WS/FloodComputeWS.asmx/GetFloodComputeForLightweightData",
+            //url: app.CSgdsRoot + "WS/FloodComputeWS.asmx/GetFloodComputeForLightweightData",
+            url: app.siteRoot + "RtHydro/MidProxy",
+            data: { urlAPI: app.CSgdsRoot + "WS/FloodComputeWS.asmx/GetFloodComputeForLightweightData" },
             dataType: "json",
-            contentType: "application/json; charset=utf-8",
+            //contentType: "application/json; charset=utf-8",
             type: "POST",
             data: JSON.stringify({ beginDT: st, endDT: et, computeDistance: 500, CountyID: countyID, dataType:datatype})
         }, function (d) {
@@ -337,9 +355,11 @@ app.epaapi = EPAAPI == '' ? 'https://pj.ftis.org.tw/EPAAPI/' : EPAAPI;
     //取淹水設施結果
     var loadEMISFacilitys = function (st, et, countyID, datatype, callback) {
         $.BasePinCtrl.helper.ajaxGeneralRequest({
-            url: app.CSgdsRoot + "WS/FloodComputeWS.asmx/wsEMISWaterByTime",
+            //url: app.CSgdsRoot + "WS/FloodComputeWS.asmx/wsEMISWaterByTime",
+            url: app.siteRoot + "RtHydro/MidProxy",
+            data: { urlAPI: app.CSgdsRoot + "WS/FloodComputeWS.asmx/wsEMISWaterByTime" },
             dataType: "json",
-            contentType: "application/json; charset=utf-8",
+            //contentType: "application/json; charset=utf-8",
             type: "POST",
             data: JSON.stringify({ startDate: st, endDate: et})
         }, function (d) {
@@ -361,9 +381,11 @@ app.epaapi = EPAAPI == '' ? 'https://pj.ftis.org.tw/EPAAPI/' : EPAAPI;
 
     var getFHYFloodSensorInfoLast24Hours_Address = function (address, callback) {
         $.BasePinCtrl.helper.ajaxGeneralRequest({
-            url: app.CSgdsRoot + "WS/FHYBrokerWS.asmx/GetFHYFloodSensorInfoLast24Hours_Address",
+            //url: app.CSgdsRoot + "WS/FHYBrokerWS.asmx/GetFHYFloodSensorInfoLast24Hours_Address",\
+            url: app.siteRoot + "RtHydro/MidProxy",
+            data: { urlAPI: app.CSgdsRoot + "WS/FHYBrokerWS.asmx/GetFHYFloodSensorInfoLast24Hours_Address" },
             dataType: "json",
-            contentType: "application/json; charset=utf-8",
+            //contentType: "application/json; charset=utf-8",
             data: JSON.stringify({ 'address': address }),
             type: "POST"
         }, function (d) {
@@ -371,10 +393,10 @@ app.epaapi = EPAAPI == '' ? 'https://pj.ftis.org.tw/EPAAPI/' : EPAAPI;
         });
     }
     var getFHYFloodSensorStation = function (callback) {
-        getData(app.CSgdsRoot + 'WS/FHYBrokerWS.asmx/GetFHYFloodSensorStation', undefined, callback, { type: 'POST' });
+        getData(app.siteRoot + "RtHydro/MidProxy", { urlAPI: app.CSgdsRoot + "WS/FHYBrokerWS.asmx/GetFHYFloodSensorStation" }, callback, { type: 'POST' });
     }
     var getFHYFloodSensorInfoRt = function (dt, callback) {
-        getData(app.CSgdsRoot + 'WS/FHYBrokerWS.asmx/GetFHYFloodSensorInfoRt', undefined, callback, { type: 'POST' });
+        getData(app.siteRoot + "RtHydro/MidProxy", { urlAPI: app.CSgdsRoot + "WS/FHYBrokerWS.asmx/GetFHYFloodSensorInfoRt" }, callback, { type: 'POST' });
     }
     var getFHYFloodSensorInfoLast24Hours = function (id, callback) {
         getData(app.CSgdsRoot + 'WS/FHYBrokerWS.asmx/GetFHYFloodSensorInfoLast24Hours', JSON.stringify({ sensorUUID: id }), callback, { type: 'POST' });
@@ -414,7 +436,7 @@ app.epaapi = EPAAPI == '' ? 'https://pj.ftis.org.tw/EPAAPI/' : EPAAPI;
             callback(window.fhyCity);
         }
         else
-            getData(app.CSgdsRoot + "WS/FHYBrokerWS.asmx/GetFHYCity", undefined, function (d) {
+            getData(app.siteRoot + "RtHydro/MidProxy", { urlAPI: app.CSgdsRoot + "WS/FHYBrokerWS.asmx/GetFHYCity" }, function (d) {
                 window.fhyCity = d;
                 callback(window.fhyCity)
             }, { type: 'POST', async:false });
