@@ -20,6 +20,8 @@ namespace DEDS.FHYResultOfFHYFloodSensorStation
     [XmlRoot(ElementName = "FHYFloodSensorStation")]
     public class FHYFloodSensorStation
     {
+        //__type
+        public string __type { get { return "DisasterEditorMapWeb.WS.FHYBrokerWs+FHYFloodSensorStation"; } }
 
         [XmlElement(ElementName = "SensorUUID")]
         public string SensorUUID { get; set; }
@@ -59,7 +61,7 @@ namespace DEDS.FHYResultOfFHYFloodSensorStation
     {
 
         [XmlElement(ElementName = "UpdataTime")]
-        public DateTime UpdataTime { get; set; }
+        public string UpdataTime { get; set; }
 
         [XmlElement(ElementName = "Data")]
         public Data Data { get; set; }
@@ -77,5 +79,9 @@ namespace DEDS.FHYResultOfFHYFloodSensorStation
         public string Text { get; set; }
     }
 
-
+    public class Output
+    {
+        public string UpdataTime;
+        public List<FHYFloodSensorStation> Data;
+    }
 }

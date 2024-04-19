@@ -41,7 +41,7 @@ namespace DEDS.FHYResultOfFHYCityData
     {
 
         [XmlElement(ElementName = "UpdataTime")]
-        public DateTime UpdataTime { get; set; }
+        public string UpdataTime { get; set; }
 
         [XmlElement(ElementName = "Data")]
         public Data Data { get; set; }

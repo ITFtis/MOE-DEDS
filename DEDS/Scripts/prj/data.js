@@ -30,6 +30,11 @@ app.epaapi = EPAAPI == '' ? 'https://pj.ftis.org.tw/EPAAPI/' : EPAAPI;
         $.ajax(_ajaxoptions)
             .done(function (dat, status) {
                 var d = dat.d ? dat.d : (dat.Data ? dat.Data : dat);
+
+                //if (dat.d) {
+                //    d.UpdataTime = JsonDateStr2Datetime(d.UpdataTime).toJSON(); 
+                //}
+
                 d = d.Data ? d.Data: d;
                 callback(d); //dat.Data是fly v2
             }).fail(function (dat, status) {
@@ -393,10 +398,10 @@ app.epaapi = EPAAPI == '' ? 'https://pj.ftis.org.tw/EPAAPI/' : EPAAPI;
         });
     }
     var getFHYFloodSensorStation = function (callback) {
-        getData(app.siteRoot + "RtHydro/MidProxy", { urlAPI: app.CSgdsRoot + "WS/FHYBrokerWS.asmx/GetFHYFloodSensorStation" }, callback, { type: 'POST' });
+        getData(app.siteRoot + "RtHydro/MidProxyF2", { urlAPI: app.CSgdsRoot + "WS/FHYBrokerWS.asmx/GetFHYFloodSensorStation" }, callback, { type: 'POST' });
     }
     var getFHYFloodSensorInfoRt = function (dt, callback) {
-        getData(app.siteRoot + "RtHydro/MidProxy", { urlAPI: app.CSgdsRoot + "WS/FHYBrokerWS.asmx/GetFHYFloodSensorInfoRt" }, callback, { type: 'POST' });
+        getData(app.siteRoot + "RtHydro/MidProxyF2", { urlAPI: app.CSgdsRoot + "WS/FHYBrokerWS.asmx/GetFHYFloodSensorInfoRt" }, callback, { type: 'POST' });
     }
     var getFHYFloodSensorInfoLast24Hours = function (id, callback) {
         getData(app.CSgdsRoot + 'WS/FHYBrokerWS.asmx/GetFHYFloodSensorInfoLast24Hours', JSON.stringify({ sensorUUID: id }), callback, { type: 'POST' });
@@ -436,7 +441,7 @@ app.epaapi = EPAAPI == '' ? 'https://pj.ftis.org.tw/EPAAPI/' : EPAAPI;
             callback(window.fhyCity);
         }
         else
-            getData(app.siteRoot + "RtHydro/MidProxy", { urlAPI: app.CSgdsRoot + "WS/FHYBrokerWS.asmx/GetFHYCity" }, function (d) {
+            getData(app.siteRoot + "RtHydro/MidProxyF2", { urlAPI: app.CSgdsRoot + "WS/FHYBrokerWS.asmx/GetFHYCity" }, function (d) {
                 window.fhyCity = d;
                 callback(window.fhyCity)
             }, { type: 'POST', async:false });
