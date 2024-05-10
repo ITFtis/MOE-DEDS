@@ -369,6 +369,7 @@
     <Compile Include="_core\APIClass\FHYResultOfFHYFloodSensorStation.cs" />
     <Compile Include="_core\AppConfig.cs" />
     <Compile Include="_core\Code.cs" />
+    <Compile Include="_core\CommonFunc.cs" />
     <Compile Include="_core\Constant.cs" />
     <Compile Include="_core\XmlHelper.cs" />
   </ItemGroup>

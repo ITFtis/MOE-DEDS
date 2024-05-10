@@ -47,6 +47,13 @@ namespace DEDS.Controllers.Prj
 
             if (urlAPI == null)
                 return null;
+            
+            //測試連線  urlAPI = "xxxx123" + urlAPI;
+            if (!CommonFunc.TestUrl(urlAPI))
+            {
+                //目的端連線失敗
+                return null;
+            }
 
             string text = "";
             WebClient webClient = new WebClient();
@@ -115,6 +122,13 @@ namespace DEDS.Controllers.Prj
 
             if (urlAPI == null)
                 return null;
+
+            //測試連線  urlAPI = "xxxx123" + urlAPI;
+            if (!CommonFunc.TestUrl(urlAPI))
+            {
+                //目的端連線失敗
+                return null;
+            }
 
             string text = "";
             WebClient webClient = new WebClient();
