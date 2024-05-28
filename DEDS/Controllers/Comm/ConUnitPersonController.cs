@@ -115,6 +115,7 @@ namespace DEDS.Controllers.Comm
                 //確認日期更新
                 var f = GetModelEntity();
                 var iquery = f.GetAll().Where(a => Ids.Any(b => b == a.Id));
+                int n = iquery.Count();
                 if (iquery.Count() > 0)
                 {
                     DateTime now = DateTime.Now;
@@ -122,10 +123,16 @@ namespace DEDS.Controllers.Comm
                     {
                         i.ConfirmDate = now;
                     }
-                }
-                f.Update(iquery);
 
-                return Json(new { result = true });
+                    f.Update(iquery);
+
+                    return Json(new { result = true });
+                }
+                else
+                {
+                    return Json(new { result = false, errorMessage = "查無對應Id：" + string.Join(",", Ids) });
+                }
+                
             }
             catch (Exception ex)
             {

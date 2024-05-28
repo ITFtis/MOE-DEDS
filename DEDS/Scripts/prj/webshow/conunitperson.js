@@ -16,9 +16,12 @@
 
         var aryIds = [];
 
-        $('.bootstrap-table #_table tbody tr').find('#skey').each(function (index) {
-            var Id = $(this).html();
-            aryIds.push(Id);
+        //$('.bootstrap-table #_table tbody tr').find('#skey').each(function (index) {
+        $('.bootstrap-table #_table tbody tr').each(function (index) {
+            if ($(this).find('#btnEdit').is(":visible")) {
+                var Id = $(this).find('#skey').html();
+                aryIds.push(Id);
+            }            
         })
 
         helper.misc.showBusyIndicator();
