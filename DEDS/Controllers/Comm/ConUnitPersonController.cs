@@ -115,7 +115,11 @@ namespace DEDS.Controllers.Comm
                 //確認日期更新
                 var f = GetModelEntity();
                 var iquery = f.GetAll().Where(a => Ids.Any(b => b == a.Id));
-                int n = iquery.Count();
+                
+                ////iquery = iquery.Take(47); /////////////////
+                ////int n = iquery.Count(); /////////////////
+                ////var test = iquery.ToList();
+
                 if (iquery.Count() > 0)
                 {
                     DateTime now = DateTime.Now;

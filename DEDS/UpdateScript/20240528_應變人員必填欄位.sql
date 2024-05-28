@@ -4,5 +4,6 @@
 ----Or Name is NUll Or Position is NUll Or Tel is NUll Or Mobile is NUll Or EMail is NUll
 
 Update ConUnitPerson
-Set Position = ''
-Where Position is NUll
+Set Position = 'µL'
+Where Position is NUll Or Position = '' Or Position = ' '
+
