@@ -18,10 +18,10 @@
 
         //$('.bootstrap-table #_table tbody tr').find('#skey').each(function (index) {
         $('.bootstrap-table #_table tbody tr').each(function (index) {
-            if ($(this).find('#btnEdit').is(":visible")) {
+            if ($(this).find('.btn-update-data-manager').is(":visible")) {
                 var Id = $(this).find('#skey').html();
                 aryIds.push(Id);
-            }            
+            }
         })
 
         helper.misc.showBusyIndicator();
@@ -96,56 +96,25 @@
         setPermissions();
     }
 
-    var a = {};
-    a.item = function (v, r) {
-        var btn = "";
-        if (!r.IsImport) {
-            btn = '<span id="btnEdit" class="btn btn-data-manager-ctrl btn-default btn-sm text-white bg-primary" title="編輯">編輯</span>';
-        }
-        return btn;
-    }
-    a.event = 'click #btnEdit';
-    a.callback = function importQdate(evt, value, row, index) {
-        $('#_table tbody tr').eq(index).find('.btn-update-data-manager').trigger('click') 
-    };
-
-    var b = {};
-    b.item = function (v, r) {
-        var btn = "";
-        if (!r.IsImport) {
-            btn = '<span id="btnDelete" class="btn btn-data-manager-ctrl btn-default btn-sm" title="刪除">刪除</span>';
-        }
-        return btn;
-    }
-    b.event = 'click #btnDelete';
-    b.callback = function importQdate(evt, value, row, index) {
-        $('#_table tbody tr').eq(index).find('.btn-delete-data-manager').trigger('click')
-    };
-
-    douoptions.appendCustomFuncs = [a, b];
-
-    douoptions.afterUpdateServerData = douoptions.afterAddServerData = function (row, callback) {
-        
-
+    douoptions.afterAddServerData = douoptions.afterUpdateServerData = function (row, callback) {
         callback();
         setPermissions();
     }
 
-    douoptions.deleteServerData =
-        function (row, callback) {
-            //wdate日期在view頁面調整成物件，但dou架構流程(row)資料破壞到，故row時間需要做轉換
-            transactionDouClientDataToServer(row, $.AppConfigOptions.baseurl + 'ConUnitPerson/Delete',
-                function (result) {
-                    {
-                        alert('資料刪除成功');
-                        location.reload();
-                    }
-                })
-        };
+    douoptions.deleteServerData = function (row, callback) {
+        transactionDouClientDataToServer(row, $.AppConfigOptions.baseurl + 'ConUnitPerson/Delete',
+            function (result) {                
+                {
+                    callback(result);
+                    setTimeout(function () {
+                        setPermissions();
+                    }, 550);  
+                }
+            }         
+        );
+    }
 
-    var $_masterTable = $("#_table").DouEditableTable(douoptions).on($.dou.events.delete, function (e, row) {
-        setPermissions();
-    }); //初始dou table
+    var $_masterTable = $("#_table").DouEditableTable(douoptions); //初始dou table
 
     //文字
     $('.bootstrap-table .btn-toolbar .btn-add-data-manager').text('人員新增');
@@ -158,16 +127,20 @@
     //修改權限設定
     function setPermissions() {
 
-        $('.bootstrap-table .fixed-table-container .btn-update-data-manager').hide();
-        $('.bootstrap-table .fixed-table-container .btn-delete-data-manager').hide();
+        //文字
+        $('.bootstrap-table .fixed-table-container .btn-update-data-manager').text('編輯');
+        $('.bootstrap-table .fixed-table-container .btn-update-data-manager').removeClass('glyphicon-pencil');
+        $('.bootstrap-table .fixed-table-container .btn-update-data-manager').addClass('text-white bg-primary');
+
+        $('.bootstrap-table .fixed-table-container .btn-delete-data-manager').text('刪除');
+        $('.bootstrap-table .fixed-table-container .btn-delete-data-manager').removeClass('glyphicon-trash');
 
         //其它單位只能檢視
-        //////datas[0].ConUnit
         $.each($('.bootstrap-table.conunitpersoncontroller table.table tbody tr'), function (index, value) {
             if (ConUnitName != '' && ConUnitName != $(this).find('.dou-field-ConUnit').text()) {
-                $(this).find('#btnEdit').hide();
-                $(this).find('#btnDelete').hide();
+                $(this).find('.btn-update-data-manager').hide();
+                $(this).find('.btn-delete-data-manager').hide();
             }
-        });        
+        });
     }
 })

@@ -112,6 +112,9 @@ namespace DEDS.Controllers.Comm
         {
             try
             {
+                if (Ids == null)
+                    return Json(new { result = false, errorMessage = "Ids：不可為Null" });
+
                 //確認日期更新
                 var f = GetModelEntity();
                 var iquery = f.GetAll().Where(a => Ids.Any(b => b == a.Id));
