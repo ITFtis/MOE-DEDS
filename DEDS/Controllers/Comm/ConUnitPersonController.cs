@@ -1,5 +1,7 @@
-﻿using DEDS.Models;
+﻿using Antlr.Runtime.Misc;
+using DEDS.Models;
 using DEDS.Models.Comm;
+using DEDS.Models.Manager;
 using Dou.Controllers;
 using Dou.Misc;
 using Dou.Models.DB;
@@ -8,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using static Google.Cloud.RecaptchaEnterprise.V1.TransactionData.Types;
 
 namespace DEDS.Controllers.Comm
 {
@@ -40,6 +43,14 @@ namespace DEDS.Controllers.Comm
                 {
                     ViewBag.ConUnitName = v.Name;
                 }
+                else
+                {
+                    //user帳號位設定ConUnit(緊急應變單位)
+                    ViewBag.ConUnitName = "xx";
+                }
+
+                //IsOrgStaff 幕僚人員                
+                ViewBag.IsOrgStaff = GetModelEntity().GetAll().Any(a => a.ConType == 2 && a.Name == user.Name);                
             }
 
             return View();
@@ -55,7 +66,40 @@ namespace DEDS.Controllers.Comm
             var query = base.GetDataDBObject(dbEntity, paras);
 
             //預設條件
-            query = query.Where(a => ConUnitCodeItems.ConUnitCodes.Any(b => b.Code == a.ConUnit));
+            var user = Dou.Context.CurrentUser<DEDS.Models.Manager.User>();
+            bool IsOrgCity = user.Unit != null && user.Unit != "23";     //環境部(23)
+
+            if (IsOrgCity)
+            {
+                //縣市：聯繫窗口+該縣市，但只能修改自己
+                query = query.Where(a => ConUnitCodeItems.ConUnitCodes.Any(b => b.Code == a.ConUnit));
+
+                var q2 = base.GetDataDBObject(dbEntity, paras);
+                q2 = q2.Where(a => a.ConType == 1);
+
+                var ConUnitCodes = ConUnitCode.GetAllDatas();
+                Function fun = new Function();
+                var citys = fun.GetUnit();
+                foreach (var v in q2)
+                {
+                    var f = ConUnitCodes.Where(a => a.Code == v.ConUnit).FirstOrDefault();
+                    if (f != null)
+                    {
+                        var c = citys.Where(a => a.CityId == user.Unit).FirstOrDefault();
+                        //因下拉有包含自己縣市，不做轉換
+                        if (c != null && c.Sector != f.Name)
+                        {
+                            v.ConUnit = f.Name;
+                        }
+                    }
+                }
+
+                query = query.Concat(q2).Distinct();                
+            }
+            else
+            {
+                query = query.Where(a => ConUnitCodeItems.ConUnitCodes.Any(b => b.Code == a.ConUnit));
+            }
 
             KeyValueParams ksort = paras.FirstOrDefault((KeyValueParams s) => s.key == "sort");
             KeyValueParams korder = paras.FirstOrDefault((KeyValueParams s) => s.key == "order");

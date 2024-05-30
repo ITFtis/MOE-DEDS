@@ -75,15 +75,15 @@ namespace DEDS.Models.Comm
                     {
                     }
                     else if (ConUnit != null)
-                    {
-                        //環境部(23)檢視所有單位資料，但只能修改自己
+                    {                        
                         string unit = Dou.Context.CurrentUser<User>().Unit;
                         if (unit == "23")
                         {
-                            //全部
+                            //環境部(23)檢視所有單位資料，但只能修改自己
                         }
                         else
                         {
+                            //縣市：該縣市，但只能修改自己
                             datas = datas.Where(a => a.Code == ConUnit);
                         }
                     }

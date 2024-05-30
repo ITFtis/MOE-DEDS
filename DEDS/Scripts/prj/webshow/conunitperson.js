@@ -137,7 +137,11 @@
 
         //其它單位只能檢視
         $.each($('.bootstrap-table.conunitpersoncontroller table.table tbody tr'), function (index, value) {
-            if (ConUnitName != '' && ConUnitName != $(this).find('.dou-field-ConUnit').text()) {
+
+            var a = ConUnitName != '' && ConUnitName != $(this).find('.dou-field-ConUnit').text();
+            var b = IsOrgStaff;
+
+            if (a || b) {
                 $(this).find('.btn-update-data-manager').hide();
                 $(this).find('.btn-delete-data-manager').hide();
             }
