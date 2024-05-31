@@ -58,6 +58,17 @@
     }
 
     douoptions.afterCreateEditDataForm = function ($container, row) {
+
+        //只有admin可以跨應變單位編輯及新增(下拉挑選)
+        if (!LoginIsManager) {
+            $('.data-edit-form-group [data-fn="ConUnit"] > option').each(function () {
+                var conUnit = $(this).val();
+                if (conUnit != LoginConUnit) {
+                    $(this).remove();
+                }
+            });
+        }
+
         //加提示字
         var $p1 = $('div[data-field=ConUnit]').find('label');
         var remind = '<span class="text-danger fw-lighter ms-2">*</span>';
@@ -144,7 +155,7 @@
         //其它單位只能檢視
         $.each($('.bootstrap-table.conunitpersoncontroller table.table tbody tr'), function (index, value) {
 
-            var a = ConUnitName != '' && ConUnitName != $(this).find('.dou-field-ConUnit').text();
+            var a = LoginConUnitName != '' && LoginConUnitName != $(this).find('.dou-field-ConUnit').text();
             var b = IsOrgStaff;
 
             if (a || b) {

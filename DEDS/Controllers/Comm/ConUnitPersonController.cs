@@ -41,17 +41,20 @@ namespace DEDS.Controllers.Comm
                 var v = DEDS.Models.Comm.ConUnitCodeItems.ConUnitCodes.Where(a => a.Code == conUnit).FirstOrDefault();
                 if (v != null)
                 {
-                    ViewBag.ConUnitName = v.Name;
+                    ViewBag.LoginConUnitName = v.Name;
                 }
                 else
                 {
                     //user帳號位設定ConUnit(緊急應變單位)
-                    ViewBag.ConUnitName = "xx";
+                    ViewBag.LoginConUnitName = "xx";
                 }
 
                 //IsOrgStaff 幕僚人員                
                 ViewBag.IsOrgStaff = GetModelEntity().GetAll().Any(a => a.ConType == 2 && a.Name == user.Name);                
             }
+
+            ViewBag.LoginIsManager = user.IsManager;
+            ViewBag.LoginConUnit = user.ConUnit;
 
             return View();
         }
