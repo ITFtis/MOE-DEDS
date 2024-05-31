@@ -71,9 +71,10 @@ namespace DEDS.Controllers.Comm
 
             if (IsOrgCity)
             {
-                //縣市：聯繫窗口+該縣市，但只能修改自己
+                //應變單位(縣市)：該縣市+聯繫窗口，但只能修改自己(query)
                 query = query.Where(a => ConUnitCodeItems.ConUnitCodes.Any(b => b.Code == a.ConUnit));
 
+                //檢視可看聯絡窗口(q2)
                 var q2 = base.GetDataDBObject(dbEntity, paras);
                 q2 = q2.Where(a => a.ConType == 1);
 
@@ -86,7 +87,7 @@ namespace DEDS.Controllers.Comm
                     if (f != null)
                     {
                         var c = citys.Where(a => a.CityId == user.Unit).FirstOrDefault();
-                        //因下拉有包含自己縣市，不做轉換
+                        //特殊處理，(應變單位)下拉有權限設計，有符合對應不轉換中文。
                         if (c != null && c.Sector != f.Name)
                         {
                             v.ConUnit = f.Name;
@@ -109,8 +110,9 @@ namespace DEDS.Controllers.Comm
             }
             else
             {
-                //預設排序                
-                query = query.OrderBy(a => a.ConUnitSort).ThenBy(a => a.PSort);
+                //預設排序(備註：應變單位(縣市)，因特殊處理造成ConUnit變中文，目前使用可接受)                
+                query = query.OrderBy(a => a.EditSort)
+                            .ThenBy(a => a.ConUnitSort).ThenBy(a => a.PSort);                
             }
 
             return query;

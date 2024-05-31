@@ -104,6 +104,17 @@ namespace DEDS.Models.Comm
         [Display(Name = "人員排序")]
         public int? PSort { get; set; }
 
+        [Display(Name = "清單(編輯按鈕)排序")]
+        [ColumnDef(Visible = false, VisibleEdit = false)]
+        public int EditSort
+        {
+            get
+            {
+                var conUnit = Dou.Context.CurrentUser<DEDS.Models.Manager.User>().ConUnit;
+                return conUnit == this.ConUnit ? 0 : 1;
+            }
+        }
+
         [Display(Name = "應變單位排序")]
         [ColumnDef(Visible = false, VisibleEdit = false)]
         public int ConUnitSort
