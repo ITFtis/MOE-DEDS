@@ -106,10 +106,10 @@ namespace DEDS.Controllers.Manager
                                 Password = Dou.Context.Config.PasswordEncode(user.Password.Trim()),
                                 Enabled = true,
                                 IsManager = false,
-                                Unit = OldsysInfo.CityId.ToString(),
-                                Mobile = OldsysInfo.MobilePhone.ToString(),
-                                Tel = OldsysInfo.OfficePhone.ToString(),
-                                EMail = OldsysInfo.Email.ToString(),
+                                Unit = OldsysInfo.CityId == null ? "": OldsysInfo.CityId.ToString(),
+                                Mobile = OldsysInfo.MobilePhone == null ? "" : OldsysInfo.MobilePhone.ToString(),
+                                Tel = OldsysInfo.OfficePhone == null ? "" : OldsysInfo.OfficePhone.ToString(),
+                                EMail = OldsysInfo.Email == null ? "" : OldsysInfo.Email.ToString(),
                                 Organize = OldsysInfo.Duty == null ? "" : OldsysInfo.Duty.ToString(),
                                 RoleUsers = new RoleUser[] { new RoleUser { RoleId = defaultRoleId, UserId = user.Id } }.ToList()
                             };
