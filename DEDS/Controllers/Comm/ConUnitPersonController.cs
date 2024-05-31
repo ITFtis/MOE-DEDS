@@ -160,6 +160,14 @@ namespace DEDS.Controllers.Comm
                 field.align = "left";
             }
 
+            //IsOrgStaff 幕僚人員
+            var user = Dou.Context.CurrentUser<DEDS.Models.Manager.User>();
+            bool isOrgStaff = GetModelEntity().GetAll().Any(a => a.ConType == 2 && a.Name == user.Name);
+            if (isOrgStaff)
+            {
+                opts.addable = false;
+            }
+
             return opts;
         }
 

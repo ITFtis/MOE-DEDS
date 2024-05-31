@@ -9,47 +9,50 @@
         }
     }
 
-    var a = {};
-    a.item = '<span class="btn btn-secondary glyphicon glyphicon-download-alt"> 檢核確認</span>';
-    a.event = 'click .glyphicon-download-alt';
-    a.callback = function importQdate(a, b, c, d) {
+    //幕僚人員不能檢核確認
+    if (!IsOrgStaff) {
+        var a = {};
+        a.item = '<span class="btn btn-secondary glyphicon glyphicon-download-alt"> 檢核確認</span>';
+        a.event = 'click .glyphicon-download-alt';
+        a.callback = function importQdate(a, b, c, d) {
 
-        var aryIds = [];
+            var aryIds = [];
 
-        //$('.bootstrap-table #_table tbody tr').find('#skey').each(function (index) {
-        $('.bootstrap-table #_table tbody tr').each(function (index) {
-            if ($(this).find('.btn-update-data-manager').is(":visible")) {
-                var Id = $(this).find('#skey').html();
-                aryIds.push(Id);
-            }
-        })
-
-        helper.misc.showBusyIndicator();
-        $.ajax({
-            url: app.siteRoot + 'ConUnitPerson/UpdateConfirm',
-            datatype: "json",
-            type: "Post",
-            data: { "Ids": aryIds },
-            success: function (data) {
-                if (data.result) {
-                    alert("確認資料成功");
-                    $('.filter-toolbar-plus .btn-confirm').trigger('click');
-                } else {
-                    alert("確認資料失敗：\n" + data.errorMessage);
+            //$('.bootstrap-table #_table tbody tr').find('#skey').each(function (index) {
+            $('.bootstrap-table #_table tbody tr').each(function (index) {
+                if ($(this).find('.btn-update-data-manager').is(":visible")) {
+                    var Id = $(this).find('#skey').html();
+                    aryIds.push(Id);
                 }
-            },
-            complete: function () {
-                helper.misc.hideBusyIndicator();
-            },
-            error: function (xhr, status, error) {
-                var err = eval("(" + xhr.responseText + ")");
-                alert(err.Message);
-                helper.misc.hideBusyIndicator();
-            }
-        });
-    };
+            })
 
-    douoptions.appendCustomToolbars = [a];
+            helper.misc.showBusyIndicator();
+            $.ajax({
+                url: app.siteRoot + 'ConUnitPerson/UpdateConfirm',
+                datatype: "json",
+                type: "Post",
+                data: { "Ids": aryIds },
+                success: function (data) {
+                    if (data.result) {
+                        alert("確認資料成功");
+                        $('.filter-toolbar-plus .btn-confirm').trigger('click');
+                    } else {
+                        alert("確認資料失敗：\n" + data.errorMessage);
+                    }
+                },
+                complete: function () {
+                    helper.misc.hideBusyIndicator();
+                },
+                error: function (xhr, status, error) {
+                    var err = eval("(" + xhr.responseText + ")");
+                    alert(err.Message);
+                    helper.misc.hideBusyIndicator();
+                }
+            });
+        };
+
+        douoptions.appendCustomToolbars = [a];
+    }
 
     douoptions.afterAddServerData = function (row, callback) {
         $_masterTable.douTable('destroy');
