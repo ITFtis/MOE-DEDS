@@ -66,31 +66,31 @@ namespace DEDS.Models.Comm
             get
             {
                 if (_conUnitCode == null)
-                {
-                    string ConUnit = Dou.Context.CurrentUser<User>().ConUnit;
-                    bool IsManager = Dou.Context.CurrentUser<User>().IsManager;
-
+                {                    
                     var datas = ConUnitCode.GetAllDatas();
-                    if (IsManager)
-                    {
-                    }
-                    else if (ConUnit != null)
-                    {                        
-                        string unit = Dou.Context.CurrentUser<User>().Unit;
-                        if (unit == "23")
-                        {
-                            //環境部(23)檢視所有單位資料，但只能修改自己
-                        }
-                        else
-                        {
-                            //縣市：該縣市，但只能修改自己
-                            datas = datas.Where(a => a.Code == ConUnit);
-                        }
-                    }
-                    else
-                    {
-                        datas = datas.Take(0);
-                    }
+
+                    ////string ConUnit = Dou.Context.CurrentUser<User>().ConUnit;
+                    ////bool IsManager = Dou.Context.CurrentUser<User>().IsManager;
+                    ////if (IsManager)
+                    ////{
+                    ////}
+                    ////else if (ConUnit != null)
+                    ////{                        
+                    ////    string unit = Dou.Context.CurrentUser<User>().Unit;
+                    ////    if (unit == "23")
+                    ////    {
+                    ////        //環境部(23)檢視所有單位資料，但只能修改自己
+                    ////    }
+                    ////    else
+                    ////    {
+                    ////        //縣市：該縣市，但只能修改自己
+                    ////        datas = datas.Where(a => a.Code == ConUnit);
+                    ////    }
+                    ////}
+                    ////else
+                    ////{
+                    ////    datas = datas.Take(0);
+                    ////}
 
                     _conUnitCode = datas.OrderBy(a => a.Sort).ToArray();
                 }

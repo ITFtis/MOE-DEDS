@@ -45,7 +45,7 @@ namespace DEDS.Controllers.Comm
                 }
                 else
                 {
-                    //user帳號位設定ConUnit(緊急應變單位)
+                    //User沒設定應變單位，預設xx，view控制不顯示編輯功能
                     ViewBag.LoginConUnitName = "xx";
                 }
 
@@ -69,41 +69,47 @@ namespace DEDS.Controllers.Comm
             var query = base.GetDataDBObject(dbEntity, paras);
 
             //預設條件
+            query = query.Where(a => ConUnitCodeItems.ConUnitCodes.Any(b => b.Code == a.ConUnit));
+
             var user = Dou.Context.CurrentUser<DEDS.Models.Manager.User>();
             bool IsOrgCity = user.Unit != null && user.Unit != "23";     //環境部(23)
-
             if (IsOrgCity)
             {
-                //應變單位(縣市)：該縣市+聯繫窗口，但只能修改自己(query)
-                query = query.Where(a => ConUnitCodeItems.ConUnitCodes.Any(b => b.Code == a.ConUnit));
-
-                //檢視可看聯絡窗口(q2)
-                var q2 = base.GetDataDBObject(dbEntity, paras);
-                q2 = q2.Where(a => a.ConType == 1);
-
-                var ConUnitCodes = ConUnitCode.GetAllDatas();
-                Function fun = new Function();
-                var citys = fun.GetUnit();
-                foreach (var v in q2)
-                {
-                    var f = ConUnitCodes.Where(a => a.Code == v.ConUnit).FirstOrDefault();
-                    if (f != null)
-                    {
-                        var c = citys.Where(a => a.CityId == user.Unit).FirstOrDefault();
-                        //特殊處理，(應變單位)下拉有權限設計，有符合對應不轉換中文。
-                        if (c != null && c.Sector != f.Name)
-                        {
-                            v.ConUnit = f.Name;
-                        }
-                    }
-                }
-
-                query = query.Concat(q2).Distinct();                
+                query = query.Where(a => a.ConType == 1);
             }
-            else
-            {
-                query = query.Where(a => ConUnitCodeItems.ConUnitCodes.Any(b => b.Code == a.ConUnit));
-            }
+
+            ////if (IsOrgCity)
+            ////{
+            ////    //應變單位(縣市)：該縣市+聯繫窗口，但只能修改自己(query)
+            ////    query = query.Where(a => ConUnitCodeItems.ConUnitCodes.Any(b => b.Code == a.ConUnit));
+
+            ////    //檢視可看聯絡窗口(q2)
+            ////    var q2 = base.GetDataDBObject(dbEntity, paras);
+            ////    q2 = q2.Where(a => a.ConType == 1);
+
+            ////    var ConUnitCodes = ConUnitCode.GetAllDatas();
+            ////    Function fun = new Function();
+            ////    var citys = fun.GetUnit();
+            ////    foreach (var v in q2)
+            ////    {
+            ////        var f = ConUnitCodes.Where(a => a.Code == v.ConUnit).FirstOrDefault();
+            ////        if (f != null)
+            ////        {
+            ////            var c = citys.Where(a => a.CityId == user.Unit).FirstOrDefault();
+            ////            //特殊處理，(應變單位)下拉有權限設計，有符合對應不轉換中文。
+            ////            if (c != null && c.Sector != f.Name)
+            ////            {
+            ////                v.ConUnit = f.Name;
+            ////            }
+            ////        }
+            ////    }
+
+            ////    query = query.Concat(q2).Distinct();                
+            ////}
+            ////else
+            ////{
+            ////    query = query.Where(a => ConUnitCodeItems.ConUnitCodes.Any(b => b.Code == a.ConUnit));
+            ////}
 
             KeyValueParams ksort = paras.FirstOrDefault((KeyValueParams s) => s.key == "sort");
             KeyValueParams korder = paras.FirstOrDefault((KeyValueParams s) => s.key == "order");
