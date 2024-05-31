@@ -96,6 +96,12 @@
         setPermissions();
     }
 
+    douoptions.tableOptions.onSort = function (name, order) {
+        setTimeout(function () {
+            setPermissions();
+        }, 30);
+    }
+
     douoptions.afterAddServerData = douoptions.afterUpdateServerData = function (row, callback) {
         callback();
         setPermissions();
