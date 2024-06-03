@@ -50,7 +50,7 @@ namespace DEDS.Controllers.Comm
                 }
 
                 //IsOrgStaff 幕僚人員                
-                ViewBag.IsOrgStaff = GetModelEntity().GetAll().Any(a => a.ConType == 2 && a.Name == user.Name);                
+                ViewBag.IsOrgStaff = IsOrgStaffByName(user.Name);
             }
 
             ViewBag.LoginIsManager = user.IsManager;
@@ -162,7 +162,7 @@ namespace DEDS.Controllers.Comm
 
             //IsOrgStaff 幕僚人員
             var user = Dou.Context.CurrentUser<DEDS.Models.Manager.User>();
-            bool isOrgStaff = GetModelEntity().GetAll().Any(a => a.ConType == 2 && a.Name == user.Name);
+            bool isOrgStaff = IsOrgStaffByName(user.Name);
             if (isOrgStaff)
             {
                 opts.addable = false;
@@ -208,6 +208,20 @@ namespace DEDS.Controllers.Comm
             {
                 return Json(new { result = false, errorMessage = ex.Message });
             }
+        }
+
+        private bool IsOrgStaffByName(string name) {
+
+            bool result = false;
+
+            //幕僚人員，若同時聯繫窗口與幕僚人員(此非幕僚人員)
+            var models = GetModelEntity().GetAll();
+            var names = models.Where(a => a.ConType == 1).Select(a => a.Name);
+
+            result = models.Where(a => !names.Any(b =>b == a.Name))
+                        .Any(a => a.ConType == 2 && a.Name == name);
+
+            return result;
         }
     }
 }
