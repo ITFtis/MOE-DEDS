@@ -1,4 +1,4 @@
-﻿<script src="~/Scripts/prj/webshow/conunitperson.js?v=20240531001"></script>
+﻿<script src="~/Scripts/prj/webshow/conunitperson.js?v=20240605001"></script>
 @using Dou.Misc.Extension
 @Html.MenuMap()
 @Html.DataManagerOptionsJavascript(null, "douoptions")
@@ -14,12 +14,56 @@
         }
     }*/
 
-    .bootstrap-table .fixed-table-container .fixed-table-body table tbody tr td {        
-        word-break: break-all;
+   /* .bootstrap-table thead th {
+        width: 10%;
+    }*/
+
+    .bootstrap-table thead .dou-field-ConUnit {
+        width: 10%;
     }
 
-    .bootstrap-table .fixed-table-container .fixed-table-body table thead th {
+    .bootstrap-table thead .dou-field-ConType {
+        width: 6%;
+    }
+
+    .bootstrap-table thead .dou-field-Name {
+        width: 6%;
+    }
+
+    .bootstrap-table thead .dou-field-Position {
         width: 10%;
+    }
+
+    .bootstrap-table thead .dou-field-Tel {
+        width: 15%;
+    }
+
+    .bootstrap-table thead .dou-field-Mobile {
+        width: 10%;
+    }
+
+    .bootstrap-table thead .dou-field-HTel {
+        width: 9%;
+    }
+
+    .bootstrap-table thead .dou-field-EMail {
+        width: 18%;
+    }
+
+    .bootstrap-table thead .dou-field-Remark {
+        width: 10%;
+    }
+
+    .bootstrap-table thead .dou-field-PSort {
+        width: 6%;
+    }
+
+    .bootstrap-table thead .dou-field-StrConfirmDate {
+        width: 10%;
+    }
+
+    .bootstrap-table tbody tr td {        
+        word-break: break-all;
     }
 
     /*.bootstrap-table .fixed-table-container .fixed-table-body table thead th {
