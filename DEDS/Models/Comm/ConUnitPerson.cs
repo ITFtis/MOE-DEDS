@@ -1,4 +1,5 @@
 ﻿using Dou.Misc.Attr;
+using NPOI.SS.Util;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -95,7 +96,7 @@ namespace DEDS.Models.Comm
         public string UName { get; set; }
 
         [Display(Name = "確認日期")]
-        [ColumnDef(VisibleEdit = false)]
+        [ColumnDef(Visible = false, VisibleEdit = false)]
         public DateTime? ConfirmDate { get; set; }
 
         /// <summary>
@@ -123,6 +124,21 @@ namespace DEDS.Models.Comm
             {
                 var code = ConUnitCodeItems.ConUnitCodes.Where(a => a.Code == this.ConUnit).FirstOrDefault();
                 return code == null ? 0 : code.Sort;                
+            }
+        }
+
+        [Display(Name = "確認日期")]
+        [ColumnDef(Visible = false, VisibleEdit = false)]
+        public string StrConfirmDate
+        { 
+            get
+            {
+                string date = this.ConfirmDate == null ? "" : this.ConfirmDate.ToString();
+                if (date == null)
+                    return "";
+
+                string result = DEDS.DateFormat.ToDate4(date) + "<br/>" + DEDS.DateFormat.ToDate12(date);
+                return result;
             }
         }
     }

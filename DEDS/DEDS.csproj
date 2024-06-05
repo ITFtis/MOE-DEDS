@@ -371,6 +371,7 @@
     <Compile Include="_core\Code.cs" />
     <Compile Include="_core\CommonFunc.cs" />
     <Compile Include="_core\Constant.cs" />
+    <Compile Include="_core\DateFormat.cs" />
     <Compile Include="_core\XmlHelper.cs" />
   </ItemGroup>
   <ItemGroup>

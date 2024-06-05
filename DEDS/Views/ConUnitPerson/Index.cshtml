@@ -3,6 +3,31 @@
 @Html.MenuMap()
 @Html.DataManagerOptionsJavascript(null, "douoptions")
 
+<style>
+    /*.bootstrap-table .fixed-table-container .fixed-table-body .dou-field-strExpertises {
+        white-space: break-spaces;
+
+        .bootstrap-table .fixed-table-container .fixed-table-body table tbody tr td {
+
+        .bootstrap-table .fixed-table-container .fixed-table-body table thead [data-field="EMail"] {
+            width: 10%;
+        }
+    }*/
+
+    .bootstrap-table .fixed-table-container .fixed-table-body table tbody tr td {        
+        word-break: break-all;
+    }
+
+    .bootstrap-table .fixed-table-container .fixed-table-body table thead th {
+        width: 10%;
+    }
+
+    /*.bootstrap-table .fixed-table-container .fixed-table-body table thead th {
+        word-break: break-all
+    }*/
+
+</style>
+
 <table id="_table"></table>
 
 <script>

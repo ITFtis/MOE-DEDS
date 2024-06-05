@@ -168,6 +168,8 @@ namespace DEDS.Controllers.Comm
                 opts.addable = false;
             }
 
+            opts.GetFiled("StrConfirmDate").visible = true;
+
             return opts;
         }
 
