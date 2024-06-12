@@ -19,6 +19,7 @@ namespace DEDS.Models.Comm
         public virtual string UID { get; set; }
 
         [ColumnDef(Display = "姓名", Index = 1, Required = true, Filter = true, EditType = EditType.TextList, SelectItemsClassNamespace = "DEDS.Models.Comm.NameSelectItems, DEDS")]
+        [StringLength(200)]
         public string Name { get; set; }
 
         [ColumnDef(Display = "單位", Index = 0, Visible = false, Required = true, VisibleEdit = true, Filter = true, SelectGearingWith = "Name,CityID,false", EditType = EditType.Select, SelectItemsClassNamespace = "DEDS.Models.Comm.CityIDSelectItems, DEDS")]

@@ -14,6 +14,7 @@ namespace DEDS.Models.Manager
     public class User : Dou.Models.UserBaseExt
     {
         [ColumnDef(Display = "名稱", Index = 2)]
+        [StringLength(200)]
         public override string Name { set; get; }
 
 
