@@ -7,6 +7,17 @@
 @Html.DataManagerOptionsJavascript("#" + _containerId, var_options)
 @Html.Raw(Html.MenuJavascript("allmenuitems"))
 <div id="@_containerId"><table></table></div>
+
+<style>
+    .bootstrap-table thead .dou-field-Name {
+        width: 4%;
+    }
+
+    .bootstrap-table tbody tr td {
+        word-break: break-all;
+    }
+</style>
+
 <script>
     $(document).ready(function () {
         var permisssionFuncs = {
