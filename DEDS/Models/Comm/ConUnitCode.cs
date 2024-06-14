@@ -1,6 +1,7 @@
 ﻿using DEDS.Models.Manager;
 using Dou.Misc.Attr;
 using DouHelper;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -75,30 +76,6 @@ namespace DEDS.Models.Comm
                 if (_conUnitCode == null)
                 {                    
                     var datas = ConUnitCode.GetAllDatas();
-
-                    ////string ConUnit = Dou.Context.CurrentUser<User>().ConUnit;
-                    ////bool IsManager = Dou.Context.CurrentUser<User>().IsManager;
-                    ////if (IsManager)
-                    ////{
-                    ////}
-                    ////else if (ConUnit != null)
-                    ////{                        
-                    ////    string unit = Dou.Context.CurrentUser<User>().Unit;
-                    ////    if (unit == "23")
-                    ////    {
-                    ////        //環境部(23)檢視所有單位資料，但只能修改自己
-                    ////    }
-                    ////    else
-                    ////    {
-                    ////        //縣市：該縣市，但只能修改自己
-                    ////        datas = datas.Where(a => a.Code == ConUnit);
-                    ////    }
-                    ////}
-                    ////else
-                    ////{
-                    ////    datas = datas.Take(0);
-                    ////}
-
                     _conUnitCode = datas.OrderBy(a => a.Sort).ToArray();
                 }
                 return _conUnitCode;
@@ -109,10 +86,12 @@ namespace DEDS.Models.Comm
         public static void Reset()
         {
             _conUnitCode = null;
+            ConUnitCode.ResetGetAllDatas();
         }
         public override IEnumerable<KeyValuePair<string, object>> GetSelectItems()
-        {            
-            return ConUnitCodes.Select(s => new KeyValuePair<string, object>(s.Code, s.Name));
+        {
+            //return ConUnitCodes.Select(s => new KeyValuePair<string, object>(s.Code, s.Name));            
+            return ConUnitCodes.Select(s => new KeyValuePair<string, object>(s.Code, JsonConvert.SerializeObject(new { v = s.Name, CusOrg1 = s.CusOrg1 })));
         }
     }
 }

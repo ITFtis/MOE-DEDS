@@ -189,7 +189,8 @@ namespace DEDS.Controllers.Comm
             if (!string.IsNullOrEmpty(CusOrg1))
             {
                 int num = int.Parse(CusOrg1);
-                iquery = iquery.Where(a => a.CusOrg1 == num);
+                var list = ConUnitCode.GetAllDatas().Where(a => a.CusOrg1 == num);               
+                iquery = iquery.Where(a => list.Any(b => b.Code == a.ConUnit));
             }
 
             return iquery;

@@ -1,4 +1,5 @@
 ﻿using Dou.Misc.Attr;
+using EnumsNET;
 using NPOI.SS.Util;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,14 @@ namespace DEDS.Models.Comm
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [ColumnDef(Visible = false, VisibleEdit = false)]
         public int Id { get; set; }
-        
+
+        //客製化組織1
+        [Display(Name = "組織查詢")]
+        [ColumnDef(Visible = false, VisibleEdit = false, EditType = EditType.Select,
+                    Filter = true, SelectItemsClassNamespace = DEDS.CusOrg1SelectItems.AssemblyQualifiedName,
+                    SelectGearingWith = "ConUnit,CusOrg1")]
+        public int CusOrg1 { get; }
+
         [Required]
         [Display(Name = "應變單位")]
         [ColumnDef(EditType = EditType.Select, SelectItemsClassNamespace = DEDS.Models.Comm.ConUnitCodeItems.AssemblyQualifiedName,
@@ -125,23 +133,7 @@ namespace DEDS.Models.Comm
                 var code = ConUnitCodeItems.ConUnitCodes.Where(a => a.Code == this.ConUnit).FirstOrDefault();
                 return code == null ? 0 : code.Sort;                
             }
-        }
-
-        //客製化組織1
-        [Display(Name = "組織查詢")]
-        [ColumnDef(Visible = false, VisibleEdit = false, EditType = EditType.Select,
-            Filter = true, SelectItemsClassNamespace = DEDS.CusOrg1SelectItems.AssemblyQualifiedName)]
-        public int CusOrg1
-        {
-            get
-            {
-                var v = ConUnitCode.GetAllDatas().Where(a => a.Code == this.ConUnit).FirstOrDefault();
-                if (v != null)
-                    return v.CusOrg1;
-                else
-                    return 0;
-            }
-        }
+        }       
 
         [Display(Name = "確認日期")]
         [ColumnDef(Visible = false, VisibleEdit = false)]
