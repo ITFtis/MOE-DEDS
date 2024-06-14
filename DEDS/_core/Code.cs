@@ -21,6 +21,19 @@ namespace DEDS
 
             return result;
         }
+
+        /// <summary>
+        /// 組織查詢(使用者組織1)
+        /// </summary>
+        /// <returns></returns>
+        public static IEnumerable<KeyValuePair<string, object>> GetUserOrg1()
+        {
+            IEnumerable<KeyValuePair<string, object>> result = new List<KeyValuePair<string, object>>();
+            result = result.Append(new KeyValuePair<string, object>("1", "環境部全部"));
+            result = result.Append(new KeyValuePair<string, object>("2", "環保局全部"));
+
+            return result;
+        }
     }
 
     #region Code下拉集合

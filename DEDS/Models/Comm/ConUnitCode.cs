@@ -1,4 +1,5 @@
 ﻿using DEDS.Models.Manager;
+using Dou.Misc.Attr;
 using DouHelper;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,11 @@ namespace DEDS.Models.Comm
 
         [Display(Name = "排序")]
         public int Sort { get; set; }
+
+        [Display(Name = "組織查詢")]
+        [ColumnDef(EditType = EditType.Select,
+            Filter = true, SelectItemsClassNamespace = DEDS.Models.Manager.UserOrg1SelectItems.AssemblyQualifiedName)]
+        public int UserOrg1 { get; set; }
 
         static object lockGetAllDatas = new object();
         public static IEnumerable<ConUnitCode> GetAllDatas(int cachetimer = 0)

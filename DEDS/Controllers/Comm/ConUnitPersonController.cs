@@ -78,38 +78,12 @@ namespace DEDS.Controllers.Comm
                 query = query.Where(a => a.ConType == 1);
             }
 
-            ////if (IsOrgCity)
-            ////{
-            ////    //應變單位(縣市)：該縣市+聯繫窗口，但只能修改自己(query)
-            ////    query = query.Where(a => ConUnitCodeItems.ConUnitCodes.Any(b => b.Code == a.ConUnit));
-
-            ////    //檢視可看聯絡窗口(q2)
-            ////    var q2 = base.GetDataDBObject(dbEntity, paras);
-            ////    q2 = q2.Where(a => a.ConType == 1);
-
-            ////    var ConUnitCodes = ConUnitCode.GetAllDatas();
-            ////    Function fun = new Function();
-            ////    var citys = fun.GetUnit();
-            ////    foreach (var v in q2)
-            ////    {
-            ////        var f = ConUnitCodes.Where(a => a.Code == v.ConUnit).FirstOrDefault();
-            ////        if (f != null)
-            ////        {
-            ////            var c = citys.Where(a => a.CityId == user.Unit).FirstOrDefault();
-            ////            //特殊處理，(應變單位)下拉有權限設計，有符合對應不轉換中文。
-            ////            if (c != null && c.Sector != f.Name)
-            ////            {
-            ////                v.ConUnit = f.Name;
-            ////            }
-            ////        }
-            ////    }
-
-            ////    query = query.Concat(q2).Distinct();                
-            ////}
-            ////else
-            ////{
-            ////    query = query.Where(a => ConUnitCodeItems.ConUnitCodes.Any(b => b.Code == a.ConUnit));
-            ////}
+            var UserOrg1 = Dou.Misc.HelperUtilities.GetFilterParaValue(paras, "UserOrg1");
+            if (UserOrg1 != null)
+            {
+                int intUserOrg1 = int.Parse(UserOrg1);
+                query = query.Where(a => a.UserOrg1 == intUserOrg1);                
+            }
 
             KeyValueParams ksort = paras.FirstOrDefault((KeyValueParams s) => s.key == "sort");
             KeyValueParams korder = paras.FirstOrDefault((KeyValueParams s) => s.key == "order");

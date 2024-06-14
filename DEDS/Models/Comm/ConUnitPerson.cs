@@ -127,6 +127,21 @@ namespace DEDS.Models.Comm
             }
         }
 
+        [Display(Name = "組織查詢")]
+        [ColumnDef(Visible = false, VisibleEdit = false, EditType = EditType.Select,
+            Filter = true, SelectItemsClassNamespace = DEDS.Models.Manager.UserOrg1SelectItems.AssemblyQualifiedName)]
+        public int UserOrg1 
+        {
+            get
+            {
+                var v = ConUnitCode.GetAllDatas().Where(a => a.Code == this.ConUnit).FirstOrDefault();
+                if (v != null)
+                    return v.UserOrg1;
+                else
+                    return 0;
+            }
+        }
+
         [Display(Name = "確認日期")]
         [ColumnDef(Visible = false, VisibleEdit = false)]
         public string StrConfirmDate
