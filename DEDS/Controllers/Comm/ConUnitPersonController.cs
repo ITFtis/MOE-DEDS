@@ -78,11 +78,11 @@ namespace DEDS.Controllers.Comm
                 query = query.Where(a => a.ConType == 1);
             }
 
-            var UserOrg1 = Dou.Misc.HelperUtilities.GetFilterParaValue(paras, "UserOrg1");
-            if (UserOrg1 != null)
+            var CusOrg1 = Dou.Misc.HelperUtilities.GetFilterParaValue(paras, "CusOrg1");
+            if (CusOrg1 != null)
             {
-                int intUserOrg1 = int.Parse(UserOrg1);
-                query = query.Where(a => a.UserOrg1 == intUserOrg1);                
+                int intCusOrg1 = int.Parse(CusOrg1);
+                query = query.Where(a => a.CusOrg1 == intCusOrg1);                
             }
 
             KeyValueParams ksort = paras.FirstOrDefault((KeyValueParams s) => s.key == "sort");

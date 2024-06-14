@@ -66,17 +66,5 @@ namespace DEDS.Models.Manager
 
 
     }
-
-    /// <summary>
-    /// 組織查詢(使用者組織1)
-    /// </summary>
-    public class UserOrg1SelectItems : SelectItemsClass
-    {        
-        public const string AssemblyQualifiedName = "DEDS.Models.Manager.UserOrg1SelectItems, DEDS";
-
-        public override IEnumerable<KeyValuePair<string, object>> GetSelectItems()
-        {
-            return Code.GetUserOrg1();
-        }
-    }
+    
 }

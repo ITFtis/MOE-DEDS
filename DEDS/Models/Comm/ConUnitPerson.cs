@@ -127,16 +127,17 @@ namespace DEDS.Models.Comm
             }
         }
 
+        //客製化組織1
         [Display(Name = "組織查詢")]
         [ColumnDef(Visible = false, VisibleEdit = false, EditType = EditType.Select,
-            Filter = true, SelectItemsClassNamespace = DEDS.Models.Manager.UserOrg1SelectItems.AssemblyQualifiedName)]
-        public int UserOrg1 
+            Filter = true, SelectItemsClassNamespace = DEDS.CusOrg1SelectItems.AssemblyQualifiedName)]
+        public int CusOrg1
         {
             get
             {
                 var v = ConUnitCode.GetAllDatas().Where(a => a.Code == this.ConUnit).FirstOrDefault();
                 if (v != null)
-                    return v.UserOrg1;
+                    return v.CusOrg1;
                 else
                     return 0;
             }

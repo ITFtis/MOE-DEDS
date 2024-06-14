@@ -29,10 +29,11 @@ namespace DEDS.Models.Comm
         [Display(Name = "排序")]
         public int Sort { get; set; }
 
+        //組織查詢(大單位組織1)
         [Display(Name = "組織查詢")]
         [ColumnDef(EditType = EditType.Select,
-            Filter = true, SelectItemsClassNamespace = DEDS.Models.Manager.UserOrg1SelectItems.AssemblyQualifiedName)]
-        public int UserOrg1 { get; set; }
+            Filter = true, SelectItemsClassNamespace = DEDS.CusOrg1SelectItems.AssemblyQualifiedName)]
+        public int CusOrg1 { get; set; }
 
         static object lockGetAllDatas = new object();
         public static IEnumerable<ConUnitCode> GetAllDatas(int cachetimer = 0)
