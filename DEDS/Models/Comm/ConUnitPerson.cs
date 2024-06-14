@@ -111,6 +111,7 @@ namespace DEDS.Models.Comm
         /// 人員排序
         /// </summary>
         [Display(Name = "人員排序")]
+        [ColumnDef(Visible = false)]
         public int? PSort { get; set; }
 
         [Display(Name = "清單(編輯按鈕)排序")]
