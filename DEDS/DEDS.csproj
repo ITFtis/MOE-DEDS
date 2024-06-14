@@ -362,6 +362,7 @@
     <Compile Include="Models\Manager\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="_applyClass\KeyValue.cs" />
     <Compile Include="_core\APIClass\ArrayOfCountyXY.cs" />
     <Compile Include="_core\APIClass\ArrayOfFloodEvent.cs" />
     <Compile Include="_core\APIClass\FHYResultOfFHYCityData.cs" />

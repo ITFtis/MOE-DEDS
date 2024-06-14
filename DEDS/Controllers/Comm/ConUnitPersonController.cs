@@ -7,6 +7,7 @@ using Dou.Misc;
 using Dou.Models.DB;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -66,24 +67,8 @@ namespace DEDS.Controllers.Comm
 
         protected override IEnumerable<ConUnitPerson> GetDataDBObject(IModelEntity<ConUnitPerson> dbEntity, params KeyValueParams[] paras)
         {
-            var query = base.GetDataDBObject(dbEntity, paras);
-
-            //預設條件
-            query = query.Where(a => ConUnitCodeItems.ConUnitCodes.Any(b => b.Code == a.ConUnit));
-
-            var user = Dou.Context.CurrentUser<DEDS.Models.Manager.User>();
-            bool IsOrgCity = user.Unit != null && user.Unit != "23";     //環境部(23)
-            if (IsOrgCity)
-            {
-                query = query.Where(a => a.ConType == 1);
-            }
-
-            var CusOrg1 = Dou.Misc.HelperUtilities.GetFilterParaValue(paras, "CusOrg1");
-            if (CusOrg1 != null)
-            {
-                int intCusOrg1 = int.Parse(CusOrg1);
-                query = query.Where(a => a.CusOrg1 == intCusOrg1);                
-            }
+            var iquery = base.GetDataDBObject(dbEntity, paras);
+            iquery = GetOutputData(iquery, paras);
 
             KeyValueParams ksort = paras.FirstOrDefault((KeyValueParams s) => s.key == "sort");
             KeyValueParams korder = paras.FirstOrDefault((KeyValueParams s) => s.key == "order");
@@ -94,11 +79,11 @@ namespace DEDS.Controllers.Comm
             else
             {
                 //預設排序(備註：應變單位(縣市)，因特殊處理造成ConUnit變中文，目前使用可接受)                
-                query = query.OrderBy(a => a.EditSort)
+                iquery = iquery.OrderBy(a => a.EditSort)
                             .ThenBy(a => a.ConUnitSort).ThenBy(a => a.PSort);                
             }
 
-            return query;
+            return iquery;
         }
 
         protected override void AddDBObject(IModelEntity<ConUnitPerson> dbEntity, IEnumerable<ConUnitPerson> objs)
@@ -184,6 +169,30 @@ namespace DEDS.Controllers.Comm
             {
                 return Json(new { result = false, errorMessage = ex.Message });
             }
+        }
+
+        private IEnumerable<ConUnitPerson> GetOutputData(IEnumerable<ConUnitPerson> iquery, params KeyValueParams[] paras)
+        {
+            //預設條件
+            iquery = iquery.Where(a => ConUnitCodeItems.ConUnitCodes.Any(b => b.Code == a.ConUnit));
+
+            //var user = Dou.Context.CurrentUser<DEDS.Models.Manager.User>();
+            //bool IsOrgCity = user.Unit != null && user.Unit != "23";     //環境部(23)
+            //if (IsOrgCity)
+            //{
+            //    iquery = iquery.Where(a => a.ConType == 1);
+            //}
+
+            //---1.查詢---
+            var CusOrg1 = KeyValue.GetFilterParaValue(paras, "CusOrg1");
+
+            if (!string.IsNullOrEmpty(CusOrg1))
+            {
+                int num = int.Parse(CusOrg1);
+                iquery = iquery.Where(a => a.CusOrg1 == num);
+            }
+
+            return iquery;
         }
 
         private bool IsOrgStaffByName(string name) {
