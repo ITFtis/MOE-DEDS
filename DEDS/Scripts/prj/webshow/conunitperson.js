@@ -107,7 +107,7 @@
             success: function (data) {
                 if (data.result) {
                     console.log(data.result)
-                    location.href = app.siteRoot + data.url
+                    window.open(app.siteRoot + data.url);
                 } else {
                     alert(data.errorMessage)
                 }

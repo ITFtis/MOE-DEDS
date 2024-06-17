@@ -18,7 +18,8 @@ using System.Linq;
 using System.Security.Policy;
 using System.Web;
 using System.Web.Mvc;
-using static Google.Cloud.RecaptchaEnterprise.V1.TransactionData.Types;
+using System.IO;
+using Microsoft.Office.Interop.Excel;
 
 namespace DEDS.Controllers.Comm
 {
@@ -235,6 +236,7 @@ namespace DEDS.Controllers.Comm
             string url = "";
             try
             {
+                //1.匯出Excel
                 string fileTitle = "窗口_幕僚";
                 string folder = DEDS.FileHelper.GetFileFolder(Code.TempUploadFile.窗口_幕僚);
 
@@ -274,7 +276,37 @@ namespace DEDS.Controllers.Comm
                 int autoSizeColumn = 2;
 
                 string fileName = DEDS.ExcelSpecHelper.GenerateExcelByLinqF1(fileTitle, titles, list, folder, autoSizeColumn, topContents);
-                string path = folder + fileName;
+                string path = folder + fileName;                //.xlsx
+                //End Step 1
+
+                //2.轉換PDF
+                string toPdfName = System.IO.Path.GetFileNameWithoutExtension(fileName) + ".pdf";
+                string toPdfPath = folder + toPdfName;           //.pdf
+                //移除(範本)文字
+                toPdfPath = toPdfPath.Replace("(範本)", "");
+
+                // 轉換成pdf
+                var app = new Microsoft.Office.Interop.Excel.Application();
+                //開啟 Excel 檔案
+                var xlsxDocument = app.Workbooks.Open(path);
+                // 轉換為 PDF
+                try
+                {                    
+                    xlsxDocument.ExportAsFixedFormat(XlFixedFormatType.xlTypePDF, toPdfPath);                    
+                }
+                catch (Exception ex)
+                {                    
+                    Logger.Log.For(this).Error("PDF轉換失敗:" + ex.Message);
+                    Logger.Log.For(this).Error(ex.StackTrace);
+                    return Json(new { result = false, errorMessage = "PDF轉換失敗："}, JsonRequestBehavior.AllowGet);
+                }
+                finally
+                {
+                    xlsxDocument.Close();
+                    app.Quit();
+                }
+                path = toPdfPath;
+                //End Step 2
 
                 url = DEDS.Cm.PhysicalToUrl(path);
             }
