@@ -264,7 +264,7 @@ namespace DEDS
             int i = 0;
             bool exist = false;
 
-            fileName = fileTitle + "_" + DateTime.Now.ToString("yyyy-MM-dd_") + Guid.NewGuid() + ".xlsx";
+            fileName = fileTitle + "_" + DateFormat.ToDate1(DateTime.Now) + ".xlsx";
             filePathName = savePath + @"\" + fileName;
 
             FileStream file = new FileStream(filePathName, FileMode.Create);

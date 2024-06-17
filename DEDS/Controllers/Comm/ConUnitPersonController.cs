@@ -247,9 +247,11 @@ namespace DEDS.Controllers.Comm
                     dynamic f = new ExpandoObject();
                     f.序號 = serial;
                     serial++;
-                   
-                    f.應變單位 = data.ConUnit;
-                    f.身分 = data.ConType;
+
+                    var ConUnits = ConUnitCode.GetAllDatas().Where(a => a.Code == data.ConUnit);
+                    f.應變單位 = ConUnits.Count() == 0 ? data.ConUnit : ConUnits.First().Name;
+                    var ConTypes = Code.GetConType().Where(a => a.Key == data.ConType.ToString());
+                    f.身分 = ConTypes.Count() == 0 ? data.ConType : ConTypes.First().Value;
                     f.姓名 = data.Name;
                     f.職稱 = data.Position;
                     f.總機分機 = data.Tel;
