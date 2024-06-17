@@ -1,4 +1,5 @@
 ﻿using EnumsNET;
+using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using NPOI.SS.Util;
 using NPOI.XSSF.UserModel;
@@ -243,17 +244,18 @@ namespace DEDS
         }
 
         /// <summary>
-        /// 產生Excel F1 (一般)
+        /// 產生Excel F2 (一般)
         /// </summary>
         /// <param name="fileTitle">檔名開頭(報表統計_......)</param>
         /// <param name="titles">表頭文字:機車加油站基本資料欄位清單,條件1,條件2..等</param>
         /// <param name="list">多個Sheet資料</param>
         /// <param name="savePath">儲存路徑</param>
         /// <param name="autoSizeColumn">"0":不調整width,"1":自動調整長度(效能差:資料量多),"2":字串長度調整width,"3":字串長度調整width(展開)</param>
+        /// <param name="hasFooterNumber">true/false</param>
         /// <param name="topContents">特殊儲存格位置Top</param>
         /// <returns>Excel檔名</returns>
         public static string GenerateExcelByLinqF2(string fileTitle, List<string> titles, List<dynamic> list, string savePath,
-                                                int autoSizeColumn, List<string> topContents = null)
+                                                int autoSizeColumn, bool hasFooterNumber = false, List<string> topContents = null)
         {
             string fileName = "";
 
@@ -480,6 +482,14 @@ namespace DEDS
                     {
                         //不調整width
                     }
+                }
+
+                //頁尾
+                if (hasFooterNumber)
+                {
+                    IFooter footer = mySheet1.Footer;
+                    //footer.Center = "Page " + HSSFFooter.Page + " of " + HSSFFooter.NumPages;
+                    footer.Center = HSSFFooter.Page;
                 }
             }
 
