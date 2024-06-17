@@ -226,6 +226,10 @@ namespace DEDS.Controllers.Comm
             var iquery = base.GetDataDBObject(IModel, paras);
             iquery = GetOutputData(iquery, paras);
 
+            //預設排序(備註：應變單位(縣市)，因特殊處理造成ConUnit變中文，目前使用可接受)                
+            iquery = iquery.OrderBy(a => a.EditSort)
+                        .ThenBy(a => a.ConUnitSort).ThenBy(a => a.PSort);
+
             var datas = iquery.ToList();
 
             //查無符合資料表數
