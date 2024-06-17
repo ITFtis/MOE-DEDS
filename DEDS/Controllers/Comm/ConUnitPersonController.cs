@@ -20,6 +20,8 @@ using System.Web;
 using System.Web.Mvc;
 using System.IO;
 using Microsoft.Office.Interop.Excel;
+using iTextSharp.text.pdf;
+using iTextSharp.text;
 
 namespace DEDS.Controllers.Comm
 {
@@ -307,6 +309,69 @@ namespace DEDS.Controllers.Comm
                 }
                 path = toPdfPath;
                 //End Step 2
+
+                //3.新增浮水印
+                string text = Dou.Context.CurrentUser<User>().Id + " 僅限公務使用";
+                string waterPath = folder + "/Contact_Watermark.pdf";
+
+                FileStream outStream = new FileStream(waterPath, FileMode.Create);
+
+                PdfReader pdfReader = new PdfReader(path);
+
+                PdfStamper pdfStamper = new PdfStamper(pdfReader, outStream);
+
+                int total = pdfReader.NumberOfPages + 1;
+                iTextSharp.text.Rectangle psize = pdfReader.GetPageSize(1);
+                float width = psize.Width;
+                float height = psize.Height;
+                PdfContentByte waterMarkContent;
+                BaseFont font = BaseFont.CreateFont("C:\\Windows\\fonts\\mingliu.ttc,0", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+                PdfGState gs = new PdfGState();
+
+                for (int i = 1; i < total; i++)
+                {
+                    //在內容上方加水印（下方加水印參考上面圖片程式碼做法）
+                    waterMarkContent = pdfStamper.GetOverContent(i);
+                    //透明度
+                    gs.FillOpacity = 0.1f;
+                    waterMarkContent.SetGState(gs);
+                    //寫入文字
+                    waterMarkContent.BeginText();
+                    waterMarkContent.SetColorFill(Color.GRAY);
+                    waterMarkContent.SetFontAndSize(font, 50);
+                    waterMarkContent.SetTextMatrix(0, 0);
+
+                    waterMarkContent.ShowTextAligned(Element.ALIGN_CENTER, text, width - 120, height - 200, 45);
+                    waterMarkContent.ShowTextAligned(Element.ALIGN_CENTER, text, width - 450, height - 200, 45);
+
+                    waterMarkContent.ShowTextAligned(Element.ALIGN_CENTER, text, width - 120, height - 400, 45);
+                    waterMarkContent.ShowTextAligned(Element.ALIGN_CENTER, text, width - 450, height - 400, 45);
+
+                    waterMarkContent.ShowTextAligned(Element.ALIGN_CENTER, text, width - 120, height - 600, 45);
+                    waterMarkContent.ShowTextAligned(Element.ALIGN_CENTER, text, width - 450, height - 600, 45);
+
+                    waterMarkContent.ShowTextAligned(Element.ALIGN_CENTER, text, width - 120, height - 800, 45);
+                    waterMarkContent.ShowTextAligned(Element.ALIGN_CENTER, text, width - 450, height - 800, 45);
+
+                    waterMarkContent.ShowTextAligned(Element.ALIGN_CENTER, text, width - 120, height - 1000, 45);
+                    waterMarkContent.ShowTextAligned(Element.ALIGN_CENTER, text, width - 450, height - 1000, 45);
+
+                    waterMarkContent.EndText();
+                }
+                pdfStamper.Close();
+                pdfReader.Close();
+
+                Stream streamResult = new FileStream(waterPath, FileMode.Open);
+
+                Stream result = new MemoryStream();
+
+                streamResult.CopyTo(result);
+
+                streamResult.Close();
+
+                result.Position = 0;
+
+                path = waterPath;
 
                 url = DEDS.Cm.PhysicalToUrl(path);
             }
