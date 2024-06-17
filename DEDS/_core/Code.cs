@@ -10,6 +10,17 @@ namespace DEDS
 {
     public class Code
     {
+        public enum TempUploadFile
+        {
+            none = 0,
+            窗口_幕僚 = 1,
+        }
+
+        public enum UploadFile
+        {
+            none = 0,
+        }
+
         /// <summary>
         /// 身分類別(緊急聯繫窗口)
         /// </summary>

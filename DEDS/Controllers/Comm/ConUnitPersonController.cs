@@ -5,10 +5,17 @@ using DEDS.Models.Manager;
 using Dou.Controllers;
 using Dou.Misc;
 using Dou.Models.DB;
+using EnumsNET;
+using MathNet.Numerics.Statistics.Mcmc;
+using NPOI.OpenXml4Net.OPC.Internal;
+using NPOI.SS.UserModel;
+using Spire.Xls;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
+using System.Dynamic;
 using System.Linq;
+using System.Security.Policy;
 using System.Web;
 using System.Web.Mvc;
 using static Google.Cloud.RecaptchaEnterprise.V1.TransactionData.Types;
@@ -208,6 +215,83 @@ namespace DEDS.Controllers.Comm
                         .Any(a => a.ConType == 2 && a.Name == name);
 
             return result;
+        }
+
+        public ActionResult ExportPDF(params KeyValueParams[] paras)
+        {
+            var IModel = new ModelEntity<ConUnitPerson>(new DouModelContextExt());
+            var iquery = base.GetDataDBObject(IModel, paras);
+            iquery = GetOutputData(iquery, paras);
+
+            var datas = iquery.ToList();
+
+            //查無符合資料表數
+            if (datas.Count == 0)
+            {
+                return Json(new { result = false, errorMessage = "查無符合資料表數" }, JsonRequestBehavior.AllowGet);
+            }
+
+            //產出PDF
+            string url = "";
+            try
+            {
+                string fileTitle = "窗口_幕僚";
+                string folder = DEDS.FileHelper.GetFileFolder(Code.TempUploadFile.窗口_幕僚);
+
+                //產出Dynamic資料 (給Excel)
+                List<dynamic> list = new List<dynamic>();
+
+                int serial = 1;
+                foreach (var data in datas)
+                {
+                    dynamic f = new ExpandoObject();
+                    f.序號 = serial;
+                    serial++;
+                   
+                    f.應變單位 = data.ConUnit;
+                    f.身分 = data.ConType;
+                    f.姓名 = data.Name;
+                    f.職稱 = data.Position;
+                    f.總機分機 = data.Tel;
+                    f.行動電話 = data.Mobile;
+                    f.住家電話 = data.HTel;
+                    f.EMail = data.EMail;
+                    f.確認日期 = data.ConfirmDate == null ? "" : DEDS.DateFormat.ToDate4((DateTime)data.ConfirmDate);
+                    f.備註 = data.Remark;
+
+                    f.SheetName = fileTitle;//sheep.名稱;
+                    list.Add(f);
+                }
+
+                //特殊儲存格位置Top (會外評選=政府採購網公開評選)
+                List<string> topContents = new List<string>() {};
+
+                //產出excel
+                List<string> titles = new List<string>();
+                //"0":不調整width,"1":自動調整長度(效能差:資料量多),"2":字串長度調整width,"3":字串長度調整width(展開)
+                int autoSizeColumn = 2;
+
+                string fileName = DEDS.ExcelSpecHelper.GenerateExcelByLinqF1(fileTitle, titles, list, folder, autoSizeColumn, topContents);
+                string path = folder + fileName;
+
+                url = DEDS.Cm.PhysicalToUrl(path);
+            }
+            catch (Exception ex)
+            {
+                Logger.Log.For(this).Error("匯出專家清單失敗:" + ex.Message);
+                Logger.Log.For(this).Error(ex.StackTrace);
+                
+                return Json(new { result = false, errorMessage = "匯出專家清單失敗：" + ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+
+            if (url == "")
+            {
+                return Json(new { result = false, errorMessage = "匯出專家清單失敗：無產出連結" }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { result = true, url = url }, JsonRequestBehavior.AllowGet);
+            }
         }
     }
 }

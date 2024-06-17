@@ -199,6 +199,10 @@
     <Reference Include="SixLabors.ImageSharp, Version=2.0.0.0, Culture=neutral, PublicKeyToken=d998eea7b14cab13, processorArchitecture=MSIL">
       <HintPath>..\packages\SixLabors.ImageSharp.2.1.4\lib\net472\SixLabors.ImageSharp.dll</HintPath>
     </Reference>
+    <Reference Include="Spire.XLS, Version=14.2.0.0, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Spire.XLS.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
@@ -369,10 +373,13 @@
     <Compile Include="_core\APIClass\FHYResultOfFHYFloodSensorInfo.cs" />
     <Compile Include="_core\APIClass\FHYResultOfFHYFloodSensorStation.cs" />
     <Compile Include="_core\AppConfig.cs" />
+    <Compile Include="_core\Cm.cs" />
     <Compile Include="_core\Code.cs" />
     <Compile Include="_core\CommonFunc.cs" />
     <Compile Include="_core\Constant.cs" />
     <Compile Include="_core\DateFormat.cs" />
+    <Compile Include="_core\ExcelSpecHelper.cs" />
+    <Compile Include="_core\FileHelper.cs" />
     <Compile Include="_core\XmlHelper.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -461,6 +468,7 @@
     <Content Include="Scripts\gis\other\tableDragger\table-dragger.min.js" />
     <Content Include="Scripts\jquery.loading.js" />
     <Content Include="Scripts\jquery.loading.min.js" />
+    <Content Include="Scripts\prj\baseb.js" />
     <Content Include="Scripts\prj\citysta\citysta.js" />
     <Content Include="Scripts\prj\citysta\disinfector.js" />
     <Content Include="Scripts\prj\citysta\vehicle.js" />

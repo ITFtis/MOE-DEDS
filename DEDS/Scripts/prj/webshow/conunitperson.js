@@ -38,6 +38,8 @@
         }
     }
 
+    var cusToolbars = [];
+
     //幕僚人員不能檢核確認
     if (!IsOrgStaff) {
         var a = {};
@@ -80,7 +82,52 @@
             });
         };
 
-        douoptions.appendCustomToolbars = [a];
+        cusToolbars.push(a);        
+    }
+
+    //匯出pdf
+    //var ToPDF
+    var ToPDF = {};
+    ToPDF.item = '<span class="btn btn-secondary glyphicon glyphicon-file"> 匯出PDF</span>';
+    ToPDF.event = 'click .glyphicon glyphicon-file';
+    ToPDF.callback = function importQdate(a, b, c, d) {
+
+        var conditions = GetFilterParams($_masterTable)
+        var paras;
+        if (conditions.length > 0) {
+            paras = { key: 'filter', value: JSON.stringify(conditions) };
+        }
+
+        helper.misc.showBusyIndicator();
+        $.ajax({
+            url: app.siteRoot + 'ConUnitPerson/ExportPDF',
+            datatype: "json",
+            type: "Post",
+            data: { paras: [paras] },
+            success: function (data) {
+                if (data.result) {
+                    console.log(data.result)
+                    location.href = app.siteRoot + data.url
+                } else {
+                    alert(data.errorMessage)
+                }
+            },
+            complete: function () {
+                helper.misc.hideBusyIndicator();
+
+            },
+            error: function (xhr, status, error) {
+                var err = eval("(" + xhr.responseText + ")");
+                alert(err.Message);
+                helper.misc.hideBusyIndicator();
+            }
+        });
+    }
+    cusToolbars.push(ToPDF);
+
+    //有定義：Toolbar功能按鈕
+    if (cusToolbars.length > 0) {
+        douoptions.appendCustomToolbars = cusToolbars;
     }
 
     douoptions.afterAddServerData = function (row, callback) {
