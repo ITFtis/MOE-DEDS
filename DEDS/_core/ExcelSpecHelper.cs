@@ -20,7 +20,7 @@ namespace DEDS
         /// <param name="titles">表頭文字:機車加油站基本資料欄位清單,條件1,條件2..等</param>
         /// <param name="list">多個Sheet資料</param>
         /// <param name="savePath">儲存路徑</param>
-        /// <param name="autoSizeColumn">"0":不調整width,"1":自動調整長度(效能差:資料量多),"2":字串長度調整width,"3":字串長度調整width(展開)</param>
+        /// <param name="autoSizeColumn">"0":不調整width,"1":自動調整長度(效能差:資料量多),"2":字串長度調整width</param>
         /// <param name="topContents">特殊儲存格位置Top</param>
         /// <returns>Excel檔名</returns>
         public static string GenerateExcelByLinqF1(string fileTitle, List<string> titles, List<dynamic> list, string savePath,
@@ -215,39 +215,7 @@ namespace DEDS
                             columnWidth = (int)((columnWidth + 0.71) * 256);
                             mySheet1.SetColumnWidth(j, columnWidth);
                         }
-                    }
-                    else if (autoSizeColumn == 3)
-                    {
-                        //字串長度調整width(展開)
-                        for (int j = 0; j < columnCount; j++)
-                        {
-                            //欄寬預設 11                            
-                            int columnWidth = 11;
-
-                            if (colsLength.ContainsKey(j))
-                            {
-                                int len = colsLength[j];
-                                int wordLen = 12;
-                                if (len > 6 && len <= columnWidth)
-                                {
-                                    columnWidth = 18;
-                                }
-                                else if (len > columnWidth)
-                                {
-                                    columnWidth = (1 + (len / wordLen)) * 25;
-
-                                    //欄寬上限
-                                    int up = 50;
-                                    if (columnWidth > up)
-                                        columnWidth = up;
-                                }
-
-                                //excel儲存格實際寬度轉換公式
-                                columnWidth = (int)((columnWidth + 0.71) * 256);
-                                mySheet1.SetColumnWidth(j, columnWidth);
-                            }
-                        }
-                    }
+                    }                    
                     else if (autoSizeColumn == 0)
                     {
                         //不調整width
@@ -494,7 +462,7 @@ namespace DEDS
                                 }
                                 else if (len >= 15)
                                 {
-                                    columnWidth = 10;                                    
+                                    columnWidth = 9;                                    
                                 }
                             }
 
