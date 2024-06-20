@@ -327,7 +327,10 @@ namespace DEDS.Models.Comm
                 var r = DouHelper.Misc.GetCache<IEnumerable<Position>>(60 * 1000);
                 if (r == null)
                 {
-                    r = DouHelper.Misc.DeSerializeObjectLoadJsonFile<IEnumerable<Position>>(System.IO.Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath(("~/Data/Comm")), "Position.json"));
+                    //r = DouHelper.Misc.DeSerializeObjectLoadJsonFile<IEnumerable<Position>>(System.IO.Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath(("~/Data/Comm")), "Position.json"));
+                    Dou.Models.DB.IModelEntity<Position> model = new Dou.Models.DB.ModelEntity<Position>(new DouModelContextExt());
+                    r = model.GetAll().ToList();
+
                     DouHelper.Misc.AddCache(r);
 
                 }

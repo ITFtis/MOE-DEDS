@@ -17,7 +17,6 @@ namespace DEDS.Models.Comm
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Display(Name = "Id")]
-        [ColumnDef(Visible = false)]
         public int Id { get; set; }
 
         [Required]
