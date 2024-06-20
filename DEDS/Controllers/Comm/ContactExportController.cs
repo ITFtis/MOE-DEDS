@@ -51,7 +51,7 @@ namespace DEDS.Controllers.Comm
             ////                        .AsEnumerable().OrderBy(b => b.Order)                                    
             ////                        .ToList().Take(300);
 
-            var PositionList = fun.GetPosition();
+            ////var PositionList = fun.GetPosition();
 
 
 
@@ -219,7 +219,7 @@ namespace DEDS.Controllers.Comm
                     else
                     {
                         var bquery = BaseList.Where(w => w.UID == tquery[MemberNum - 1].UID).FirstOrDefault();
-                        var PositionName = fun.GetPositionName(PositionList, bquery.PositionId);
+                        var PositionName = bquery.PositionId;//fun.GetPositionName(PositionList, bquery.PositionId);
 
                         if (PositionName == null)
                         {
@@ -513,7 +513,7 @@ namespace DEDS.Controllers.Comm
                     else
                     {
                         var bquery = BaseList.Where(w => w.UID == tquery[MemberNum - 1].UID).FirstOrDefault();
-                        var PositionName = fun.GetPositionName(PositionList, bquery.PositionId);
+                        var PositionName = bquery.PositionId; //fun.GetPositionName(PositionList, bquery.PositionId);
                                                 
                         newRow.Height = 250;
 

@@ -55,7 +55,7 @@ namespace DEDS.Controllers.Comm
             if (filterCategory != null || filterName != null)
             {
                 var BaseList = Db.UserBasic.ToList(); // 基本資料表
-                var PositionList = fun.GetPosition();
+                ////var PositionList = fun.GetPosition();
                 var iquery = base.GetDataDBObject(dbEntity, paras);
 
                 var result = new List<Tabulation>();
@@ -72,7 +72,7 @@ namespace DEDS.Controllers.Comm
                         CategoryId = item.CategoryId,
                         Sort = item.Sort,
                         Act = item.Act,
-                        PositionId = fun.GetPositionName(PositionList, UserBase.PositionId),
+                        PositionId = item.PositionId,//fun.GetPositionName(PositionList, UserBase.PositionId),
                         OfficePhone = UserBase.OfficePhone,
                         MobilePhone = UserBase.MobilePhone,
                         Email = UserBase.Email,

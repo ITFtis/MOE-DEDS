@@ -25,7 +25,9 @@ namespace DEDS.Models.Comm
         [ColumnDef(Display = "單位", Index = 0, Visible = false, Required = true, VisibleEdit = true, Filter = true, SelectGearingWith = "Name,CityID,false", EditType = EditType.Select, SelectItemsClassNamespace = "DEDS.Models.Comm.CityIDSelectItems, DEDS")]
         public string CityID { get; set; }
 
-        [ColumnDef(Display = "職稱", Required = true, EditType = EditType.TextList, TextListMatchValue = true, SelectItemsClassNamespace = "DEDS.Models.Comm.PositionSelectItems, DEDS")]
+        //[ColumnDef(Display = "職稱", Required = true, EditType = EditType.TextList, TextListMatchValue = true, SelectItemsClassNamespace = "DEDS.Models.Comm.PositionSelectItems, DEDS")]
+        [ColumnDef(Display = "職稱", Required = true)]
+        [StringLength(100)]
         public string PositionId { get; set; }
 
         [ColumnDef(Display = "辦公室電話", VisibleEdit = false)]
@@ -115,19 +117,20 @@ namespace DEDS.Models.Comm
         public string EditName { get; set; }
     }
 
-    public class PositionSelectItems : Dou.Misc.Attr.SelectItemsClass
-    {
-        public Function fun = new Function();
-        public override IEnumerable<KeyValuePair<string, object>> GetSelectItems()
-        {
-            var JSONList = fun.GetPosition();
-            return JSONList.Select(
-                            s => new KeyValuePair<string, object>(s.Id.ToString(), s.Name)
-                            );
-        }
+    ////Brian_20240620:職稱改文字輸入
+    ////public class PositionSelectItems : Dou.Misc.Attr.SelectItemsClass
+    ////{
+    ////    public Function fun = new Function();
+    ////    public override IEnumerable<KeyValuePair<string, object>> GetSelectItems()
+    ////    {
+    ////        var JSONList = fun.GetPosition();
+    ////        return JSONList.Select(
+    ////                        s => new KeyValuePair<string, object>(s.Id.ToString(), s.Name)
+    ////                        );
+    ////    }
 
 
-    }
+    ////}
 
     public class CityIDSelectItems : Dou.Misc.Attr.SelectItemsClass
     {
@@ -225,7 +228,7 @@ namespace DEDS.Models.Comm
             bool IsManager = Dou.Context.CurrentUser<User>().IsManager;
             List<KeyValuePair<string, object>> keyValuePair = new List<KeyValuePair<string, object>>();
             int index = 1;
-            var PositionList = fun.GetPosition();
+            ////var PositionList = fun.GetPosition();
             if (!IsManager) //一般使用者
             {
                 //List<LoginInfo> Info = fun.GetInfo(UserID, PWD);
@@ -320,29 +323,31 @@ namespace DEDS.Models.Comm
             }
         }
 
-        public List<Position> GetPosition()
-        {
-            lock (LockGetAllDep)
-            {
-                var r = DouHelper.Misc.GetCache<IEnumerable<Position>>(60 * 1000);
-                if (r == null)
-                {
-                    //r = DouHelper.Misc.DeSerializeObjectLoadJsonFile<IEnumerable<Position>>(System.IO.Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath(("~/Data/Comm")), "Position.json"));
-                    Dou.Models.DB.IModelEntity<Position> model = new Dou.Models.DB.ModelEntity<Position>(new DouModelContextExt());
-                    r = model.GetAll().ToList();
+        ////Brian_20240620:職稱改文字輸入
+        ////public List<Position> GetPosition()
+        ////{
+        ////    lock (LockGetAllDep)
+        ////    {
+        ////        var r = DouHelper.Misc.GetCache<IEnumerable<Position>>(60 * 1000);
+        ////        if (r == null)
+        ////        {
+        ////            //r = DouHelper.Misc.DeSerializeObjectLoadJsonFile<IEnumerable<Position>>(System.IO.Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath(("~/Data/Comm")), "Position.json"));
+        ////            Dou.Models.DB.IModelEntity<Position> model = new Dou.Models.DB.ModelEntity<Position>(new DouModelContextExt());
+        ////            r = model.GetAll().ToList();
 
-                    DouHelper.Misc.AddCache(r);
+        ////            DouHelper.Misc.AddCache(r);
 
-                }
-                var Result = r.ToList();
-                return Result;
-            }
-        }
+        ////        }
+        ////        var Result = r.ToList();
+        ////        return Result;
+        ////    }
+        ////}
 
-        public string GetPositionName(List<Position> List, string PositionId)
-        {
-            return List.Where(w => w.Id.ToString() == PositionId).Select(w => w.Name).FirstOrDefault();
-        }
+        ////Brian_20240620:職稱改文字輸入
+        ////public string GetPositionName(List<Position> List, string PositionId)
+        ////{
+        ////    return List.Where(w => w.Id.ToString() == PositionId).Select(w => w.Name).FirstOrDefault();
+        ////}
     }
 
 

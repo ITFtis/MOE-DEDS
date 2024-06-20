@@ -14,14 +14,14 @@ namespace DEDS.Models.Comm
     [Table("Position")]
     public class Position
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Display(Name = "Id")]
-        public int Id { get; set; }
+        ////[Key]
+        ////[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        ////[Display(Name = "Id")]
+        ////public int Id { get; set; }
 
-        [Required]
-        [Display(Name = "名稱")]
-        [StringLength(50)]
-        public string Name { get; set; }
+        ////[Required]
+        ////[Display(Name = "名稱")]
+        ////[StringLength(50)]
+        ////public string Name { get; set; }
     }
 }
