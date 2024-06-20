@@ -173,3 +173,12 @@ INSERT [dbo].[Position] ([Id], [Name]) VALUES (159, N'環境衛生組簡任技正　　')
 INSERT [dbo].[Position] ([Id], [Name]) VALUES (160, N'代理科長')
 SET IDENTITY_INSERT [dbo].[Position] OFF
 GO
+
+Alter TABLE UserBasic ALTER COLUMN [PositionId] [nvarchar](100) NULL
+Go
+
+Update UserBasic
+Set PositionId = b.Name 
+from UserBasic a
+Left Join Position b On a.PositionId = Convert(Nvarchar, b.Id)
+Go
