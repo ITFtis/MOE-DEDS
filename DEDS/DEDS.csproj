@@ -343,6 +343,7 @@
     <Compile Include="Controllers\Comm\ContactExportController.cs" />
     <Compile Include="Controllers\Comm\ConUnitCodeController.cs" />
     <Compile Include="Controllers\Comm\ConUnitPersonController.cs" />
+    <Compile Include="Controllers\Comm\PositionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HtmlIframeOtherMainLayoutController.cs" />
     <Compile Include="Controllers\Manager\LoggerController.cs" />
@@ -362,6 +363,7 @@
     </Compile>
     <Compile Include="Models\Comm\ConUnitCode.cs" />
     <Compile Include="Models\Comm\ConUnitPerson.cs" />
+    <Compile Include="Models\Comm\Position.cs" />
     <Compile Include="Models\Comm\Tabulation.cs" />
     <Compile Include="Models\Comm\UserBasic.cs" />
     <Compile Include="Models\Comm\UserBasicHis.cs" />
@@ -581,6 +583,7 @@
     <Content Include="Views\Contact\Index.cshtml" />
     <Content Include="Views\ContactExport\index.cshtml" />
     <Content Include="Views\ConUnitPerson\Index.cshtml" />
+    <Content Include="Views\Position\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

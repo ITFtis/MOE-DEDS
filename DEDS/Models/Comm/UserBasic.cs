@@ -122,7 +122,7 @@ namespace DEDS.Models.Comm
         {
             var JSONList = fun.GetPosition();
             return JSONList.Select(
-                            s => new KeyValuePair<string, object>(s.PositionId, s.Name)
+                            s => new KeyValuePair<string, object>(s.Id.ToString(), s.Name)
                             );
         }
 
@@ -338,17 +338,17 @@ namespace DEDS.Models.Comm
 
         public string GetPositionName(List<Position> List, string PositionId)
         {
-            return List.Where(w => w.PositionId == PositionId).Select(w => w.Name).FirstOrDefault();
+            return List.Where(w => w.Id.ToString() == PositionId).Select(w => w.Name).FirstOrDefault();
         }
     }
 
 
     #region class
-    public class Position
-    {
-        public string PositionId { get; set; }
-        public string Name { get; set; }
-    }
+    ////public class Position
+    ////{
+    ////    public string PositionId { get; set; }
+    ////    public string Name { get; set; }
+    ////}
 
     public class Category
     {

@@ -22,5 +22,6 @@ namespace DEDS.Models
 
         public virtual DbSet<Comm.ConUnitCode> ConUnitCode { get; set; }
 
+        public virtual DbSet<Comm.Position> Position { get; set; }
     }
 }
