@@ -47,46 +47,57 @@ namespace DEDS.Controllers.Comm
         }
 
         protected override IEnumerable<Tabulation> GetDataDBObject(IModelEntity<Tabulation> dbEntity, params KeyValueParams[] paras)
-        {
-            IEnumerable<Tabulation> blankresult = null;
+        {            
             var filterCategory = Dou.Misc.HelperUtilities.GetFilterParaValue(paras, "CategoryId");
             var filterName = Dou.Misc.HelperUtilities.GetFilterParaValue(paras, "Name");
 
-            if (filterCategory != null || filterName != null)
+            //強迫要有查尋條件
+            if (filterCategory == null && filterName == null)
             {
-                var BaseList = Db.UserBasic.ToList(); // 基本資料表
-                ////var PositionList = fun.GetPosition();
-                var iquery = base.GetDataDBObject(dbEntity, paras);
+                return new List<Tabulation>();
+            }
 
-                var result = new List<Tabulation>();
-                iquery = iquery.Where(x => x.Act == true).OrderBy(z => z.CategoryId).ThenBy(c => c.Sort).ToList();
-                foreach (var item in iquery)
-                {
-                    UserBasic UserBase = GetBase(BaseList, item.UID)[0];
-                    result.Add(new Tabulation
-                    {
-                        No = item.No,
-                        UID = item.UID,
-                        Name = UserBase.Name,
-                        CityID = UserBase.CityID,
-                        CategoryId = item.CategoryId,
-                        Sort = item.Sort,
-                        Act = item.Act,
-                        PositionId = item.PositionId,//fun.GetPositionName(PositionList, UserBase.PositionId),
-                        OfficePhone = UserBase.OfficePhone,
-                        MobilePhone = UserBase.MobilePhone,
-                        Email = UserBase.Email,
-                        Note = UserBase.Note,
-                    });
-                }
-                return result;
-                //return base.GetDataDBObject(dbEntity, paras).Where(x => x.Act == true).OrderBy(z => z.CategoryId).ThenBy(c => c.Sort);
-            }
-            else
+            var iquery = base.GetDataDBObject(dbEntity, paras);
+
+            //預設條件
+            bool IsManager = Dou.Context.CurrentUser<DEDS.Models.Manager.User>().IsManager;
+            if (!IsManager)
             {
-                blankresult = new List<Tabulation>(); //強迫要有查尋條件
-                return blankresult;
+                //20240626_Brian：登入者姓名在手冊內，才能查詢
+                bool inTabulation = iquery.Any(a => a.Name == Dou.Context.CurrentUser<DEDS.Models.Manager.User>().Name);
+                if(!inTabulation)
+                {
+                    return new List<Tabulation>();
+                }
             }
+
+            var BaseList = Db.UserBasic.ToList(); // 基本資料表
+            ////var PositionList = fun.GetPosition();            
+
+            var result = new List<Tabulation>();
+            iquery = iquery.Where(x => x.Act == true).OrderBy(z => z.CategoryId).ThenBy(c => c.Sort).ToList();
+            foreach (var item in iquery)
+            {
+                UserBasic UserBase = GetBase(BaseList, item.UID)[0];
+                result.Add(new Tabulation
+                {
+                    No = item.No,
+                    UID = item.UID,
+                    Name = UserBase.Name,
+                    CityID = UserBase.CityID,
+                    CategoryId = item.CategoryId,
+                    Sort = item.Sort,
+                    Act = item.Act,
+                    PositionId = item.PositionId,//fun.GetPositionName(PositionList, UserBase.PositionId),
+                    OfficePhone = UserBase.OfficePhone,
+                    MobilePhone = UserBase.MobilePhone,
+                    Email = UserBase.Email,
+                    Note = UserBase.Note,
+                });
+            }
+            return result;
+            //return base.GetDataDBObject(dbEntity, paras).Where(x => x.Act == true).OrderBy(z => z.CategoryId).ThenBy(c => c.Sort);
+
         }
 
         public List<UserBasic> GetBase(List<UserBasic> BaseList, string UID)
