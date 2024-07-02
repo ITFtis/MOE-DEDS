@@ -76,7 +76,7 @@ namespace DEDS.Models.Comm
             set;
         }
 
-        [ColumnDef(Display = "排序")]
+        [ColumnDef(Display = "排序", Visible = false)]
         public int Order 
         { 
             get
