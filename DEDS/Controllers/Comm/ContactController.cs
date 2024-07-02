@@ -88,7 +88,7 @@ namespace DEDS.Controllers.Comm
                     CategoryId = item.CategoryId,
                     Sort = item.Sort,
                     Act = item.Act,
-                    PositionId = item.PositionId,//fun.GetPositionName(PositionList, UserBase.PositionId),
+                    PositionId = UserBase.PositionId,//fun.GetPositionName(PositionList, UserBase.PositionId),
                     OfficePhone = UserBase.OfficePhone,
                     MobilePhone = UserBase.MobilePhone,
                     Email = UserBase.Email,
