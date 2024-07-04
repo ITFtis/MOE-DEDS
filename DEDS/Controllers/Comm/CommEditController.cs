@@ -38,6 +38,18 @@ namespace DEDS.Controllers.Comm
             bool IsManager = Dou.Context.CurrentUser<User>().IsManager;
             if (!IsManager) { opts.GetFiled("CityID").visibleEdit = false; }
             else { opts.GetFiled("CityID").visible = true; }
+                        
+            if (!IsManager)
+            {
+                //20240626_Brian：誰具有編輯各單位窗口編輯自己單位的                
+                bool IsConUnit = Dou.Context.CurrentUser<User>().IsConUnit;
+                if (!IsConUnit)
+                {
+                    opts.addable = false;
+                    opts.editable = false;
+                    opts.deleteable = false;
+                }
+            }
 
             return opts;
         }

@@ -1,4 +1,5 @@
-﻿using DEDS.Models.Comm;
+﻿using Antlr.Runtime.Misc;
+using DEDS.Models.Comm;
 using Dou.Misc.Attr;
 using Newtonsoft.Json;
 using System;
@@ -45,7 +46,27 @@ namespace DEDS.Models.Manager
         //public bool IsManager { set; get; }
 
         [ColumnDef(Display = "權責人員", Required = true, EditType = EditType.Select, SelectItems = "{\"true\":\"是\",\"false\":\"否\"}", DefaultValue = "false")]
-        public bool IsManager { get; set; }        
+        public bool IsManager { get; set; }
+
+        [ColumnDef(Display = "是否同一單位(通聯單位=緊急應變單位)", Visible = false, VisibleEdit = false)]
+        public bool IsConUnit
+        {
+            get
+            {  
+                //應變單位
+                var conUnit = ConUnitCode.GetAllDatas().Where(a => a.Code == this.ConUnit).FirstOrDefault();
+                if (conUnit == null)
+                    return false;
+                
+                //單位
+                Function fun = new Function();
+                var unit = fun.GetUnit().Where(a => a.Id == this.Unit).FirstOrDefault();
+                if (unit == null)
+                    return false;
+
+                return conUnit.Name == unit.Sector;
+            }
+        }
     }
 
     public class ALLCityIDSelectItems : Dou.Misc.Attr.SelectItemsClass
