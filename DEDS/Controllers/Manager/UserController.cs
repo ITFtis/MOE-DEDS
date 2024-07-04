@@ -88,13 +88,13 @@ namespace DEDS.Controllers.Manager
                         if (IsOldSysUser.Key == true) //驗證成功
                         {
                             //判斷預設角色，無則新增角色
-                            string defaultRoleId = "user"; //預設角色id
+                            string defaultRoleId = "user2"; //預設角色id
                             var me = new Dou.Models.DB.ModelEntity<Role>(RoleController._dbContext);
                             var role = me.FirstOrDefault(s => s.Id == defaultRoleId);
                             if (role == null)
                             {
-                                var ms = Menu.GetMenuDefs().Where(m => !m.IsOnlyPath).Where(s => s.Id == "CommEdit"); //預設角色所擁有controller id功能
-                                role = new Role() { Id = defaultRoleId, Name = "通聯資料編輯角色", RolePermissions = ms.Select(m => new RolePermission { RoleId = defaultRoleId, Permission = m.Id, Func = (int)m.Func }).ToList() };
+                                var ms = Menu.GetMenuDefs().Where(m => !m.IsOnlyPath).Where(s => s.Id == "RtHydro"); //預設角色所擁有controller id功能
+                                role = new Role() { Id = defaultRoleId, Name = "決策支援圖台", RolePermissions = ms.Select(m => new RolePermission { RoleId = defaultRoleId, Permission = m.Id, Func = (int)m.Func }).ToList() };
                                 me.Add(role);
                             }
 
