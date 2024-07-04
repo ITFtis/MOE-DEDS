@@ -19,6 +19,25 @@
 <span class="btn btn-outline-primary  glyphicon glyphicon-export button" title="匯出" onclick="exportPDF()">匯 出</span>
 
 <script>
+    $(document).ready(function () {
+
+        var IsManager = '@ViewBag.IsManager'.toLowerCase() == 'true';
+        var InTabulation = '@ViewBag.InTabulation'.toLowerCase() == 'true';
+
+        if (!IsManager) {
+            if (InTabulation) {
+                $('.glyphicon-export').show();
+            }
+            else {
+
+                var content = '<font color="red" size="4em">●非通聯手冊人員無法匯出通聯手冊。</font>';
+                jspAlertMsg($("body"), { autoclose: 2000, content: content });
+
+                $('.glyphicon-export').hide();
+            }
+        }
+    });
+
     function exportPDF() {
         $('body').loading();
         $.ajax({

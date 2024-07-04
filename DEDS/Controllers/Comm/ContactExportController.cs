@@ -30,6 +30,20 @@ namespace DEDS.Controllers.Comm
         // GET: ContactExport
         public ActionResult Index()
         {
+            Dou.Models.DB.IModelEntity<Tabulation> tabulation = new Dou.Models.DB.ModelEntity<Tabulation>(Db);
+            var iquery = tabulation.GetAll();
+
+            bool IsManager = Dou.Context.CurrentUser<DEDS.Models.Manager.User>().IsManager;            
+            if (!IsManager)
+            {
+                //20240626_Brian：通聯手冊裡的人可以匯出手冊
+                string name = Dou.Context.CurrentUser<DEDS.Models.Manager.User>().Name;
+                bool inTabulation = iquery.Any(a => a.Name == name);
+                ViewBag.InTabulation = inTabulation;
+            }
+
+            ViewBag.IsManager = IsManager;
+
             return View();
         }
 
