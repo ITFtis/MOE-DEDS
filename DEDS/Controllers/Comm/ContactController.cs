@@ -56,20 +56,21 @@ namespace DEDS.Controllers.Comm
             {
                 return new List<Tabulation>();
             }
-
-            var iquery = base.GetDataDBObject(dbEntity, paras);
-
-            //預設條件
+                        
             bool IsManager = Dou.Context.CurrentUser<DEDS.Models.Manager.User>().IsManager;
             if (!IsManager)
             {
-                //20240626_Brian：登入者姓名在手冊內，才能查詢
-                bool inTabulation = iquery.Any(a => a.Name == Dou.Context.CurrentUser<DEDS.Models.Manager.User>().Name);
+                //20240626_Brian：登入者姓名在手冊內，才能查詢(可看到全部)
+                var totalTabulation = GetModelEntity().GetAll();
+                string name = Dou.Context.CurrentUser<DEDS.Models.Manager.User>().Name;
+                bool inTabulation = totalTabulation.Any(a => a.Name == name);
                 if(!inTabulation)
                 {
                     return new List<Tabulation>();
                 }
             }
+
+            var iquery = base.GetDataDBObject(dbEntity, paras);
 
             var BaseList = Db.UserBasic.ToList(); // 基本資料表
             ////var PositionList = fun.GetPosition();            
