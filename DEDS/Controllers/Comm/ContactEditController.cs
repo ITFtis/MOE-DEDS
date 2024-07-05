@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using static Google.Cloud.RecaptchaEnterprise.V1.AccountVerificationInfo.Types;
 
 namespace DEDS.Controllers.Comm
 {
@@ -34,6 +35,8 @@ namespace DEDS.Controllers.Comm
         {
             IEnumerable<Tabulation> blankresult = null;
             var filterCategory = Dou.Misc.HelperUtilities.GetFilterParaValue(paras, "CategoryId");
+
+            Dou.Help.DouUnobtrusiveSession.Session.Remove("KeyTabulationList");
 
             if (filterCategory != null)
             {
@@ -95,6 +98,9 @@ namespace DEDS.Controllers.Comm
                             ConfirmDate = item.ConfirmDate,
                         });
                     }
+                    
+                    Dou.Help.DouUnobtrusiveSession.Session.Add("KeyTabulationList", result);                                                                                
+
                     return result;
 
                 }
@@ -127,33 +133,21 @@ namespace DEDS.Controllers.Comm
         {
             try
             {
-                if (Ids == null)
-                    return Json(new { result = false, errorMessage = "Ids：不可為Null" });
+                var KeyTabulationList = Dou.Help.DouUnobtrusiveSession.Session["KeyTabulationList"];
+                if (KeyTabulationList == null)
+                {
+                    return Json(new { result = false, errorMessage = "清單無資料" });
+                }
 
-                //////確認日期更新
-                ////var f = GetModelEntity();
-                ////var iquery = f.GetAll().Where(a => Ids.Any(b => b == a.Id));
+                List<Tabulation> list = (List<Tabulation>)KeyTabulationList;
+                List<int> nos = list.Where(a => a.Act).Select(a => a.No).ToList();
 
-                ////////iquery = iquery.Take(47); /////////////////
-                ////////int n = iquery.Count(); /////////////////
-                ////////var test = iquery.ToList();
+                //確認日期更新
+                var model = GetModelEntity();
+                var iquery = model.GetAll().Where(a => nos.Any(b => b == a.No))                                        ;
+                iquery.ToList().ForEach(p => p.ConfirmDate = DateTime.Now);
 
-                ////if (iquery.Count() > 0)
-                ////{
-                ////    DateTime now = DateTime.Now;
-                ////    foreach (var i in iquery)
-                ////    {
-                ////        i.ConfirmDate = now;
-                ////    }
-
-                ////    f.Update(iquery);
-
-                ////    return Json(new { result = true });
-                ////}
-                ////else
-                ////{
-                ////    return Json(new { result = false, errorMessage = "查無對應Id：" + string.Join(",", Ids) });
-                ////}
+                model.Update(iquery);
 
                 return Json(new { result = true });
             }
