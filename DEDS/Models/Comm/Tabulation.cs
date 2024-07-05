@@ -76,6 +76,10 @@ namespace DEDS.Models.Comm
             set;
         }
 
+        [Display(Name = "確認日期")]
+        [ColumnDef(Visible = false, VisibleEdit = false)]
+        public DateTime? ConfirmDate { get; set; }
+
         [ColumnDef(Display = "排序", Visible = false)]
         public int Order 
         { 
@@ -86,6 +90,28 @@ namespace DEDS.Models.Comm
                 var v = vs.Where(a => a.CategoryId == this.CategoryId).FirstOrDefault();                
 
                 return v == null ? 0 : v.Order;
+            }
+        }
+
+        [Display(Name = "確認日期")]
+        [ColumnDef(Visible = false, VisibleEdit = false)]
+        public string StrConfirmDate
+        {
+            get
+            {
+                string result = "";
+
+                if (this.ConfirmDate == null)
+                {
+                    return "";
+                }
+                else
+                {
+                    DateTime date = (DateTime)this.ConfirmDate;
+                    result = DEDS.DateFormat.ToDate4(date) + "<br/>" + DEDS.DateFormat.ToDate12(date);
+                }
+
+                return result;
             }
         }
     }

@@ -66,6 +66,7 @@ namespace DEDS.Controllers.Comm
                             MobilePhone = UserBase.MobilePhone,
                             Email = UserBase.Email,
                             Note = UserBase.Note,
+                            ConfirmDate = item.ConfirmDate,
                         });
                     }
                     return result;
@@ -91,6 +92,7 @@ namespace DEDS.Controllers.Comm
                             MobilePhone = UserBase.MobilePhone,
                             Email = UserBase.Email,
                             Note = UserBase.Note,
+                            ConfirmDate = item.ConfirmDate,
                         });
                     }
                     return result;
@@ -110,6 +112,7 @@ namespace DEDS.Controllers.Comm
             var opts = base.GetDataManagerOptions();
 
             opts.GetFiled("No").visible = false;
+            opts.GetFiled("StrConfirmDate").visible = true;
 
             return opts;
         }
@@ -118,7 +121,46 @@ namespace DEDS.Controllers.Comm
         {
             List<UserBasic> result = new List<UserBasic> { BaseList.Where(q => q.UID == UID).FirstOrDefault() };
             return result;
-        }       
+        }
 
+        public ActionResult UpdateConfirm(List<int> Ids)
+        {
+            try
+            {
+                if (Ids == null)
+                    return Json(new { result = false, errorMessage = "Ids：不可為Null" });
+
+                //////確認日期更新
+                ////var f = GetModelEntity();
+                ////var iquery = f.GetAll().Where(a => Ids.Any(b => b == a.Id));
+
+                ////////iquery = iquery.Take(47); /////////////////
+                ////////int n = iquery.Count(); /////////////////
+                ////////var test = iquery.ToList();
+
+                ////if (iquery.Count() > 0)
+                ////{
+                ////    DateTime now = DateTime.Now;
+                ////    foreach (var i in iquery)
+                ////    {
+                ////        i.ConfirmDate = now;
+                ////    }
+
+                ////    f.Update(iquery);
+
+                ////    return Json(new { result = true });
+                ////}
+                ////else
+                ////{
+                ////    return Json(new { result = false, errorMessage = "查無對應Id：" + string.Join(",", Ids) });
+                ////}
+
+                return Json(new { result = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { result = false, errorMessage = ex.Message });
+            }
+        }
     }
 }

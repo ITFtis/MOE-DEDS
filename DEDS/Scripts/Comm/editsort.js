@@ -95,6 +95,38 @@
             destroyTableDragger();
             $('input[type="checkbox"]').prop('disabled', true);
         }
+        },
+        {
+            item: '<span class="btn btn-secondary glyphicon glyphicon-download-alt" title="編輯">檢核確認</span>', event: 'click .glyphicon-download-alt',
+            callback: function (e) {
+
+                var aryIds = [];
+
+                helper.misc.showBusyIndicator();
+                $.ajax({
+                    url: app.siteRoot + 'ContactEdit/UpdateConfirm',
+                    datatype: "json",
+                    type: "Post",
+                    data: { "Ids": aryIds },
+                    success: function (data) {
+                        if (data.result) {
+                            alert("確認資料成功");
+                            ////$('.filter-toolbar-plus .btn-confirm').trigger('click');
+                        } else {
+                            alert("確認資料失敗：\n" + data.errorMessage);
+                        }
+                    },
+                    complete: function () {
+                        helper.misc.hideBusyIndicator();
+                    },
+                    error: function (xhr, status, error) {
+                        var err = eval("(" + xhr.responseText + ")");
+                        alert(err.Message);
+                        helper.misc.hideBusyIndicator();
+                    }
+                });
+                
+            }
         }
     ];
     //douHelper.getField(dou_options.fields, 'Order')

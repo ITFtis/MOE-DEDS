@@ -134,19 +134,26 @@ namespace DEDS.Models.Comm
                 var code = ConUnitCodeItems.ConUnitCodes.Where(a => a.Code == this.ConUnit).FirstOrDefault();
                 return code == null ? 0 : code.Sort;                
             }
-        }       
+        }
 
         [Display(Name = "確認日期")]
         [ColumnDef(Visible = false, VisibleEdit = false)]
         public string StrConfirmDate
-        { 
+        {
             get
             {
-                string date = this.ConfirmDate == null ? "" : this.ConfirmDate.ToString();
-                if (date == null)
-                    return "";
+                string result = "";
 
-                string result = DEDS.DateFormat.ToDate4(date) + "<br/>" + DEDS.DateFormat.ToDate12(date);
+                if (this.ConfirmDate == null)
+                {
+                    return "";
+                }
+                else
+                {
+                    DateTime date = (DateTime)this.ConfirmDate;
+                    result = DEDS.DateFormat.ToDate4(date) + "<br/>" + DEDS.DateFormat.ToDate12(date);
+                }
+
                 return result;
             }
         }
