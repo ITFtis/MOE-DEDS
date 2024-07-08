@@ -42,13 +42,13 @@
         $('body').loading();
         $.ajax({
             type: "GET",
-            url: "../DEDS/ContactExport/ExportPDF",
+            url: app.siteRoot + "ContactExport/ExportPDF",
             success: function (data) {
                 const now = new Date();
                 const year = now.getFullYear() - 1911;
                 var fileName = "環境部" + year + "年度環境污染事故緊急應變通聯手冊.pdf";
                 var Account = data.Account;
-                var fileUrl = "../DEDS/Data/Comm/Export/" + Account + "/Contact_Watermark.pdf";
+                var fileUrl = app.siteRoot + "Data/Comm/Export/" + Account + "/Contact_Watermark.pdf";
                 var link = document.createElement("a"); // 建立 <a> 標籤
                 link.href = fileUrl;
                 link.download = fileName; // 設定下載的檔案名稱
