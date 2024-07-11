@@ -49,22 +49,44 @@ namespace DEDS.Models.Manager
         public bool IsManager { get; set; }
 
         [ColumnDef(Display = "是否同一單位(通聯單位=緊急應變單位)", Visible = false, VisibleEdit = false)]
-        public bool IsConUnit
+        public bool IsCommEditPower
         {
             get
-            {  
-                //應變單位
-                var conUnit = ConUnitCode.GetAllDatas().Where(a => a.Code == this.ConUnit).FirstOrDefault();
-                if (conUnit == null)
+            {
+                bool result = false;
+
+                if (Dou.Context.CurrentUser<User>() == null)
                     return false;
-                
-                //單位
+
+                //登入者單位
+                string LoginUnit = Dou.Context.CurrentUser<User>().Unit;                
+
+                //通聯手冊單位
                 Function fun = new Function();
                 var unit = fun.GetUnit().Where(a => a.Id == this.Unit).FirstOrDefault();
                 if (unit == null)
                     return false;
 
-                return conUnit.Name == unit.Sector;
+                if (LoginUnit == "23")
+                {
+                    //登入者為環境部單位
+                    return true;
+                    //////通聯單位比登入者單位(Id)
+                    ////if(unit.CityId == LoginUnit)
+                    ////    result = true;
+                }
+                else
+                {
+                    //登入者非環保局單位
+                    //通聯單位比應變單位(Name)
+                    var conUnit = ConUnitCode.GetAllDatas().Where(a => a.Code == this.ConUnit).FirstOrDefault();
+                    if (conUnit == null)
+                        return false;
+
+                    result = conUnit.Name == unit.Sector;
+                }
+
+                return result;
             }
         }
     }
