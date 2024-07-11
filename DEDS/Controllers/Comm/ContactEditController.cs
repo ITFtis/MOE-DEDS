@@ -46,12 +46,14 @@ namespace DEDS.Controllers.Comm
                 string UserID = Dou.Context.CurrentUser<User>().Id;
                 string PWD = Dou.Context.CurrentUser<User>().Password;
                 bool IsManager = Dou.Context.CurrentUser<User>().IsManager;
+
+                var result = new List<Tabulation>();
                 if (!IsManager)
                 {
                     //List<LoginInfo> Info = fun.GetInfo(UserID, PWD);
                     string CityID = fun.GetInfo(UserID, PWD); // 取得登錄者的部門ID
                     iquery = iquery.Where(s => s.CityID == CityID).OrderBy(e => e.Act ? 0 : 1).ThenBy(w => w.Sort).ToList();
-                    var result = new List<Tabulation>();
+                    
                     foreach (var item in iquery)
                     {
                         UserBasic UserBase = GetBase(BaseList, item.UID)[0];
@@ -72,11 +74,9 @@ namespace DEDS.Controllers.Comm
                             ConfirmDate = item.ConfirmDate,
                         });
                     }
-                    return result;
                 }
                 else
-                {
-                    var result = new List<Tabulation>();
+                {                    
                     iquery = iquery.OrderBy(e => e.Act ? 0 : 1).ThenBy(w => w.Sort).ToList();
                     foreach (var item in iquery)
                     {
@@ -97,14 +97,11 @@ namespace DEDS.Controllers.Comm
                             Note = UserBase.Note,
                             ConfirmDate = item.ConfirmDate,
                         });
-                    }
-                    
-                    Dou.Help.DouUnobtrusiveSession.Session.Add("KeyTabulationList", result);                                                                                
-
-                    return result;
-
+                    }                                                            
                 }
 
+                Dou.Help.DouUnobtrusiveSession.Session.Add("KeyTabulationList", result);
+                return result;
             }
             else
                 blankresult = new List<Tabulation>(); //強迫要有查尋條件
