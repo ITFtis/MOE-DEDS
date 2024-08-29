@@ -14,7 +14,7 @@ namespace DEDS.Models.Manager
     [Table("User")]
     public class User : Dou.Models.UserBaseExt
     {
-        [ColumnDef(Display = "名稱", Index = 2)]
+        [ColumnDef(Display = "名稱", Filter = true, FilterAssign = FilterAssignType.Contains, Index = 2)]
         [StringLength(200)]
         public override string Name { set; get; }
 
