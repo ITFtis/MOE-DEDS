@@ -22,7 +22,7 @@ using Google.Protobuf.WellKnownTypes;
 
 namespace DEDS.Controllers.Comm
 {
-    [Dou.Misc.Attr.MenuDef(Id = "ContactExport", Name = "通聯造冊匯出", MenuPath = "通聯資料", Action = "Index", Index = 4, Func = Dou.Misc.Attr.FuncEnum.None, AllowAnonymous = false)]
+    [Dou.Misc.Attr.MenuDef(Id = "ContactExport", Name = "通聯造冊匯出", MenuPath = "緊急應變通聯手冊", Action = "Index", Index = 4, Func = Dou.Misc.Attr.FuncEnum.None, AllowAnonymous = false)]
     public class ContactExportController : Dou.Controllers.AGenericModelController<object>
     {
         public DouModelContextExt Db = new DouModelContextExt();

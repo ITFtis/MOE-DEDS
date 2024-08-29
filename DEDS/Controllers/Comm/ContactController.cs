@@ -12,7 +12,7 @@ using System.Web.Mvc;
 
 namespace DEDS.Controllers.Comm
 {
-    [Dou.Misc.Attr.MenuDef(Id = "Contact", Name = "通聯造冊查詢", MenuPath = "通聯資料", Action = "Index", Index = 0, Func = Dou.Misc.Attr.FuncEnum.None, AllowAnonymous = false)]
+    [Dou.Misc.Attr.MenuDef(Id = "Contact", Name = "通聯造冊查詢", MenuPath = "緊急應變通聯手冊", Action = "Index", Index = 0, Func = Dou.Misc.Attr.FuncEnum.None, AllowAnonymous = false)]
     public class ContactController : Dou.Controllers.AGenericModelController<Tabulation>
     {
         public DouModelContextExt Db = new DouModelContextExt();

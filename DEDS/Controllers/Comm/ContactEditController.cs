@@ -15,7 +15,7 @@ using static Google.Cloud.RecaptchaEnterprise.V1.AccountVerificationInfo.Types;
 
 namespace DEDS.Controllers.Comm
 {
-    [Dou.Misc.Attr.MenuDef(Id = "ContactEdit", Name = "通聯造冊管理", MenuPath = "通聯資料", Action = "Index", Index = 2, Func = Dou.Misc.Attr.FuncEnum.None, AllowAnonymous = false)]
+    [Dou.Misc.Attr.MenuDef(Id = "ContactEdit", Name = "通聯造冊管理", MenuPath = "緊急應變通聯手冊", Action = "Index", Index = 2, Func = Dou.Misc.Attr.FuncEnum.None, AllowAnonymous = false)]
     public class ContactEditController : Dou.Controllers.AGenericModelController<Tabulation>
     {
         public DouModelContextExt Db = new DouModelContextExt();

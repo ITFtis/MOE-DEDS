@@ -1,8 +1,8 @@
 [
   {
     "Name": "通聯造冊查詢",
-    "MenuPath": "通聯資料",
-    "FullMenuPath": "通聯資料/通聯造冊查詢",
+    "MenuPath": "緊急應變通聯手冊",
+    "FullMenuPath": "緊急應變通聯手冊/通聯造冊查詢",
     "Index": 0,
     "Desc": null,
     "AllowAnonymous": false,
@@ -41,8 +41,8 @@
   },
   {
     "Name": "人員資料管理",
-    "MenuPath": "通聯資料",
-    "FullMenuPath": "通聯資料/人員資料管理",
+    "MenuPath": "緊急應變通聯手冊",
+    "FullMenuPath": "緊急應變通聯手冊/人員資料管理",
     "Index": 1,
     "Desc": null,
     "AllowAnonymous": false,
@@ -141,8 +141,8 @@
   },
   {
     "Name": "通聯造冊管理",
-    "MenuPath": "通聯資料",
-    "FullMenuPath": "通聯資料/通聯造冊管理",
+    "MenuPath": "緊急應變通聯手冊",
+    "FullMenuPath": "緊急應變通聯手冊/通聯造冊管理",
     "Index": 2,
     "Desc": null,
     "AllowAnonymous": false,
@@ -262,8 +262,8 @@
   },
   {
     "Name": "通聯造冊匯出",
-    "MenuPath": "通聯資料",
-    "FullMenuPath": "通聯資料/通聯造冊匯出",
+    "MenuPath": "緊急應變通聯手冊",
+    "FullMenuPath": "緊急應變通聯手冊/通聯造冊匯出",
     "Index": 4,
     "Desc": null,
     "AllowAnonymous": false,
@@ -321,9 +321,9 @@
     "TypeId": "Dou.Misc.Attr.MenuDefAttribute, Dou, Version=1.1.0.0, Culture=neutral, PublicKeyToken=null"
   },
   {
-    "Name": "通聯資料",
+    "Name": "緊急應變通聯手冊",
     "MenuPath": "",
-    "FullMenuPath": "通聯資料",
+    "FullMenuPath": "緊急應變通聯手冊",
     "Index": 5,
     "Desc": null,
     "AllowAnonymous": false,
@@ -332,11 +332,11 @@
     "IsOnlyPath": true,
     "IsPromptUI": false,
     "FromAppend": false,
-    "Target": "通聯資料",
+    "Target": "緊急應變通聯手冊",
     "ActionController": null,
     "Action": null,
     "ExportCSV": false,
-    "Id": "通聯資料",
+    "Id": "緊急應變通聯手冊",
     "Remark": null,
     "TypeId": "Dou.Misc.Attr.MenuDefAttribute, Dou, Version=1.1.0.0, Culture=neutral, PublicKeyToken=null"
   },

@@ -14,7 +14,7 @@ using System.Web.Mvc;
 
 namespace DEDS.Controllers.Comm
 {
-    [Dou.Misc.Attr.MenuDef(Id = "CommEdit", Name = "人員資料管理", MenuPath = "通聯資料", Action = "Index", Index = 1, Func = Dou.Misc.Attr.FuncEnum.ALL, AllowAnonymous = false)]
+    [Dou.Misc.Attr.MenuDef(Id = "CommEdit", Name = "人員資料管理", MenuPath = "緊急應變通聯手冊", Action = "Index", Index = 1, Func = Dou.Misc.Attr.FuncEnum.ALL, AllowAnonymous = false)]
     public class CommEditController : Dou.Controllers.AGenericModelController<UserBasic>
     {
         public DouModelContextExt Db = new DouModelContextExt();
