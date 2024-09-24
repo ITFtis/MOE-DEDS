@@ -23,6 +23,13 @@ using Microsoft.Office.Interop.Excel;
 using iTextSharp.text.pdf;
 using iTextSharp.text;
 using Microsoft.Office.Interop.Word;
+using System.ComponentModel.DataAnnotations;
+using System.Reflection;
+using Dou.Misc.Attr;
+using System.Diagnostics;
+using System.ComponentModel;
+using NPOI.SS.Formula.Functions;
+
 
 namespace DEDS.Controllers.Comm
 {
@@ -112,6 +119,9 @@ namespace DEDS.Controllers.Comm
         {
             var f = objs.First();
 
+            //原資料
+            var before = GetModelEntity().GetAll().Where(a => a.Id == f.Id).First();
+
             f.UDate = DateTime.Now;
             f.UId = Dou.Context.CurrentUserBase.Id;
             f.UName = Dou.Context.CurrentUserBase.Name;
@@ -119,7 +129,41 @@ namespace DEDS.Controllers.Comm
             base.UpdateDBObject(dbEntity, objs);
 
             //寄發承辦
-            ToSend("Update", f);
+            List<string> diffNames = new List<string>();
+            PropertyInfo[] properties = before.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.SetField | BindingFlags.SetProperty);
+            ConUnitPerson menuDefAttribute = (ConUnitPerson)before.GetType().GetConstructor(new Type[0]).Invoke(new object[0]);
+            PropertyInfo[] array = properties;
+            foreach (PropertyInfo propertyInfo in array)
+            {
+                if (propertyInfo.Name == "UDate")
+                    continue;
+
+                try
+                {
+                    if (propertyInfo.CanWrite)
+                    {
+                        string diffName = "";
+                        var a = propertyInfo.GetValue(before);
+                        var b = propertyInfo.GetValue(f);
+
+                        var attr = propertyInfo?.GetCustomAttributes(typeof(DisplayAttribute), false).FirstOrDefault() as DisplayAttribute;
+                        diffName = attr?.GetName() ?? propertyInfo.Name;
+
+                        string s1 = a == null ? "" : a.ToString();
+                        string s2 = b == null ? "" : b.ToString();
+
+                        if (s1 != s2)
+                            diffNames.Add(diffName);
+                    }
+                }
+                catch (Exception value)
+                {
+                    Debug.WriteLine(value, ToString());
+                }
+            }
+
+            string diffNote = diffNames.Count == 0 ? "無" : "修改欄位：" + string.Join(", ", diffNames);
+            ToSend("Update", f, diffNote);
         }
 
         public override DataManagerOptions GetDataManagerOptions()
@@ -402,7 +446,7 @@ namespace DEDS.Controllers.Comm
             }
         }
 
-        private bool ToSend(string act, ConUnitPerson f)
+        private bool ToSend(string act, ConUnitPerson f, string diffNote)
         {
             bool result = false;
 
@@ -415,10 +459,12 @@ namespace DEDS.Controllers.Comm
                 string content = string.Format(@"
 您好，{0}({1})有資料異動，處理人員({2})。
 <br/><br/>
-
+變動說明<br/>
+{3}
 ", con == null ? "" : con.Name,
 f.Name,
-Dou.Context.CurrentUser<User>().Name);
+Dou.Context.CurrentUser<User>().Name,
+diffNote);
 
                 if (act == "Update")
                 {
