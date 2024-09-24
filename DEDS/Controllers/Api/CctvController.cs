@@ -169,7 +169,7 @@ namespace DEDS.Controllers.Api
         string GetFmgUrlBase(string inApibase = null)
         {
             if (string.IsNullOrEmpty(inApibase) || !inApibase.StartsWith("http"))
-                return Startup.AppSet.WraFmgApiUrl;
+                return Startup.AppSet.WraFmgApiUrl != null ? Startup.AppSet.WraFmgApiUrl : "";
             else return inApibase;
         }
     }
