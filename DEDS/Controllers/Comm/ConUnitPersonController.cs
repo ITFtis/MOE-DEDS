@@ -178,7 +178,7 @@ namespace DEDS.Controllers.Comm
 
             //寄發承辦
             string diffNote = "刪除資料";
-            ToSend("Add", f, diffNote);
+            ToSend("Delete", f, diffNote);
         }
 
         public override DataManagerOptions GetDataManagerOptions()
@@ -483,7 +483,7 @@ diffNote);
 
                 if (act == "Add")
                 {
-                    actName = "修改";
+                    actName = "新增";
                 }
                 else if (act == "Update")
                 {
