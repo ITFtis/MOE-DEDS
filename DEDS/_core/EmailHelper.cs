@@ -401,9 +401,17 @@ namespace DEDS
 
     public class MailParam
     {
+        public static string filePath
+        {
+            get
+            {
+                return System.Web.Hosting.HostingEnvironment.MapPath("~/Data/TestMailParam.json");
+            }
+        }
+
         public virtual void iniParam()
         {
-            using (StreamReader sr = new StreamReader(Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath(("~/FileDatas/json")), "TestMailParam.json")))
+            using (StreamReader sr = new StreamReader(Path.Combine(MailParam.filePath)))
             {
                 string text = sr.ReadToEnd().Replace("\r\n", "");
                 TestMailParam obj = Newtonsoft.Json.JsonConvert.DeserializeObject<TestMailParam>(text);
@@ -431,7 +439,7 @@ namespace DEDS
     {
         public override void iniParam()
         {
-            using (StreamReader sr = new StreamReader(Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath(("~/Data")), "TestMailParam.json")))
+            using (StreamReader sr = new StreamReader(Path.Combine(MailParam.filePath)))
             {
                 string text = sr.ReadToEnd().Replace("\r\n", "");
                 TestMailParam obj = Newtonsoft.Json.JsonConvert.DeserializeObject<TestMailParam>(text);

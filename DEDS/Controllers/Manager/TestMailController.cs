@@ -100,6 +100,7 @@ namespace DEDS.Controllers.Manager
                 emailHelper.Subject = subject;
                 emailHelper.Body = body;
 
+                f.ToMails = f.ToMails == null ? "" : f.ToMails;
                 foreach (string addr in f.ToMails.Split(','))
                 {
                     if (addr != "")
@@ -108,6 +109,7 @@ namespace DEDS.Controllers.Manager
                     }
                 }
 
+                f.BCCMails = f.BCCMails == null ? "" : f.BCCMails;
                 foreach (string addr in f.BCCMails.Split(','))
                 {
                     if (addr != "")
@@ -152,7 +154,7 @@ namespace DEDS.Controllers.Manager
 
             try
             {
-                string path = System.Web.Hosting.HostingEnvironment.MapPath("~/Data/TestMailParam.json");
+                string path = MailParam.filePath;
                 using (var streamWriter = System.IO.File.CreateText(path))
                 {
                     var text = new JavaScriptSerializer().Serialize(f);
@@ -167,7 +169,7 @@ namespace DEDS.Controllers.Manager
                 Logger.Log.For(null).Error("更新Mail設定值(json)失敗：" + ex.Message);
                 Logger.Log.For(null).Error(ex.StackTrace);
 
-                desc = "更新失敗";
+                desc = "更新失敗" + ex.Message;
             }
 
             return Json(new { Success = success, Desc = desc, data = f }, JsonRequestBehavior.AllowGet);
