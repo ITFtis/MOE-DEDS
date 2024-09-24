@@ -58,7 +58,7 @@ namespace DEDS
         {
             get 
             {
-                _htmlTemplatePath = System.Web.HttpContext.Current.Server.MapPath(_htmlTemplatePath);
+                _htmlTemplatePath = _htmlTemplatePath;
                 return _htmlTemplatePath; 
             }
         }

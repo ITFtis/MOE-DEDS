@@ -68,9 +68,9 @@ namespace DEDS.Controllers.Manager
 
             try
             {
-                //(1)設定內容 (特休結算通知)
+                //(1)設定內容
                 string body = "";
-                string path = AppConfig.HtmlTemplatePath + "0_測試Mail.html";
+                string path = Server.MapPath(AppConfig.HtmlTemplatePath) + "0_測試Mail.html";
                 using (StreamReader reader = System.IO.File.OpenText(path))
                 {
                     body = reader.ReadToEnd();
