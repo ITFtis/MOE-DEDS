@@ -22,6 +22,7 @@ using System.IO;
 using Microsoft.Office.Interop.Excel;
 using iTextSharp.text.pdf;
 using iTextSharp.text;
+using Microsoft.Office.Interop.Word;
 
 namespace DEDS.Controllers.Comm
 {
@@ -116,6 +117,9 @@ namespace DEDS.Controllers.Comm
             f.UName = Dou.Context.CurrentUserBase.Name;
 
             base.UpdateDBObject(dbEntity, objs);
+
+            //寄發承辦
+            ToSend("Update", f);
         }
 
         public override DataManagerOptions GetDataManagerOptions()
@@ -396,6 +400,83 @@ namespace DEDS.Controllers.Comm
             {
                 return Json(new { result = true, url = url }, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        private bool ToSend(string act, ConUnitPerson f)
+        {
+            bool result = false;
+
+            try
+            {
+                string actName = "";
+
+                var con = ConUnitCode.GetAllDatas().Where(a => a.Code == f.ConUnit).FirstOrDefault();
+
+                string content = string.Format(@"
+您好，{0}({1})有資料異動，處理人員({2})。
+<br/><br/>
+
+", con == null ? "" : con.Name,
+f.Name,
+Dou.Context.CurrentUser<User>().Name);
+
+                if (act == "Update")
+                {
+                    actName = "修改";
+                }
+                else
+                {
+                    Logger.Log.For(null).Error("尚未設定行為(act)：" + act);
+                }
+
+                EmailHelper emailHelper = new EmailHelper();
+                MailParam p = new MailParam();
+                p.iniParam();
+                emailHelper.MailFrom = p.MailFrom;
+                emailHelper.MailFromName = p.MailFromName;
+                emailHelper.Account = p.Account;
+                emailHelper.Password = p.Password;
+                emailHelper.MailServer = p.MailServer;
+                emailHelper.MailPort = p.MailPort;
+                emailHelper.EnableSSL = p.EnableSSL;
+
+                emailHelper.Subject = "幕僚/窗口異動：" + actName;
+                emailHelper.Body = content;
+                foreach (string addr in AppConfig.EmailAddressResp.Split(','))
+                {
+                    if (addr != "")
+                    {
+                        emailHelper.AddTo(addr, "");
+                    }
+                }
+
+                foreach (string addr in AppConfig.EmailAddressCC.Split(','))
+                {
+                    if (addr != "")
+                    {
+                        emailHelper.AddCC(addr, "");
+                    }
+                }
+
+                emailHelper.IsSendEmail = true;
+                bool success = emailHelper.SendBySmtp();
+
+                if (!success)
+                {
+                    Logger.Log.For(null).Error("ToSend - 信件寄發失敗:" + emailHelper.ToMails);
+                }
+
+                result = true;
+            }
+            catch (Exception ex)
+            {
+                Logger.Log.For(null).Error("信件寄發錯誤：" + ex.Message);
+                Logger.Log.For(null).Error(ex.StackTrace);
+
+                return false;
+            }
+
+            return result;
         }
     }
 }

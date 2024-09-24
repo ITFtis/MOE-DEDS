@@ -16,6 +16,8 @@ namespace DEDS
         private static string _ePAAPI;
 
         private static string _htmlTemplatePath;
+        private static string _emailAddressCC;
+        private static string _emailAddressResp;
 
         #endregion
 
@@ -29,6 +31,9 @@ namespace DEDS
 
             _ePAAPI = ConfigurationManager.AppSettings["EPAAPI"] == null ? "": ConfigurationManager.AppSettings["EPAAPI"].ToString();
             _htmlTemplatePath = ConfigurationManager.AppSettings["HtmlTemplatePath"] == null ? "" : ConfigurationManager.AppSettings["HtmlTemplatePath"].ToString();
+
+            _emailAddressCC = ConfigurationManager.AppSettings["EmailAddressCC"] == null ? "" : ConfigurationManager.AppSettings["EmailAddressCC"].ToString();
+            _emailAddressResp = ConfigurationManager.AppSettings["EmailAddressResp"] == null ? "" : ConfigurationManager.AppSettings["EmailAddressResp"].ToString();
         }
 
         #endregion
@@ -61,6 +66,22 @@ namespace DEDS
                 _htmlTemplatePath = _htmlTemplatePath;
                 return _htmlTemplatePath; 
             }
+        }
+
+        /// <summary>
+        /// Email副本 
+        /// </summary>
+        public static string EmailAddressCC
+        {
+            get { return _emailAddressCC; }
+        }
+
+        /// <summary>
+        /// Email負責人(淑俐) 
+        /// </summary>
+        public static string EmailAddressResp
+        {
+            get { return _emailAddressResp; }
         }
 
         #endregion

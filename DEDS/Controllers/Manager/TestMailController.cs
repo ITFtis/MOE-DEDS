@@ -133,7 +133,7 @@ namespace DEDS.Controllers.Manager
             }
             catch (Exception ex)
             {
-                Logger.Log.For(null).Error("更新Mail設定值(json)失敗：" + ex.Message);
+                Logger.Log.For(null).Error("信件寄發錯誤：" + ex.Message);
                 Logger.Log.For(null).Error(ex.StackTrace);
 
                 desc = "信件寄發錯誤：" + ex.Message;
