@@ -113,6 +113,10 @@ namespace DEDS.Controllers.Comm
             f.BName = Dou.Context.CurrentUserBase.Name;
 
             base.AddDBObject(dbEntity, objs);
+
+            //寄發承辦
+            string diffNote = "新增資料";
+            ToSend("Add", f, diffNote);
         }
 
         protected override void UpdateDBObject(IModelEntity<ConUnitPerson> dbEntity, IEnumerable<ConUnitPerson> objs)
@@ -135,7 +139,7 @@ namespace DEDS.Controllers.Comm
             PropertyInfo[] array = properties;
             foreach (PropertyInfo propertyInfo in array)
             {
-                if (propertyInfo.Name == "UDate")
+                if (propertyInfo.Name == "UDate" || propertyInfo.Name == "UId" || propertyInfo.Name == "UName")
                     continue;
 
                 try
@@ -164,6 +168,17 @@ namespace DEDS.Controllers.Comm
 
             string diffNote = diffNames.Count == 0 ? "無" : "修改欄位：" + string.Join(", ", diffNames);
             ToSend("Update", f, diffNote);
+        }
+
+        protected override void DeleteDBObject(IModelEntity<ConUnitPerson> dbEntity, IEnumerable<ConUnitPerson> objs)
+        {
+            var f = objs.First();
+
+            base.DeleteDBObject(dbEntity, objs);
+
+            //寄發承辦
+            string diffNote = "刪除資料";
+            ToSend("Add", f, diffNote);
         }
 
         public override DataManagerOptions GetDataManagerOptions()
@@ -466,9 +481,17 @@ f.Name,
 Dou.Context.CurrentUser<User>().Name,
 diffNote);
 
-                if (act == "Update")
+                if (act == "Add")
                 {
                     actName = "修改";
+                }
+                else if (act == "Update")
+                {
+                    actName = "修改";
+                }
+                else if (act == "Delete")
+                {
+                    actName = "刪除";
                 }
                 else
                 {
