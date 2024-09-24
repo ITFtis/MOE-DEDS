@@ -22,7 +22,7 @@ using static NPOI.HSSF.Util.HSSFColor;
 
 namespace DEDS.Controllers.Manager
 {
-    [Dou.Misc.Attr.MenuDef(Id = "User", Name = "使用者管理", MenuPath = "系統管理", Action = "Index", Func = Dou.Misc.Attr.FuncEnum.ALL, AllowAnonymous = false)]
+    [Dou.Misc.Attr.MenuDef(Id = "User", Name = "使用者管理", MenuPath = "系統管理", Action = "Index", Index = 2, Func = Dou.Misc.Attr.FuncEnum.ALL, AllowAnonymous = false)]
     public class UserController : Dou.Controllers.UserBaseControll<User, Role>
     {
         public DouModelContextExt Db = new DouModelContextExt();

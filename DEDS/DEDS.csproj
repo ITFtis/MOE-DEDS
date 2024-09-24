@@ -348,6 +348,7 @@
     <Compile Include="Controllers\HtmlIframeOtherMainLayoutController.cs" />
     <Compile Include="Controllers\Manager\LoggerController.cs" />
     <Compile Include="Controllers\Manager\RoleController.cs" />
+    <Compile Include="Controllers\Manager\TestMailController.cs" />
     <Compile Include="Controllers\Manager\UserController.cs" />
     <Compile Include="Controllers\Path\ManagerPathController.cs" />
     <Compile Include="Controllers\Path\PrjPathController.cs" />
@@ -384,6 +385,7 @@
     <Compile Include="_core\CommonFunc.cs" />
     <Compile Include="_core\Constant.cs" />
     <Compile Include="_core\DateFormat.cs" />
+    <Compile Include="_core\EmailHelper.cs" />
     <Compile Include="_core\ExcelSpecHelper.cs" />
     <Compile Include="_core\FileHelper.cs" />
     <Compile Include="_core\XmlHelper.cs" />
@@ -480,6 +482,7 @@
     <Content Include="Scripts\prj\citysta\vehicle.js" />
     <Content Include="Scripts\prj\citysta\disinfectant.js" />
     <Content Include="Scripts\prj\webshow\conunitperson.js" />
+    <Content Include="Scripts\prj\webshow\TestMail.js" />
     <Content Include="Scripts\tableHTMLExport.js" />
     <Content Include="XMLFile1.xml" />
     <Content Include="Config\DouMenuExt.json" />
@@ -584,6 +587,7 @@
     <Content Include="Views\ContactExport\index.cshtml" />
     <Content Include="Views\ConUnitPerson\Index.cshtml" />
     <Content Include="Views\Position\Index.cshtml" />
+    <Content Include="Views\TestMail\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
