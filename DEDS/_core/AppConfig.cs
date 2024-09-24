@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Grpc.Core;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Web;
 
 namespace DEDS
@@ -12,6 +14,8 @@ namespace DEDS
 
         private static string _rootPath;
         private static string _ePAAPI;
+
+        private static string _htmlTemplatePath;
 
         #endregion
 
@@ -24,6 +28,7 @@ namespace DEDS
             _rootPath = _rootPath.Replace("~\\", HttpContext.Current.Server.MapPath("~\\"));
 
             _ePAAPI = ConfigurationManager.AppSettings["EPAAPI"] == null ? "": ConfigurationManager.AppSettings["EPAAPI"].ToString();
+            _htmlTemplatePath = ConfigurationManager.AppSettings["HtmlTemplatePath"] == null ? "" : ConfigurationManager.AppSettings["HtmlTemplatePath"].ToString();
         }
 
         #endregion
@@ -44,6 +49,18 @@ namespace DEDS
         public static string EPAAPI
         {
             get { return _ePAAPI; }
+        }
+
+        /// <summary>
+        ///Html樣式路徑
+        /// </summary>
+        public static string HtmlTemplatePath
+        {
+            get 
+            {
+                _htmlTemplatePath = System.Web.HttpContext.Current.Server.MapPath(_htmlTemplatePath);
+                return _htmlTemplatePath; 
+            }
         }
 
         #endregion

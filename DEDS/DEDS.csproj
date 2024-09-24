@@ -423,6 +423,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="HtmlTemplate\0_測試Mail.html" />
     <Content Include="Images\bg.png" />
     <Content Include="Images\logo.png" />
     <Content Include="Images\menu\menu_admin.png" />
