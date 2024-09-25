@@ -125,6 +125,46 @@
     }
     cusToolbars.push(ToPDF);
 
+    //匯出excel
+    //var ToExcel
+    var ToExcel = {};
+    ToExcel.item = '<span class="btn btn-secondary glyphicon glyphicon-tree-deciduous"> 匯出Excel</span>';
+    ToExcel.event = 'click .glyphicon glyphicon-tree-deciduous';
+    ToExcel.callback = function importQdate(a, b, c, d) {
+
+        var conditions = GetFilterParams($_masterTable)
+        var paras;
+        if (conditions.length > 0) {
+            paras = { key: 'filter', value: JSON.stringify(conditions) };
+        }
+
+        helper.misc.showBusyIndicator();
+        $.ajax({
+            url: app.siteRoot + 'ConUnitPerson/ExportExcel',
+            datatype: "json",
+            type: "Post",
+            data: { paras: [paras] },
+            success: function (data) {
+                if (data.result) {
+                    console.log(data.result)
+                    window.open(app.siteRoot + data.url);
+                } else {
+                    alert(data.errorMessage)
+                }
+            },
+            complete: function () {
+                helper.misc.hideBusyIndicator();
+
+            },
+            error: function (xhr, status, error) {
+                var err = eval("(" + xhr.responseText + ")");
+                alert(err.Message);
+                helper.misc.hideBusyIndicator();
+            }
+        });
+    }
+    cusToolbars.push(ToExcel);
+
     //有定義：Toolbar功能按鈕
     if (cusToolbars.length > 0) {
         douoptions.appendCustomToolbars = cusToolbars;

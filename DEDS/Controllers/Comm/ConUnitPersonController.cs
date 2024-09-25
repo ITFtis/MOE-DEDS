@@ -480,6 +480,91 @@ namespace DEDS.Controllers.Comm
             }
         }
 
+        public ActionResult ExportExcel(params KeyValueParams[] paras)
+        {
+            var IModel = new ModelEntity<ConUnitPerson>(new DouModelContextExt());
+            var iquery = base.GetDataDBObject(IModel, paras);
+            iquery = GetOutputData(iquery, paras);
+
+            //預設排序(備註：應變單位(縣市)，因特殊處理造成ConUnit變中文，目前使用可接受)                
+            iquery = iquery.OrderBy(a => a.EditSort)
+                        .ThenBy(a => a.ConUnitSort).ThenBy(a => a.PSort);
+
+            var datas = iquery.ToList();
+
+            //查無符合資料表數
+            if (datas.Count == 0)
+            {
+                return Json(new { result = false, errorMessage = "查無符合資料表數" }, JsonRequestBehavior.AllowGet);
+            }
+
+            //產出PDF
+            string url = "";
+            try
+            {
+                //1.匯出Excel
+                string fileTitle = "窗口_幕僚";
+                string folder = DEDS.FileHelper.GetFileFolder(Code.TempUploadFile.窗口_幕僚);
+
+                //產出Dynamic資料 (給Excel)
+                List<dynamic> list = new List<dynamic>();
+
+                int serial = 1;
+                foreach (var data in datas)
+                {
+                    dynamic f = new ExpandoObject();
+                    f.序號 = serial;
+                    serial++;
+
+                    var ConUnits = ConUnitCode.GetAllDatas().Where(a => a.Code == data.ConUnit);
+                    f.應變單位 = ConUnits.Count() == 0 ? data.ConUnit : ConUnits.First().Name;
+                    var ConTypes = Code.GetConType().Where(a => a.Key == data.ConType.ToString());
+                    f.身分 = ConTypes.Count() == 0 ? data.ConType : ConTypes.First().Value;
+                    f.姓名 = data.Name;
+                    f.職稱 = data.Position;
+                    f.總機分機 = data.Tel;
+                    f.行動電話 = data.Mobile;
+                    f.住家電話 = data.HTel;
+                    f.EMail = data.EMail;
+                    f.確認日期 = data.ConfirmDate == null ? "" : DEDS.DateFormat.ToDate4((DateTime)data.ConfirmDate);
+                    f.備註 = data.Remark;
+
+                    f.SheetName = fileTitle;//sheep.名稱;
+                    list.Add(f);
+                }
+
+                //特殊儲存格位置Top (會外評選=政府採購網公開評選)
+                List<string> topContents = new List<string>() { };
+
+                //產出excel
+                List<string> titles = new List<string>();
+                //"0":不調整width,"1":自動調整長度(效能差:資料量多),"2":字串長度調整width,"3":字串長度調整width(展開)
+                int autoSizeColumn = 3;
+
+                string fileName = DEDS.ExcelSpecHelper.GenerateExcelByLinqF2(fileTitle, titles, list, folder, autoSizeColumn, true, topContents);
+                string path = folder + fileName;                //.xlsx
+                //End Step 1
+
+                url = DEDS.Cm.PhysicalToUrl(path);
+            }
+            catch (Exception ex)
+            {
+                Logger.Log.For(this).Error("匯出專家清單失敗:" + ex.Message);
+                Logger.Log.For(this).Error(ex.StackTrace);
+
+                return Json(new { result = false, errorMessage = "匯出專家清單失敗：" + ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+
+            if (url == "")
+            {
+                return Json(new { result = false, errorMessage = "匯出專家清單失敗：無產出連結" }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { result = true, url = url }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         private bool ToSend(string act, ConUnitPerson f, string diffNote)
         {
             bool result = false;
