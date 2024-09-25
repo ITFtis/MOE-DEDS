@@ -129,6 +129,7 @@ namespace DEDS.Controllers.Comm
             f.UDate = DateTime.Now;
             f.UId = Dou.Context.CurrentUserBase.Id;
             f.UName = Dou.Context.CurrentUserBase.Name;
+            f.ConfirmDate = f.UDate;
 
             base.UpdateDBObject(dbEntity, objs);
 
