@@ -364,7 +364,17 @@ namespace DEDS.Controllers.Comm
                 //"0":不調整width,"1":自動調整長度(效能差:資料量多),"2":字串長度調整width,"3":字串長度調整width(展開)
                 int autoSizeColumn = 3;
 
-                string fileName = DEDS.ExcelSpecHelper.GenerateExcelByLinqF2(fileTitle, titles, list, folder, autoSizeColumn, true, topContents);
+                Dictionary<string, int> dicWidth = new Dictionary<string, int>()
+                {
+                    { "應變單位", 2600 },//2229
+                    { "總機分機", 2600 },//2485
+                    { "行動電話", 2600 },//2229
+                    { "住家電話", 2600 },//2229
+                    { "EMail", 2700 },//2485
+                    { "確認日期", 2800 },//2485
+                };
+
+                string fileName = DEDS.ExcelSpecHelper.GenerateExcelByLinqF2(fileTitle, titles, list, folder, autoSizeColumn, true, topContents, dicWidth);
                 string path = folder + fileName;                //.xlsx
                 //End Step 1
 
@@ -542,7 +552,12 @@ namespace DEDS.Controllers.Comm
                 //"0":不調整width,"1":自動調整長度(效能差:資料量多),"2":字串長度調整width,"3":字串長度調整width(展開)
                 int autoSizeColumn = 3;
 
-                string fileName = DEDS.ExcelSpecHelper.GenerateExcelByLinqF2(fileTitle, titles, list, folder, autoSizeColumn, true, topContents);
+                Dictionary<string, int> dicWidth = new Dictionary<string, int>()
+                {
+                    { "EMail", 100 },
+                };
+
+                string fileName = DEDS.ExcelSpecHelper.GenerateExcelByLinqF2(fileTitle, titles, list, folder, autoSizeColumn, true, topContents, dicWidth);
                 string path = folder + fileName;                //.xlsx
                 //End Step 1
 

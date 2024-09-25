@@ -253,9 +253,11 @@ namespace DEDS
         /// <param name="autoSizeColumn">"0":不調整width,"1":自動調整長度(效能差:資料量多),"2":字串長度調整width,"3":字串長度調整width(展開)</param>
         /// <param name="hasFooterNumber">true/false</param>
         /// <param name="topContents">特殊儲存格位置Top</param>
+        /// <param name="dicWidth">指定欄位width</param>
         /// <returns>Excel檔名</returns>
         public static string GenerateExcelByLinqF2(string fileTitle, List<string> titles, List<dynamic> list, string savePath,
-                                                int autoSizeColumn, bool hasFooterNumber = false, List<string> topContents = null)
+                                                int autoSizeColumn, bool hasFooterNumber = false, List<string> topContents = null,
+                                                Dictionary<string, int> dicWidth = null)
         {
             string fileName = "";
 
@@ -452,6 +454,20 @@ namespace DEDS
                         //字串長度調整width(展開)
                         for (int j = 0; j < columnCount; j++)
                         {
+                            //dicWidth(指定欄位width)
+                            if (dicWidth != null && mySheet1.GetRow(0).Count() > j)
+                            {
+                                var cname = mySheet1.GetRow(0).Cells[j].ToString();
+                                if (cname != null)
+                                {
+                                    if (dicWidth.ContainsKey(cname))
+                                    {
+                                        mySheet1.SetColumnWidth(j, dicWidth[cname]);
+                                        continue;
+                                    }
+                                }
+                            }
+
                             //欄寬預設 5                            
                             int columnWidth = 5;
 
