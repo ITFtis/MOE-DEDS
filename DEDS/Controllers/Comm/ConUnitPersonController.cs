@@ -258,12 +258,31 @@ namespace DEDS.Controllers.Comm
 
             //---1.查詢---
             var CusOrg1 = KeyValue.GetFilterParaValue(paras, "CusOrg1");
+            var ConUnit = KeyValue.GetFilterParaValue(paras, "ConUnit");
+            var ConType = KeyValue.GetFilterParaValue(paras, "ConType");
+            var Name = KeyValue.GetFilterParaValue(paras, "Name");
 
             if (!string.IsNullOrEmpty(CusOrg1))
             {
                 int num = int.Parse(CusOrg1);
                 var list = ConUnitCode.GetAllDatas().Where(a => a.CusOrg1 == num);               
                 iquery = iquery.Where(a => list.Any(b => b.Code == a.ConUnit));
+            }
+
+            if (!string.IsNullOrEmpty(ConUnit))
+            {
+                iquery = iquery.Where(a => a.ConUnit == ConUnit);
+            }
+
+            if (!string.IsNullOrEmpty(ConType))
+            {
+                int num = int.Parse(ConType);
+                iquery = iquery.Where(a => a.ConType == num);
+            }
+
+            if (!string.IsNullOrEmpty(Name))
+            {
+                iquery = iquery.Where(a => a.Name == Name);
             }
 
             return iquery;
