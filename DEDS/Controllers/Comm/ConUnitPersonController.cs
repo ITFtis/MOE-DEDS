@@ -115,7 +115,7 @@ namespace DEDS.Controllers.Comm
             base.AddDBObject(dbEntity, objs);
 
             //寄發承辦
-            string diffNote = "新增資料";
+            string diffNote = "人員新增";
             ToSend("Add", f, diffNote);
         }
 
@@ -166,7 +166,7 @@ namespace DEDS.Controllers.Comm
                 }
             }
 
-            string diffNote = diffNames.Count == 0 ? "無" : "修改欄位：" + string.Join(", ", diffNames);
+            string diffNote = diffNames.Count == 0 ? "無" : "修改欄位(" + string.Join(", ", diffNames) + ")";
             ToSend("Update", f, diffNote);
         }
 
@@ -177,7 +177,7 @@ namespace DEDS.Controllers.Comm
             base.DeleteDBObject(dbEntity, objs);
 
             //寄發承辦
-            string diffNote = "刪除資料";
+            string diffNote = "人員刪除";
             ToSend("Delete", f, diffNote);
         }
 
@@ -472,14 +472,24 @@ namespace DEDS.Controllers.Comm
                 var con = ConUnitCode.GetAllDatas().Where(a => a.Code == f.ConUnit).FirstOrDefault();
 
                 string content = string.Format(@"
-您好，{0}({1})有資料異動，處理人員({2})。
+您好，DEDS【幕僚/窗口】人員異動通知
 <br/><br/>
-變動說明<br/>
-{3}
-", con == null ? "" : con.Name,
+
+異動幕僚/窗口人員：環境管理署({0})({1})<br/>
+異動項目：{2}<br/>
+異動時間：{3}
+<br/><br/>
+處理人員帳號：{4}({5})<br/>
+災情預警應變決策支援系統(DEDS)連結如下<br/>
+<a href='https://newemis.moenv.gov.tw/DEDS/User/Login'>https://newemis.moenv.gov.tw/DEDS/User/Login</a>
+", 
+con == null ? "" : con.Name,
 f.Name,
+diffNote,
+DateFormat.ToDate7(DateTime.Now),
 Dou.Context.CurrentUser<User>().Name,
-diffNote);
+Dou.Context.CurrentUser<User>().Id
+);
 
                 if (act == "Add")
                 {
