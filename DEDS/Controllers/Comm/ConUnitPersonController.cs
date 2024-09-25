@@ -362,7 +362,7 @@ namespace DEDS.Controllers.Comm
                 //產出excel
                 List<string> titles = new List<string>();
                 //"0":不調整width,"1":自動調整長度(效能差:資料量多),"2":字串長度調整width,"3":字串長度調整width(展開)
-                int autoSizeColumn = 2;
+                int autoSizeColumn = 3;
 
                 string fileName = DEDS.ExcelSpecHelper.GenerateExcelByLinqF2(fileTitle, titles, list, folder, autoSizeColumn, true, topContents);
                 string path = folder + fileName;                //.xlsx
@@ -540,7 +540,7 @@ namespace DEDS.Controllers.Comm
                 //產出excel
                 List<string> titles = new List<string>();
                 //"0":不調整width,"1":自動調整長度(效能差:資料量多),"2":字串長度調整width,"3":字串長度調整width(展開)
-                int autoSizeColumn = 2;
+                int autoSizeColumn = 3;
 
                 string fileName = DEDS.ExcelSpecHelper.GenerateExcelByLinqF2(fileTitle, titles, list, folder, autoSizeColumn, true, topContents);
                 string path = folder + fileName;                //.xlsx
