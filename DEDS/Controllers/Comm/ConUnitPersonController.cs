@@ -554,7 +554,12 @@ namespace DEDS.Controllers.Comm
 
                 Dictionary<string, int> dicWidth = new Dictionary<string, int>()
                 {
-                    { "EMail", 100 },
+                    { "應變單位", 2600 },//2229
+                    { "總機分機", 2600 },//2485
+                    { "行動電話", 2600 },//2229
+                    { "住家電話", 2600 },//2229
+                    { "EMail", 2700 },//2485
+                    { "確認日期", 2800 },//2485
                 };
 
                 string fileName = DEDS.ExcelSpecHelper.GenerateExcelByLinqF2(fileTitle, titles, list, folder, autoSizeColumn, true, topContents, dicWidth);
