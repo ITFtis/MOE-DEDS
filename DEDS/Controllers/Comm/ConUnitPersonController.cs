@@ -349,7 +349,7 @@ namespace DEDS.Controllers.Comm
                     f.行動電話 = data.Mobile;
                     f.住家電話 = data.HTel;
                     f.EMail = data.EMail;
-                    f.確認日期 = data.ConfirmDate == null ? "" : DEDS.DateFormat.ToDate4((DateTime)data.ConfirmDate);
+                    f.確認日期 = data.ConfirmDate == null ? "" : DEDS.DateFormat.ToDate7((DateTime)data.ConfirmDate);
                     f.備註 = data.Remark;
 
                     f.SheetName = fileTitle;//sheep.名稱;
@@ -362,7 +362,7 @@ namespace DEDS.Controllers.Comm
                 //產出excel
                 List<string> titles = new List<string>();
                 //"0":不調整width,"1":自動調整長度(效能差:資料量多),"2":字串長度調整width,"3":字串長度調整width(展開)
-                int autoSizeColumn = 3;
+                int autoSizeColumn = 2;
 
                 string fileName = DEDS.ExcelSpecHelper.GenerateExcelByLinqF2(fileTitle, titles, list, folder, autoSizeColumn, true, topContents);
                 string path = folder + fileName;                //.xlsx
@@ -527,7 +527,7 @@ namespace DEDS.Controllers.Comm
                     f.行動電話 = data.Mobile;
                     f.住家電話 = data.HTel;
                     f.EMail = data.EMail;
-                    f.確認日期 = data.ConfirmDate == null ? "" : DEDS.DateFormat.ToDate4((DateTime)data.ConfirmDate);
+                    f.確認日期 = data.ConfirmDate == null ? "" : DEDS.DateFormat.ToDate7((DateTime)data.ConfirmDate);
                     f.備註 = data.Remark;
 
                     f.SheetName = fileTitle;//sheep.名稱;
@@ -580,7 +580,7 @@ namespace DEDS.Controllers.Comm
 您好，DEDS【幕僚/窗口】人員異動通知
 <br/><br/>
 
-異動幕僚/窗口人員：環境管理署({0})({1})<br/>
+異動幕僚/窗口人員：{0}({1})<br/>
 異動項目：{2}<br/>
 異動時間：{3}
 <br/><br/>
