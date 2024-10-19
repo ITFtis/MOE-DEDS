@@ -49,6 +49,12 @@ namespace DEDS.Controllers.Manager
         }
         public override ActionResult DouLogin(User user, string returnUrl, bool redirectLogin = false)
         {
+            var vuser = TempData["vuser"] as User;
+            if (vuser != null)
+            {
+               return base.DouLogin(vuser, returnUrl, redirectLogin);
+            }
+
             ViewBag.recaptchaSiteKey = recaptchaSiteKey;
             ViewBag.recaptchaAction = recaptchaAction;
             var token = Request.Params["token"];
@@ -143,7 +149,54 @@ namespace DEDS.Controllers.Manager
             //更換帳號清cache
             ConUnitCodeItems.Reset();
 
+            if (user.Id != null)
+            {
+                return LoginRedirect(user, returnUrl, redirectLogin);
+            }
+            else
+            {
+                return base.DouLogin(user, returnUrl, redirectLogin);
+            }
+        }
+
+        public ActionResult LoginRedirect(Models.Manager.User user, string returnUrl, bool redirectLogin)
+        {
+            if (IsSystemNotice())
+            {
+                TempData["vuser"] = user;
+                return View("~/Views/User/SystemNotice.cshtml", user);
+            }
+
             return base.DouLogin(user, returnUrl, redirectLogin);
+        }
+
+        /// <summary>
+        /// 系統公告訊息
+        /// </summary>
+        /// <returns></returns>
+        public bool IsSystemNotice()
+        {
+            bool result = false;
+
+            DateTime date = DateTime.Now;
+
+            DateTime sDate1 = DateTime.Parse("2024/10/19 00:00");
+            DateTime eDate1 = DateTime.Parse("2024/10/21 22:30");
+
+            if (date >= sDate1 && date <= eDate1)
+            {
+                return true;
+            }
+
+            ////DateTime sDate2 = DateTime.Parse("2024/08/22 00:00");
+            ////DateTime eDate2 = DateTime.Parse("2024/08/25 22:00");
+
+            ////if (date >= sDate2 && date <= eDate2)
+            ////{
+            ////    return true;
+            ////}
+
+            return result;
         }
 
         internal string OldSysUserLoginKey = "~OldSysUserLoginKey~";

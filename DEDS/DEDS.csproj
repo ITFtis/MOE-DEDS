@@ -589,6 +589,8 @@
     <Content Include="Views\ConUnitPerson\Index.cshtml" />
     <Content Include="Views\Position\Index.cshtml" />
     <Content Include="Views\TestMail\Index.cshtml" />
+    <Content Include="Views\User\SystemNotice.cshtml" />
+    <Content Include="Views\User\_ThirdLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

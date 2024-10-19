@@ -1,0 +1,155 @@
+﻿@model DEDS.Models.Manager.User
+@{
+    Layout = "~/Views/User/_ThirdLayout.cshtml";
+    ViewBag.Title = "系統公告";
+}
+
+@{ 
+    var aaa = Model;
+}
+
+<style type="text/css">
+    .progessbar {
+        position: relative;
+        text-align: center;
+        border: 1px dashed blue;
+        height: 36px;
+        width: 500px;
+    }
+
+        .progessbar .text {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            line-height: 36px;
+            z-index: 10;
+        }
+
+        .progessbar .bar {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 36px;
+            background-color: green;
+        }
+
+    h1 {
+        text-align: center;
+    }
+
+    .block {
+        width: 60%;
+        margin: 0 auto;
+        border: 2px solid burlywood;
+        padding: 1rem;
+        font-size: 1.5rem;
+    }
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<center>
+
+    <h1>系統公告</h1>
+    <div class="block">
+        <p3>
+            為加強資訊安全防護量能，本部訂於113年10月21日（星期一）18時30分至22時30分進行文心機房設備維護作業，請查照。
+            <br /> <br />
+
+            更換時間1：113年10月21日（星期一）18時30分至22時30分
+
+
+            <br /><br />
+            <a style="font-weight:bold; font-size:20px" href="@Url.Action("DouLogin")">
+                按下跳過
+            </a>
+
+            ，直接進入系統
+        </p3>
+        <br /><br />
+        <p>
+            系統將於 <span id="secs">30</span> 秒後自動進入系統
+        </p>
+
+        <div class="progessbar">
+            <div class="text"></div>
+            <div class="bar"></div>
+        </div>
+    </div>
+</center>
+
+<div class="msg"></div>
+
+<script>
+    // 起始時間(計時器的啟動時間)。
+    const startTime = new Date().getTime();
+
+    // 目標時間(要倒數幾秒)。
+    const targetSeconds = 30; //10; //120;
+
+    // 初始化。
+    init(targetSeconds);
+
+    // timer.
+    var timer = function (startTime) {
+        // 當前時間。
+        var currentTime = new Date().getTime();
+
+        // 當前時間 - 起始時間 = 經過時間。(因為不需要毫秒，所以將結果除以1000。)
+        var diffSec = Math.round((currentTime - startTime) / 1000);
+
+        // 目標時間 - 經過時間 = 剩餘時間。
+        var remainingTime = targetSeconds - diffSec;
+
+        // update progess.
+        update(remainingTime);
+
+        if (remainingTime <= 0) {
+            // stop the timer.
+            clearInterval(timerId);
+
+            // 確保最後顯示的時間為00:00
+            update(0);
+
+            // do anything you want to.
+            //$(".msg").text("time up!");
+            location.href = "@Url.Action("DouLogin")";
+        }
+    }
+
+    // start the timer.
+    var timerId = setInterval(function () { timer(startTime); }, 1000);
+
+    // 初始化。此處借用update函式來初次設定進度條。
+    function init(seconds) {
+        update(seconds);
+    }
+
+    // update progess with the timer.
+    function update(seconds) {
+        barRenderer(seconds);
+        textRenderer(seconds);
+    }
+
+    // refresh the bar.
+    function barRenderer(seconds) {
+        var percent = (seconds / targetSeconds) * 100;
+        $(".bar").css("width", percent + "%");
+    }
+
+    // refresh the text of the bar.
+    function textRenderer(seconds) {
+        var sec = seconds % 60;
+        var min = Math.floor(seconds / 60);
+
+        /* 兩種作法都可以 */
+        //min = min > 9 ? min : "0" + min;
+        //sec = sec > 9 ? sec : "0" + sec;
+        min = min.toString().padStart(2, '0');
+        sec = sec.toString().padStart(2, '0');
+
+        $(".text").text(min + ":" + sec);
+    }
+</script>
+
