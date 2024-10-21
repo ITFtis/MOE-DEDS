@@ -12,7 +12,7 @@
         this.currentevent = undefined;
         this.rainInfo = {
             title: '雨量站', total: '-',
-            legends: ['images/pin/雨量_超大豪雨.png', 'images/pin/雨量_大豪雨.png', 'images/pin/雨量_豪雨.png', 'images/pin/雨量_大雨.png'],
+            legends: [app.siteRoot + 'images/pin/雨量_超大豪雨.png', app.siteRoot + 'images/pin/雨量_大豪雨.png', app.siteRoot + 'images/pin/雨量_豪雨.png', app.siteRoot + 'images/pin/雨量_大雨.png'],
             snames: ['超大豪雨', '大豪雨', '豪雨', '大雨'],
             counts: ['0', '0', '0', '0']
         }
@@ -24,7 +24,7 @@
         }
         this.fsInfo = {
             title: '淹水感測器', total: '-',
-            legends: ['images/pin/fsensor_50.png', 'images/pin/fsensor_30.png'],
+            legends: [app.siteRoot + 'images/pin/fsensor_50.png', app.siteRoot + 'images/pin/fsensor_30.png'],
             snames: ['50公分↑', '30公分↑'],
             counts: ['0', '0']
         }
@@ -32,7 +32,7 @@
             title: 'EMIC災情', total: '-',
             //legends: ['images/pin/flood_50.png', 'images/pin/flood_30.png', 'images/pin/flood_10.png'],
             //snames: ['50公分↑', '30公分↑', '10公分↑'],
-            legends: ['images/pin/災情_未處理.png', 'images/pin/災情_處理中.png'],
+            legends: [app.siteRoot + 'images/pin/災情_未處理.png', app.siteRoot + 'images/pin/災情_處理中.png'],
             snames: ['未處理', '處理中'],
             counts: ['0', '0']
         }
