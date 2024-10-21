@@ -103,10 +103,6 @@ namespace DEDS.Controllers.Comm
                 }                
             }
 
-            //BaseList = Base_32;   ////////////////////////xxxxxxxxxxxxxxxxxxxxxxx
-            //Base_32.ToList().ForEach(p => p.CategoryId = "CG274");
-            //return null;
-
             XWPFDocument doc1 = ReadDocx(Server.MapPath("../") + "Data/Comm/Contact_local.docx");
             // 複製表格
             XWPFTable Table = doc1.Tables[0];
