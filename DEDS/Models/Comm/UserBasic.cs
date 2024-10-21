@@ -110,6 +110,9 @@ namespace DEDS.Models.Comm
         [ColumnDef(Display = "備註")]
         public string Note { get; set; }
 
+        [ColumnDef(Display = "是否環保局災害應變聯繫窗口", Required = true, EditType = EditType.Select, SelectItems = "{\"true\":\"是\",\"false\":\"否\"}", DefaultValue = "false")]
+        public bool? IsResContact { get; set; }
+
         [ColumnDef(Display = "編輯時間", VisibleEdit = false)]
         public DateTime? EditTime { get; set; }
 
