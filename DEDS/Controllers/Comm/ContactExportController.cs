@@ -19,6 +19,8 @@ using System.Web.UI.WebControls.WebParts;
 using NPOI.Util;
 using System.Data.Entity.Infrastructure;
 using Google.Protobuf.WellKnownTypes;
+using NPOI.HPSF;
+using DouHelper;
 
 namespace DEDS.Controllers.Comm
 {
@@ -67,7 +69,43 @@ namespace DEDS.Controllers.Comm
 
             ////var PositionList = fun.GetPosition();
 
+            //第32類：(是)環保局災害應變聯繫窗口
+            var Base_32 = BaseList.Where(a => (a.IsResContact ?? false) == true).ToList();
+            if (Base_32.Count > 0)
+            {
+                //Base_32.ToList().ForEach(p => p.CityID = "24");
+                //BaseList.AddRange(Base_32);
 
+                int sort = 1;
+                foreach (var b32 in Base_32)
+                {
+                    string UID = Guid.NewGuid().ToString();
+                    string CityID = "24";
+
+                    //人
+                    //UserBasic man = new UserBasic();
+                    var man = b32.CloneObj();
+                    man.UID = UID;
+                    man.CityID = CityID;
+                    BaseList.Add(man);
+
+                    //單位
+                    Tabulation tab = new Tabulation();
+                    tab.UID = UID;
+                    tab.Name = b32.Name;
+                    tab.CityID = CityID;
+                    tab.CategoryId = "CG274";
+                    tab.Sort = sort;
+                    tab.Act = true;
+                    TabulationList.Add(tab);
+
+                    sort++;
+                }                
+            }
+
+            //BaseList = Base_32;   ////////////////////////xxxxxxxxxxxxxxxxxxxxxxx
+            //Base_32.ToList().ForEach(p => p.CategoryId = "CG274");
+            //return null;
 
             XWPFDocument doc1 = ReadDocx(Server.MapPath("../") + "Data/Comm/Contact_local.docx");
             // 複製表格
