@@ -58,6 +58,8 @@ namespace DEDS.Controllers.Comm
         [Route("ContactExport/ExportPDF")]
         public ActionResult ExportPDF()
         {
+            var UnitList = fun.GetUnit();
+
             // 準備資料進行核對
             var CategoryIdList = GetCategoryIdList();
             var BaseList = Db.UserBasic.ToList(); // 基本資料表            
@@ -77,16 +79,21 @@ namespace DEDS.Controllers.Comm
                 //BaseList.AddRange(Base_32);
 
                 int sort = 1;
+                List<Tabulation> lss = new List<Tabulation>();
                 foreach (var b32 in Base_32)
                 {
                     string UID = Guid.NewGuid().ToString();
                     string CityID = "24";
+
+                    var b32_unit = UnitList.Where(a => a.CityId == b32.CityID).FirstOrDefault();
 
                     //人
                     //UserBasic man = new UserBasic();
                     var man = b32.CloneObj();
                     man.UID = UID;
                     man.CityID = CityID;
+                    //第32類：(是)環保局災害應變聯繫窗口
+                    man.PositionId = "ttt";
                     BaseList.Add(man);
 
                     //單位
@@ -95,12 +102,17 @@ namespace DEDS.Controllers.Comm
                     tab.Name = b32.Name;
                     tab.CityID = CityID;
                     tab.CategoryId = "CG274";
-                    tab.Sort = sort;
+
+                    //unit縣市做排序
+                    tab.Sort = b32_unit != null ? int.Parse(b32_unit.Id) : 0;
                     tab.Act = true;
-                    TabulationList.Add(tab);
+                    lss.Add(tab);
 
                     sort++;
-                }                
+                }
+
+                TabulationList.AddRange(
+                                lss.OrderBy(a => a.Sort).ToList());
             }
 
             XWPFDocument doc1 = ReadDocx(Server.MapPath("../") + "Data/Comm/Contact_local.docx");
@@ -268,6 +280,21 @@ namespace DEDS.Controllers.Comm
                     {
                         var bquery = BaseList.Where(w => w.UID == tquery[MemberNum - 1].UID).FirstOrDefault();
                         var PositionName = bquery.PositionId;//fun.GetPositionName(PositionList, bquery.PositionId);
+
+                        //第32類：(是)環保局災害應變聯繫窗口
+                        if (bquery.CityID == "24")
+                        {
+                            //找人(CityID!=24)，避開同名同姓
+                            var man = BaseList.Where(a => a.CityID != "24" && a.PositionId != "ttt")
+                                            .Where(a => a.Name == bquery.Name)
+                                            .FirstOrDefault();
+
+                            if (man != null)
+                            {
+                                var sCity = UnitList.Where(a => a.CityId == man.CityID).FirstOrDefault();
+                                PositionName = sCity != null ? sCity.Sector : PositionName;
+                            }
+                        }
 
                         if (PositionName == null)
                         {
@@ -552,7 +579,15 @@ namespace DEDS.Controllers.Comm
                                 cellWidth.w = "1300";
                             }
 
-                            fontrun.SetText(Table.Rows[0].GetTableCells()[i].GetText());
+                            //第32類：(是)環保局災害應變聯繫窗口  欄位標頭
+                            var bquery = BaseList.Where(w => w.UID == tquery[MemberNum].UID).FirstOrDefault();
+                            string setText = Table.Rows[0].GetTableCells()[i].GetText();
+                            if (bquery.CityID == "24" && setText == "職稱")
+                            {
+                                setText = "單位";
+                            }
+
+                            fontrun.SetText(setText);
 
                             newCell.RemoveParagraph(0);
                         }
@@ -562,7 +597,22 @@ namespace DEDS.Controllers.Comm
                     {
                         var bquery = BaseList.Where(w => w.UID == tquery[MemberNum - 1].UID).FirstOrDefault();
                         var PositionName = bquery.PositionId; //fun.GetPositionName(PositionList, bquery.PositionId);
-                                                
+
+                        //第32類：(是)環保局災害應變聯繫窗口
+                        if (bquery.CityID == "24")
+                        {
+                            //找人(CityID!=24)，避開同名同姓
+                            var man = BaseList.Where(a => a.CityID != "24" && a.PositionId != "ttt")
+                                            .Where(a => a.Name == bquery.Name)
+                                            .FirstOrDefault();
+
+                            if (man != null)
+                            {
+                                var sCity = UnitList.Where(a => a.CityId == man.CityID).FirstOrDefault();
+                                PositionName = sCity != null ? sCity.Sector : PositionName;
+                            }
+                        }
+
                         newRow.Height = 250;
 
                         //換頁 => 拆新Table判斷"[" -------------
