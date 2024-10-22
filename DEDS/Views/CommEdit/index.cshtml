@@ -44,6 +44,9 @@
         $("button.取.消").css("display", "none");
 
         dou_options.afterCreateEditDataForm = function ($_c, row) {
+            //刪除環保局災害應變聯繫窗口
+            $('.modal-dialog').find('[data-fn="CityID"] option[value="24"]').remove();
+
             changetypeposition('OfficePhone1', 'OfficePhone2', 'OfficePhone3', '');
         }
 
@@ -62,6 +65,9 @@
 
 
         $("#_table").DouEditableTable(dou_options);
+
+        //刪除環保局災害應變聯繫窗口
+        $('.filter-toolbar-plus').find('[data-fn="CityID"] option[value="24"]').remove();
     });
 
 

@@ -129,6 +129,10 @@
     ];
     //douHelper.getField(dou_options.fields, 'Order')
     var $_t = $("<table id='_table'>").appendTo('.body-content').DouEditableTable(dou_options);
+
+    //刪除環保局災害應變聯繫窗口
+    $('.filter-toolbar-plus').find('[data-fn="CityID"] option[value="24"]').remove();
+
     var $_currenttable = $("#_table");
     var $_CategoryText = $('<div class="CategoryText">').insertBefore($_currenttable);
     $('.CategoryText').text("請先選擇欲查詢業務類別");

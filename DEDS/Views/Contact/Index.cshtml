@@ -9,6 +9,9 @@
 
 
         $("#_table").DouEditableTable(dou_options);
+
+        //刪除環保局災害應變聯繫窗口
+        $('.filter-toolbar-plus').find('[data-fn="CityID"] option[value="24"]').remove();
     });
 
 
