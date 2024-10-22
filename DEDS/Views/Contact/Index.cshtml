@@ -7,6 +7,10 @@
 <script>
     $(document).ready(function () {
 
+        dou_options.tableOptions.onLoadSuccess = function (datas) {
+            setUIList();
+        }
+
         $("#_table").DouEditableTable(dou_options);
 
         //刪除環保局災害應變聯繫窗口
@@ -14,6 +18,22 @@
 
         //刪除filter 無
         $('.filter-toolbar-plus').find('[data-fn="rType"] option[value=""]').remove();
+
+        function setUIList() {
+            var rType = $('.filter-toolbar-plus').find('[data-fn="rType"]').val();
+            if (rType == 1) {
+                //各業務單位緊急應變通聯表
+                $('#_table td:nth-child(2),th:nth-child(2)').show();
+            }
+            else if (rType == 2) {
+                //環保局災害應變聯繫窗口
+                $('#_table td:nth-child(2),th:nth-child(2)').hide();
+            }
+        }
+
+        function setUIFitler() {
+
+        }
     });
 
 
