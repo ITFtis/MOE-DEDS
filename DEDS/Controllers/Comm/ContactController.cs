@@ -38,6 +38,8 @@ namespace DEDS.Controllers.Comm
             opts.GetFiled("No").visible = false;
             opts.GetFiled("Act").visible = false;
             opts.GetFiled("Name").textListMatchValue = true;
+            opts.GetFiled("rType").filter = true;
+
 
             // 重新給全國縣市的列表
             opts.GetFiled("CityID").selectitems = GetALLCityIDSelectItems();
@@ -47,56 +49,104 @@ namespace DEDS.Controllers.Comm
         }
 
         protected override IEnumerable<Tabulation> GetDataDBObject(IModelEntity<Tabulation> dbEntity, params KeyValueParams[] paras)
-        {            
-            var filterCategory = Dou.Misc.HelperUtilities.GetFilterParaValue(paras, "CategoryId");
-            var filterName = Dou.Misc.HelperUtilities.GetFilterParaValue(paras, "Name");
+        {
 
-            //強迫要有查尋條件
-            if (filterCategory == null && filterName == null)
+            var rType = Dou.Misc.HelperUtilities.GetFilterParaValue(paras, "rType");
+            if (rType == null)
             {
                 return new List<Tabulation>();
             }
-                        
-            bool IsManager = Dou.Context.CurrentUser<DEDS.Models.Manager.User>().IsManager;
-            if (!IsManager)
+
+            if (rType == "2")
             {
-                //20240626_Brian：登入者姓名在手冊內，才能查詢(可看到全部)
-                var totalTabulation = GetModelEntity().GetAll();
-                string name = Dou.Context.CurrentUser<DEDS.Models.Manager.User>().Name;
-                bool inTabulation = totalTabulation.Any(a => a.Name == name);
-                if(!inTabulation)
+                //環保局災害應變聯繫窗口
+                var iquery = GetModelEntity().GetAll();
+                var datas = iquery.ToList();
+                var UnitList = fun.GetUnit();
+
+                var BaseList = Db.UserBasic.Where(a => (a.IsResContact ?? false) == true).ToList(); // 基本資料表
+                var result = new List<Tabulation>();
+                foreach (var UserBase in BaseList)
+                {
+                    var item = datas.Where(a => a.UID == UserBase.UID).FirstOrDefault();
+                    if (item != null)
+                    {
+                        var unit = UnitList.Where(a => a.CityId == UserBase.CityID).FirstOrDefault();
+                        result.Add(new Tabulation
+                        {
+                            No = item.No,
+                            UID = item.UID,
+                            Name = UserBase.Name,
+                            CityID = UserBase.CityID,
+                            CategoryId = item.CategoryId,
+                            Sort = unit!=null ? int.Parse(unit.Id): item.Sort,
+                            Act = item.Act,
+                            PositionId = UserBase.PositionId,//fun.GetPositionName(PositionList, UserBase.PositionId),
+                            OfficePhone = UserBase.OfficePhone,
+                            MobilePhone = UserBase.MobilePhone,
+                            Email = UserBase.Email,
+                            Note = UserBase.Note,
+                        });
+                    }
+                }
+
+                result = result.OrderBy(a => a.Sort).ToList();
+
+                return result;
+            }
+            else
+            {
+                var filterCategory = Dou.Misc.HelperUtilities.GetFilterParaValue(paras, "CategoryId");
+                var filterName = Dou.Misc.HelperUtilities.GetFilterParaValue(paras, "Name");
+
+                //強迫要有查尋條件
+                if (filterCategory == null && filterName == null)
                 {
                     return new List<Tabulation>();
                 }
-            }
 
-            var iquery = base.GetDataDBObject(dbEntity, paras);
-
-            var BaseList = Db.UserBasic.ToList(); // 基本資料表
-            ////var PositionList = fun.GetPosition();            
-
-            var result = new List<Tabulation>();
-            iquery = iquery.Where(x => x.Act == true).OrderBy(z => z.CategoryId).ThenBy(c => c.Sort).ToList();
-            foreach (var item in iquery)
-            {
-                UserBasic UserBase = GetBase(BaseList, item.UID)[0];
-                result.Add(new Tabulation
+                bool IsManager = Dou.Context.CurrentUser<DEDS.Models.Manager.User>().IsManager;
+                if (!IsManager)
                 {
-                    No = item.No,
-                    UID = item.UID,
-                    Name = UserBase.Name,
-                    CityID = UserBase.CityID,
-                    CategoryId = item.CategoryId,
-                    Sort = item.Sort,
-                    Act = item.Act,
-                    PositionId = UserBase.PositionId,//fun.GetPositionName(PositionList, UserBase.PositionId),
-                    OfficePhone = UserBase.OfficePhone,
-                    MobilePhone = UserBase.MobilePhone,
-                    Email = UserBase.Email,
-                    Note = UserBase.Note,
-                });
+                    //20240626_Brian：登入者姓名在手冊內，才能查詢(可看到全部)
+                    var totalTabulation = GetModelEntity().GetAll();
+                    string name = Dou.Context.CurrentUser<DEDS.Models.Manager.User>().Name;
+                    bool inTabulation = totalTabulation.Any(a => a.Name == name);
+                    if (!inTabulation)
+                    {
+                        return new List<Tabulation>();
+                    }
+                }
+
+                var iquery = base.GetDataDBObject(dbEntity, paras);
+
+                var BaseList = Db.UserBasic.ToList(); // 基本資料表
+                                                      ////var PositionList = fun.GetPosition();            
+
+                var result = new List<Tabulation>();
+                iquery = iquery.Where(x => x.Act == true).OrderBy(z => z.CategoryId).ThenBy(c => c.Sort).ToList();
+                foreach (var item in iquery)
+                {
+                    UserBasic UserBase = GetBase(BaseList, item.UID)[0];
+                    result.Add(new Tabulation
+                    {
+                        No = item.No,
+                        UID = item.UID,
+                        Name = UserBase.Name,
+                        CityID = UserBase.CityID,
+                        CategoryId = item.CategoryId,
+                        Sort = item.Sort,
+                        Act = item.Act,
+                        PositionId = UserBase.PositionId,//fun.GetPositionName(PositionList, UserBase.PositionId),
+                        OfficePhone = UserBase.OfficePhone,
+                        MobilePhone = UserBase.MobilePhone,
+                        Email = UserBase.Email,
+                        Note = UserBase.Note,
+                    });
+                }
+                return result;
             }
-            return result;
+            
             //return base.GetDataDBObject(dbEntity, paras).Where(x => x.Act == true).OrderBy(z => z.CategoryId).ThenBy(c => c.Sort);
 
         }

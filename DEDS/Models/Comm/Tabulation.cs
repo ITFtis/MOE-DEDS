@@ -114,5 +114,12 @@ namespace DEDS.Models.Comm
                 return result;
             }
         }
+
+        [ColumnDef(Display = "聯繫類型", Visible = false, VisibleEdit = false,
+            VisibleView = true,
+            EditType = EditType.Select, 
+            SelectItems = "{\"1\":\"各業務單位緊急應變通聯表\",\"2\":\"環保局災害應變聯繫窗口\"}"
+            , DefaultValue = "1")]
+        public int? rType { get; }
     }
 }
