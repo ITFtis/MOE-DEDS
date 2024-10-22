@@ -19,6 +19,10 @@
         //刪除filter 無
         $('.filter-toolbar-plus').find('[data-fn="rType"] option[value=""]').remove();
 
+        $('.filter-toolbar-plus').find('[data-fn="rType"]').on("change", function () {
+            setUIFitler();
+        });
+
         function setUIList() {
             var rType = $('.filter-toolbar-plus').find('[data-fn="rType"]').val();
             if (rType == 1) {
@@ -32,7 +36,19 @@
         }
 
         function setUIFitler() {
-
+            var rType = $('.filter-toolbar-plus').find('[data-fn="rType"]').val();
+            if (rType == 1) {
+                //各業務單位緊急應變通聯表
+                $('.filter-toolbar-plus').find('[data-fn="CityID"]').show();
+                $('.filter-toolbar-plus').find('[data-fn="CategoryId"]').show();
+                $('.filter-toolbar-plus').find('[data-fn="Name"]').show();
+            }
+            else if (rType == 2) {
+                //環保局災害應變聯繫窗口
+                $('.filter-toolbar-plus').find('[data-fn="CityID"]').hide();
+                $('.filter-toolbar-plus').find('[data-fn="CategoryId"]').hide();
+                $('.filter-toolbar-plus').find('[data-fn="Name"]').hide();
+            }
         }
     });
 
