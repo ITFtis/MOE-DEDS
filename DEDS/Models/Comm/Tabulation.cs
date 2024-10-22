@@ -23,10 +23,16 @@ namespace DEDS.Models.Comm
         [ColumnDef(Display = "姓名", Visible = true, VisibleEdit = false, EditType = EditType.TextList, SelectItemsClassNamespace = "DEDS.Models.Comm.NameSelectItems, DEDS")]
         public string Name { get; set; }
 
-        [ColumnDef(Index = 0,Display = "單位", Visible = false, VisibleEdit = false, Filter = true, SelectGearingWith = "CategoryId,CityID,true", EditType = EditType.Select, SelectItemsClassNamespace = "DEDS.Models.Comm.CityIDSelectItems, DEDS")]
+        [ColumnDef(Display = "聯繫類型", Index = 0, Visible = false, VisibleEdit = false,
+            EditType = EditType.Select,
+            SelectItems = "{\"1\":\"各業務單位緊急應變通聯表\",\"2\":\"環保局災害應變聯繫窗口\"}"
+            , DefaultValue = "1")]
+        public int? rType { get; }
+
+        [ColumnDef(Index = 1,Display = "單位", Visible = false, VisibleEdit = false, Filter = true, SelectGearingWith = "CategoryId,CityID,true", EditType = EditType.Select, SelectItemsClassNamespace = "DEDS.Models.Comm.CityIDSelectItems, DEDS")]
         public string CityID { get; set; }
 
-        [ColumnDef(Index = 1, Display = "業務類別", Visible = false, VisibleEdit = false, Filter = true, EditType = EditType.Select, SelectItemsClassNamespace = "DEDS.Models.Comm.CategoryIdSelectItems, DEDS")]
+        [ColumnDef(Index = 2, Display = "業務類別", Visible = false, VisibleEdit = false, Filter = true, EditType = EditType.Select, SelectItemsClassNamespace = "DEDS.Models.Comm.CategoryIdSelectItems, DEDS")]
         public string CategoryId { get; set; }
 
         [ColumnDef(Display = "排序", Visible = false, VisibleEdit = false)]
@@ -114,12 +120,6 @@ namespace DEDS.Models.Comm
                 return result;
             }
         }
-
-        [ColumnDef(Display = "聯繫類型", Visible = false, VisibleEdit = false,
-            VisibleView = true,
-            EditType = EditType.Select, 
-            SelectItems = "{\"1\":\"各業務單位緊急應變通聯表\",\"2\":\"環保局災害應變聯繫窗口\"}"
-            , DefaultValue = "1")]
-        public int? rType { get; }
+        
     }
 }

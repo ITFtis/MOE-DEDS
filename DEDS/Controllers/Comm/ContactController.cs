@@ -32,14 +32,13 @@ namespace DEDS.Controllers.Comm
         {
             var opts = base.GetDataManagerOptions();
 
+            opts.GetFiled("rType").filter = true;
             opts.GetFiled("Name").filter = true;
             opts.GetFiled("CityID").visible = true;
             opts.GetFiled("CategoryId").visible = true;
             opts.GetFiled("No").visible = false;
             opts.GetFiled("Act").visible = false;
             opts.GetFiled("Name").textListMatchValue = true;
-            opts.GetFiled("rType").filter = true;
-
 
             // 重新給全國縣市的列表
             opts.GetFiled("CityID").selectitems = GetALLCityIDSelectItems();
