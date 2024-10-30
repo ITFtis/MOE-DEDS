@@ -1112,7 +1112,7 @@ namespace DEDS.Controllers.Comm
                 waterMarkContent.SetGState(gs);
                 //寫入文字
                 waterMarkContent.BeginText();
-                waterMarkContent.SetColorFill(Color.GRAY);
+                waterMarkContent.SetColorFill(Color.BLACK);
                 waterMarkContent.SetFontAndSize(font, 50);
                 waterMarkContent.SetTextMatrix(0, 0);
 
