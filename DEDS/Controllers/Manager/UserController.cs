@@ -113,7 +113,7 @@ namespace DEDS.Controllers.Manager
                                 Id = user.Id,
                                 Name = user.Id,
                                 Password = Dou.Context.Config.PasswordEncode(user.Password.Trim()),
-                                DefaultPage = "Contact", //通聯造冊查詢
+                                DefaultPage = "RtHydro", //決策支援圖台
                                 Enabled = true,
                                 IsManager = false,
                                 Unit = OldsysInfo.CityId == null ? "" : OldsysInfo.CityId.ToString(),
@@ -124,7 +124,7 @@ namespace DEDS.Controllers.Manager
                                 //RoleUsers = new RoleUser[] { new RoleUser { RoleId = defaultRoleId, UserId = user.Id } }.ToList()
                             };
                             //配置預設角色(role)
-                            string roleId = "user";
+                            string roleId = "user2";
                             u.RoleUsers = new RoleUser[] { new RoleUser { RoleId = roleId, UserId = user.Id } }.ToList();
 
                             this.AddDBObject(GetModelEntity(), new User[] { u });
