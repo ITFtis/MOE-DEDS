@@ -1,5 +1,6 @@
 ﻿using DEDS.Models;
 using DEDS.Models.Comm;
+using DEDS.Models.Epaemis_local;
 using DEDS.Models.Manager;
 using Dou.Misc;
 using Dou.Models;
@@ -49,6 +50,16 @@ namespace DEDS.Controllers.Manager
         }
         public override ActionResult DouLogin(User user, string returnUrl, bool redirectLogin = false)
         {
+            if (user.Id == null)
+            {
+                //新增使用者，再一次DouLogin
+                var newUser = TempData["newUser"];
+                if (newUser != null)
+                {
+                    user = (User)newUser;
+                }
+            }
+
             var vuser = TempData["vuser"] as User;
             if (vuser != null)
             {
@@ -90,35 +101,32 @@ namespace DEDS.Controllers.Manager
                     if (u == null && Dou.Help.DouUnobtrusiveSession.Session[OldSysUserLoginKey] != null) //找不到使用者 但是是從舊系統來的
                     {
                         //to do Api驗證
-                        var IsOldSysUser = CheckOldSysUser(user.Id, user.Password);
-                        if (IsOldSysUser.Key == true) //驗證成功
-                        {
-                            //判斷預設角色，無則新增角色
-                            string defaultRoleId = "user2"; //預設角色id
-                            var me = new Dou.Models.DB.ModelEntity<Role>(RoleController._dbContext);
-                            var role = me.FirstOrDefault(s => s.Id == defaultRoleId);
-                            if (role == null)
-                            {
-                                var ms = Menu.GetMenuDefs().Where(m => !m.IsOnlyPath).Where(s => s.Id == "RtHydro"); //預設角色所擁有controller id功能
-                                role = new Role() { Id = defaultRoleId, Name = "決策支援圖台", RolePermissions = ms.Select(m => new RolePermission { RoleId = defaultRoleId, Permission = m.Id, Func = (int)m.Func }).ToList() };
-                                me.Add(role);
-                            }
+                        //var IsOldSysUser = CheckOldSysUser(user.Id, user.Password);
 
-                            var OldsysInfo = JsonConvert.DeserializeObject<List<LoginInfo>>(IsOldSysUser.Value)[0];
+                        Dou.Models.DB.IModelEntity<Models.Epaemis_local.Users> vm = new Dou.Models.DB.ModelEntity<Models.Epaemis_local.Users>(new EpaemisContextExt());
+                        var OldsysInfo = vm.GetAll().Where(a => a.UserName == user.Id && a.Pwd == user.Password).FirstOrDefault();
+
+                        if (OldsysInfo != null)
+                        {
                             u = new User()
                             {
                                 Id = user.Id,
                                 Name = user.Id,
                                 Password = Dou.Context.Config.PasswordEncode(user.Password.Trim()),
+                                DefaultPage = "Contact", //通聯造冊查詢
                                 Enabled = true,
                                 IsManager = false,
-                                Unit = OldsysInfo.CityId == null ? "": OldsysInfo.CityId.ToString(),
+                                Unit = OldsysInfo.CityId == null ? "" : OldsysInfo.CityId.ToString(),
                                 Mobile = OldsysInfo.MobilePhone == null ? "" : OldsysInfo.MobilePhone.ToString(),
                                 Tel = OldsysInfo.OfficePhone == null ? "" : OldsysInfo.OfficePhone.ToString(),
                                 EMail = OldsysInfo.Email == null ? "" : OldsysInfo.Email.ToString(),
                                 Organize = OldsysInfo.Duty == null ? "" : OldsysInfo.Duty.ToString(),
-                                RoleUsers = new RoleUser[] { new RoleUser { RoleId = defaultRoleId, UserId = user.Id } }.ToList()
+                                //RoleUsers = new RoleUser[] { new RoleUser { RoleId = defaultRoleId, UserId = user.Id } }.ToList()
                             };
+                            //配置預設角色(role)
+                            string roleId = "user";
+                            u.RoleUsers = new RoleUser[] { new RoleUser { RoleId = roleId, UserId = user.Id } }.ToList();
+
                             this.AddDBObject(GetModelEntity(), new User[] { u });
 
                             if (Dou.Context.Config.VerifyPassword(u.Password, user.Password.Trim()))
@@ -126,10 +134,14 @@ namespace DEDS.Controllers.Manager
                                 u.Password = Dou.Context.Config.PasswordEncode(user.Password.Trim());
                                 this.UpdateDBObject(GetModelEntity(), new User[] { u });
                             }
+
+                            //重新登入驗證                            
+                            TempData["newUser"] = u;
+                            return RedirectToAction("DouLogin", new { returnUrl = returnUrl, redirectLogin = redirectLogin });
                         }
                         else
                         {
-                            ViewBag.ErrorMessage = IsOldSysUser.Value;
+                            ViewBag.ErrorMessage = string.Format("(Emis)查無此帳密資料：{0}({1})", user.Id, user.Password);
                             return PartialView(user);
                         }
                     }

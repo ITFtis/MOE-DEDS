@@ -369,6 +369,7 @@
     <Compile Include="Models\Comm\UserBasic.cs" />
     <Compile Include="Models\Comm\UserBasicHis.cs" />
     <Compile Include="Models\DouModelContextExt.cs" />
+    <Compile Include="Models\Epaemis_local\Users.cs" />
     <Compile Include="Models\Manager\Role.cs" />
     <Compile Include="Models\Manager\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

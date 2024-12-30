@@ -24,4 +24,16 @@ namespace DEDS.Models
 
         //public virtual DbSet<Comm.Position> Position { get; set; }
     }
+
+    public partial class EpaemisContextExt : Dou.Models.ModelContextBase<User, Role>
+    {
+        public EpaemisContextExt()
+            : base("name=EpaemisContextExt")
+        {
+            Database.SetInitializer<EpaemisContextExt>(null);
+        }
+
+        public virtual DbSet<Epaemis_local.Users> Tabulation { get; set; }
+
+    }
 }
