@@ -187,6 +187,13 @@ namespace DEDS.Models.Comm
             {
                 //List<LoginInfo> Info = fun.GetInfo(UserID, PWD);
                 string CityID = fun.GetInfo(UserID, PWD); // 取得登錄者的部門ID
+
+                if (string.IsNullOrEmpty(CityID))
+                {
+                    //使用者(User)所屬單位非必填
+                    return new List<KeyValuePair<string, object>>();
+                }
+
                 var targetCityUnits = JSONList.Where(unit => unit.CityId == CityID).ToList();
                 var targetCityCategories = targetCityUnits.FirstOrDefault().Category;
 
@@ -270,29 +277,32 @@ namespace DEDS.Models.Comm
         public string GetInfo(string UserID, string PWD)
         {
             var cityID = Db.User.Where(q => q.Id == UserID).Select(w => w.Unit).FirstOrDefault();
-            bool Isint = int.TryParse(cityID, out int result);
-            if (Isint == false)
-            {
-                var options = new RestClientOptions(Startup.AppSet.OldSysUserLoginApi)
-                {
-                    MaxTimeout = -1,
-                };
-                var client = new RestClient(options);
-                var request = new RestRequest(Startup.AppSet.OldSysUserLoginApi, Method.Post);
-                request.AddHeader("token", "aS6bQK2Bj4rS[awqFY&"); //預防不是從系統Post的路徑呼叫的
-                request.AddHeader("Content-Type", "application/json");
-                var body = @"{""UserName"":""" + UserID + @""",""Pwd"":""" + PWD + @"""}";
-                request.AddStringBody(body, DataFormat.Json);
-                RestResponse response = client.Execute(request);
-                var jsonstring = response.Content;
-                var Result = JsonConvert.DeserializeObject<List<LoginInfo>>(jsonstring);
-                return Result[0].CityId.ToString();
-            }
-            else
-            {
-                return cityID;
-            }
-            
+            return cityID == null ? "" : cityID;
+
+            ////swagger(EPAAPI)網站已移除
+            ////bool Isint = int.TryParse(cityID, out int result);
+            ////if (Isint == false)
+            ////{
+            ////    var options = new RestClientOptions(Startup.AppSet.OldSysUserLoginApi)
+            ////    {
+            ////        MaxTimeout = -1,
+            ////    };
+            ////    var client = new RestClient(options);
+            ////    var request = new RestRequest(Startup.AppSet.OldSysUserLoginApi, Method.Post);
+            ////    request.AddHeader("token", "aS6bQK2Bj4rS[awqFY&"); //預防不是從系統Post的路徑呼叫的
+            ////    request.AddHeader("Content-Type", "application/json");
+            ////    var body = @"{""UserName"":""" + UserID + @""",""Pwd"":""" + PWD + @"""}";
+            ////    request.AddStringBody(body, DataFormat.Json);
+            ////    RestResponse response = client.Execute(request);
+            ////    var jsonstring = response.Content;
+            ////    var Result = JsonConvert.DeserializeObject<List<LoginInfo>>(jsonstring);
+            ////    return Result[0].CityId.ToString();
+            ////}
+            ////else
+            ////{
+            ////    return cityID;
+            ////}
+
         }
 
         static object LockGetAllDep = new object();
