@@ -63,7 +63,7 @@ namespace DEDS.Models.Manager
 
                 //通聯手冊單位
                 Function fun = new Function();
-                var unit = fun.GetUnit().Where(a => a.Id == this.Unit).FirstOrDefault();
+                var unit = fun.GetUnit().Where(a => a.CityId == this.Unit).FirstOrDefault();
                 if (unit == null)
                     return false;
 
