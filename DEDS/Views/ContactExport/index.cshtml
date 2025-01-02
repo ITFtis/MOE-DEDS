@@ -21,23 +21,22 @@
 <script>
     $(document).ready(function () {
 
-        //var IsManager = '@ViewBag.IsManager'.toLowerCase() == 'true';
-        //var InTabulation = '@ViewBag.InTabulation'.toLowerCase() == 'true';
-        //var IsCityEdit = '@ViewBag.IsCityEdit'.toLowerCase() == 'true';
+        var IsManager = '@ViewBag.IsManager'.toLowerCase() == 'true';
+        var InTabulation = '@ViewBag.InTabulation'.toLowerCase() == 'true';
+        var IsCityEdit = '@ViewBag.IsCityEdit'.toLowerCase() == 'true';
 
-        ////20240102_Brian：沒挑選所屬單位(縣市)，也要匯出
-        //if (!IsManager) {
-        //    if (InTabulation || IsCityEdit) {
-        //        $('.glyphicon-export').show();
-        //    }
-        //    else {
+        if (!IsManager) {
+            if (InTabulation || IsCityEdit) {
+                $('.glyphicon-export').show();
+            }
+            else {
 
-        //        var content = '<font color="red" size="4em">●非通聯手冊人員無法匯出通聯手冊。</font>';
-        //        jspAlertMsg($("body"), { autoclose: 2000, content: content });
+                var content = '<font color="red" size="4em">●非通聯手冊人員無法匯出通聯手冊。</font>';
+                jspAlertMsg($("body"), { autoclose: 2000, content: content });
 
-        //        $('.glyphicon-export').hide();
-        //    }
-        //}
+                $('.glyphicon-export').hide();
+            }
+        }
     });
 
     function exportPDF() {

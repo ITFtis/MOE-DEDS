@@ -37,19 +37,18 @@ namespace DEDS.Controllers.Comm
 
             bool IsManager = Dou.Context.CurrentUser<DEDS.Models.Manager.User>().IsManager;
 
-            ////20240102_Brian：沒挑選所屬單位(縣市)，也要匯出
-            ////if (!IsManager)
-            ////{
-            ////    //20240626_Brian：通聯手冊裡的人可以匯出手冊
-            ////    string name = Dou.Context.CurrentUser<DEDS.Models.Manager.User>().Name;
-            ////    bool inTabulation = iquery.Any(a => a.Name == name);
-            ////    ViewBag.InTabulation = inTabulation;
+            if (!IsManager)
+            {
+                //20240626_Brian：通聯手冊裡的人可以匯出手冊
+                string name = Dou.Context.CurrentUser<DEDS.Models.Manager.User>().Name;
+                bool inTabulation = iquery.Any(a => a.Name == name);
+                ViewBag.InTabulation = inTabulation;
 
-            ////    //20250102_Brian：通聯手冊有縣市編輯權限可以匯出手冊
-            ////    var units = fun.GetUnit();
-            ////    bool isCityEdit = units.Any(a => a.CityId == Dou.Context.CurrentUser<User>().Unit);
-            ////    ViewBag.IsCityEdit = isCityEdit;
-            ////}
+                //20250102_Brian：通聯手冊有縣市編輯權限可以匯出手冊
+                var units = fun.GetUnit();
+                bool isCityEdit = units.Any(a => a.CityId == Dou.Context.CurrentUser<User>().Unit);
+                ViewBag.IsCityEdit = isCityEdit;
+            }
 
             ViewBag.IsManager = IsManager;
 
