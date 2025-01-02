@@ -111,7 +111,12 @@ namespace DEDS.Controllers.Comm
                     var totalTabulation = GetModelEntity().GetAll();
                     string name = Dou.Context.CurrentUser<DEDS.Models.Manager.User>().Name;
                     bool inTabulation = totalTabulation.Any(a => a.Name == name);
-                    if (!inTabulation)
+
+                    //20250102_Brian：有縣市編輯權限，才能查詢(可看到全部)
+                    var units = fun.GetUnit();
+                    bool isCityEdit = units.Any(a => a.CityId == Dou.Context.CurrentUser<DEDS.Models.Manager.User>().Unit);
+
+                    if (!inTabulation && !isCityEdit)
                     {
                         return new List<Tabulation>();
                     }
