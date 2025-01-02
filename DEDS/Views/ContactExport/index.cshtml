@@ -23,9 +23,10 @@
 
         var IsManager = '@ViewBag.IsManager'.toLowerCase() == 'true';
         var InTabulation = '@ViewBag.InTabulation'.toLowerCase() == 'true';
+        var IsCityEdit = '@ViewBag.IsCityEdit'.toLowerCase() == 'true';
 
         if (!IsManager) {
-            if (InTabulation) {
+            if (InTabulation || IsCityEdit) {
                 $('.glyphicon-export').show();
             }
             else {

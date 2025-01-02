@@ -42,6 +42,11 @@ namespace DEDS.Controllers.Comm
                 string name = Dou.Context.CurrentUser<DEDS.Models.Manager.User>().Name;
                 bool inTabulation = iquery.Any(a => a.Name == name);
                 ViewBag.InTabulation = inTabulation;
+
+                //20250102_Brian：通聯手冊有縣市編輯權限可以匯出手冊
+                var units = fun.GetUnit();
+                bool isCityEdit = units.Any(a => a.CityId == Dou.Context.CurrentUser<User>().Unit);
+                ViewBag.IsCityEdit = isCityEdit;
             }
 
             ViewBag.IsManager = IsManager;
