@@ -105,22 +105,24 @@ namespace DEDS.Controllers.Comm
                 }
 
                 bool IsManager = Dou.Context.CurrentUser<DEDS.Models.Manager.User>().IsManager;
-                if (!IsManager)
-                {
-                    //20240626_Brian：登入者姓名在手冊內，才能查詢(可看到全部)
-                    var totalTabulation = GetModelEntity().GetAll();
-                    string name = Dou.Context.CurrentUser<DEDS.Models.Manager.User>().Name;
-                    bool inTabulation = totalTabulation.Any(a => a.Name == name);
 
-                    //20250102_Brian：有縣市編輯權限，才能查詢(可看到全部)
-                    var units = fun.GetUnit();
-                    bool isCityEdit = units.Any(a => a.CityId == Dou.Context.CurrentUser<DEDS.Models.Manager.User>().Unit);
+                ////20240102_Brian：沒挑選所屬單位(縣市)，也要匯出
+                //if (!IsManager)
+                //{
+                //    //20240626_Brian：登入者姓名在手冊內，才能查詢(可看到全部)
+                //    var totalTabulation = GetModelEntity().GetAll();
+                //    string name = Dou.Context.CurrentUser<DEDS.Models.Manager.User>().Name;
+                //    bool inTabulation = totalTabulation.Any(a => a.Name == name);
 
-                    if (!inTabulation && !isCityEdit)
-                    {
-                        return new List<Tabulation>();
-                    }
-                }
+                //    //20250102_Brian：有縣市編輯權限，才能查詢(可看到全部)
+                //    var units = fun.GetUnit();
+                //    bool isCityEdit = units.Any(a => a.CityId == Dou.Context.CurrentUser<DEDS.Models.Manager.User>().Unit);
+
+                //    if (!inTabulation && !isCityEdit)
+                //    {
+                //        return new List<Tabulation>();
+                //    }
+                //}
 
                 var iquery = base.GetDataDBObject(dbEntity, paras);
 
