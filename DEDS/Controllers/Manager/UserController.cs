@@ -111,7 +111,7 @@ namespace DEDS.Controllers.Manager
                             u = new User()
                             {
                                 Id = user.Id,
-                                Name = user.Id,
+                                Name = OldsysInfo.Name,
                                 Password = Dou.Context.Config.PasswordEncode(user.Password.Trim()),
                                 DefaultPage = "RtHydro", //決策支援圖台
                                 Enabled = true,
