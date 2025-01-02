@@ -39,18 +39,6 @@ namespace DEDS.Controllers.Comm
             if (!IsManager) { opts.GetFiled("CityID").visibleEdit = false; }
             else { opts.GetFiled("CityID").visible = true; }
                         
-            if (!IsManager)
-            {
-                //20240626_Brian：誰具有編輯各單位窗口編輯自己單位的，環境部的人可以編輯所有環境部
-                bool IsConUnit = Dou.Context.CurrentUser<User>().IsCommEditPower;
-                if (!IsConUnit)
-                {
-                    opts.addable = false;
-                    opts.editable = false;
-                    opts.deleteable = false;
-                }
-            }
-
             return opts;
         }
 
