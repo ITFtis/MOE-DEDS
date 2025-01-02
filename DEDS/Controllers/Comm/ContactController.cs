@@ -104,29 +104,28 @@ namespace DEDS.Controllers.Comm
                     return new List<Tabulation>();
                 }
 
+                var BaseList = Db.UserBasic.ToList(); // 基本資料表
+                                                      ////var PositionList = fun.GetPosition();  
+                                                      
                 bool IsManager = Dou.Context.CurrentUser<DEDS.Models.Manager.User>().IsManager;
-
                 if (!IsManager)
                 {
                     //20240626_Brian：登入者姓名在手冊內，才能查詢(可看到全部)
-                    var totalTabulation = GetModelEntity().GetAll();
+                    //var totalTabulation = GetModelEntity().GetAll();
                     string name = Dou.Context.CurrentUser<DEDS.Models.Manager.User>().Name;
-                    bool inTabulation = totalTabulation.Any(a => a.Name == name);
+                    bool inBaseList = BaseList.Any(a => a.Name == name);
 
                     //20250102_Brian：有縣市編輯權限，才能查詢(可看到全部)
                     var units = fun.GetUnit();
                     bool isCityEdit = units.Any(a => a.CityId == Dou.Context.CurrentUser<DEDS.Models.Manager.User>().Unit);
 
-                    if (!inTabulation && !isCityEdit)
+                    if (!inBaseList && !isCityEdit)
                     {
                         return new List<Tabulation>();
                     }
                 }
 
                 var iquery = base.GetDataDBObject(dbEntity, paras);
-
-                var BaseList = Db.UserBasic.ToList(); // 基本資料表
-                                                      ////var PositionList = fun.GetPosition();            
 
                 var result = new List<Tabulation>();
                 iquery = iquery.Where(x => x.Act == true).OrderBy(z => z.CategoryId).ThenBy(c => c.Sort).ToList();

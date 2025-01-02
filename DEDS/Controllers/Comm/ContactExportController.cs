@@ -40,9 +40,10 @@ namespace DEDS.Controllers.Comm
             if (!IsManager)
             {
                 //20240626_Brian：通聯手冊裡的人可以匯出手冊
+                var BaseList = Db.UserBasic.ToList(); // 基本資料表
                 string name = Dou.Context.CurrentUser<DEDS.Models.Manager.User>().Name;
-                bool inTabulation = iquery.Any(a => a.Name == name);
-                ViewBag.InTabulation = inTabulation;
+                bool inBaseList = BaseList.Any(a => a.Name == name);
+                ViewBag.InBaseList = inBaseList;
 
                 //20250102_Brian：通聯手冊有縣市編輯權限可以匯出手冊
                 var units = fun.GetUnit();

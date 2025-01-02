@@ -22,11 +22,11 @@
     $(document).ready(function () {
 
         var IsManager = '@ViewBag.IsManager'.toLowerCase() == 'true';
-        var InTabulation = '@ViewBag.InTabulation'.toLowerCase() == 'true';
+        var InBaseList = '@ViewBag.InBaseList'.toLowerCase() == 'true';
         var IsCityEdit = '@ViewBag.IsCityEdit'.toLowerCase() == 'true';
 
         if (!IsManager) {
-            if (InTabulation || IsCityEdit) {
+            if (InBaseList || IsCityEdit) {
                 $('.glyphicon-export').show();
             }
             else {
