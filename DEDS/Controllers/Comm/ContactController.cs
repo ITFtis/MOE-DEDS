@@ -103,17 +103,14 @@ namespace DEDS.Controllers.Comm
                 {
                     return new List<Tabulation>();
                 }
-
-                var BaseList = Db.UserBasic.ToList(); // 基本資料表
-                                                      ////var PositionList = fun.GetPosition();  
-                                                      
+                                     
                 bool IsManager = Dou.Context.CurrentUser<DEDS.Models.Manager.User>().IsManager;
                 if (!IsManager)
                 {
                     //20240626_Brian：登入者姓名在手冊內，才能查詢(可看到全部)
-                    //var totalTabulation = GetModelEntity().GetAll();
+                    var totalTabulation = GetModelEntity().GetAll().Where(a => a.Act == true);
                     string name = Dou.Context.CurrentUser<DEDS.Models.Manager.User>().Name;
-                    bool inBaseList = BaseList.Any(a => a.Name == name);
+                    bool inBaseList = totalTabulation.Any(a => a.Name == name);
 
                     //20250102_Brian：有縣市編輯權限，才能查詢(可看到全部)
                     var units = fun.GetUnit();
@@ -124,6 +121,9 @@ namespace DEDS.Controllers.Comm
                         return new List<Tabulation>();
                     }
                 }
+
+                var BaseList = Db.UserBasic.ToList(); // 基本資料表
+                                                      ////var PositionList = fun.GetPosition();  
 
                 var iquery = base.GetDataDBObject(dbEntity, paras);
 
