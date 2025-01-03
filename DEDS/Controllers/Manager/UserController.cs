@@ -46,7 +46,7 @@ namespace DEDS.Controllers.Manager
         }
         protected override Dou.Models.DB.IModelEntity<User> GetModelEntity()
         {
-            return new Dou.Models.DB.ModelEntity<User>(RoleController._dbContext);
+            return new Dou.Models.DB.ModelEntity<User>(new DouModelContextExt());
         }
         public override ActionResult DouLogin(User user, string returnUrl, bool redirectLogin = false)
         {
