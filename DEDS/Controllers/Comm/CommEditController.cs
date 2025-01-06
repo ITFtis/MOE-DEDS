@@ -36,8 +36,20 @@ namespace DEDS.Controllers.Comm
             var opts = base.GetDataManagerOptions();
 
             bool IsManager = Dou.Context.CurrentUser<User>().IsManager;
-            if (!IsManager) { opts.GetFiled("CityID").visibleEdit = false; }
-            else { opts.GetFiled("CityID").visible = true; }
+            if (!IsManager) 
+            { 
+                opts.GetFiled("CityID").visibleEdit = false;
+
+                //登入者無縣市，則無新增權限
+                if (string.IsNullOrEmpty(Dou.Context.CurrentUser<User>().Unit))
+                {
+                    opts.addable = false;
+                }
+            }
+            else 
+            { 
+                opts.GetFiled("CityID").visible = true; 
+            }
                         
             return opts;
         }
