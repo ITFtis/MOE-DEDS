@@ -125,6 +125,9 @@ namespace DEDS.Controllers.Comm
                 obj.CityID = CityID;
             }
 
+            if (obj.Name != null)
+                obj.Name = obj.Name.Trim();
+
             obj.UID = Uid;
             obj.EditTime = now;
             obj.EditName = Dou.Context.CurrentUser<User>().Id; //取得目前登入者資訊
@@ -157,6 +160,9 @@ namespace DEDS.Controllers.Comm
                 //Console.WriteLine("")
                 return;
             }
+
+            if (obj.Name != null)
+                obj.Name = obj.Name.Trim();
 
             obj.EditTime = DateTime.Now;
             obj.EditName = Dou.Context.CurrentUser<User>().Id;

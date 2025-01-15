@@ -40,9 +40,9 @@ namespace DEDS.Controllers.Comm
             if (!IsManager)
             {
                 //20240626_Brian：通聯手冊裡的人可以匯出手冊
-                string name = Dou.Context.CurrentUser<DEDS.Models.Manager.User>().Name;
+                string name = Dou.Context.CurrentUser<DEDS.Models.Manager.User>().Name.Trim();
                 bool inTabulation = iquery.Where(a => a.Act == true
-                                        ).Any(a => a.Name == name);
+                                        ).Any(a => a.Name.Trim() == name);
                 ViewBag.InTabulation = inTabulation;
 
                 //20250102_Brian：通聯手冊有縣市編輯權限可以匯出手冊

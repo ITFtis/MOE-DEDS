@@ -61,8 +61,8 @@ namespace DEDS.Controllers.Comm
             {
                 //20240626_Brian：登入者姓名在手冊內，才能查詢(可看到全部)
                 var totalTabulation = GetModelEntity().GetAll().Where(a => a.Act == true);
-                string name = Dou.Context.CurrentUser<DEDS.Models.Manager.User>().Name;
-                bool inBaseList = totalTabulation.Any(a => a.Name == name);
+                string name = Dou.Context.CurrentUser<DEDS.Models.Manager.User>().Name.Trim();
+                bool inBaseList = totalTabulation.Any(a => a.Name.Trim() == name);
 
                 //20250102_Brian：有縣市編輯權限，才能查詢(可看到全部)
                 var units = fun.GetUnit();
