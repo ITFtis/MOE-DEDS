@@ -356,7 +356,7 @@ namespace DEDS.Controllers.Comm
                                         //限定30字內
                                         bquery.Note = bquery.Note.Length > 30 ? bquery.Note.Substring(0, 30) : bquery.Note;
 
-                                        if (bquery.Note.Count() >= 5 && bquery.Note.Count() <= 10)
+                                        if (bquery.Note.Count() > 5 && bquery.Note.Count() <= 10)
                                         {
                                             cRow = 2;
                                         }
@@ -887,7 +887,7 @@ namespace DEDS.Controllers.Comm
                                         //限定30字內
                                         bquery.Note = bquery.Note.Length > 30 ? bquery.Note.Substring(0, 30) : bquery.Note;
 
-                                        if (bquery.Note.Count() >= 5 && bquery.Note.Count() <= 10)
+                                        if (bquery.Note.Count() > 5 && bquery.Note.Count() <= 10)
                                         {
                                             fontrun.SetText(bquery.Note.Substring(0, 5));
                                             var newrun = newCell.AddParagraph().CreateRun();
