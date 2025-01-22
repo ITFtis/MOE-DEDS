@@ -546,7 +546,7 @@ namespace DEDS.Controllers.Comm
                             {
                                 CT_TblWidth cellWidth = newCell.GetCTTc().AddNewTcPr().AddNewTcW();
                                 cellWidth.type = ST_TblWidth.dxa;
-                                cellWidth.w = "1300";
+                                cellWidth.w = "1400";
                             }
                             else if (i == 1)
                             {
@@ -564,14 +564,14 @@ namespace DEDS.Controllers.Comm
                             {
                                 CT_TblWidth cellWidth = newCell.GetCTTc().AddNewTcPr().AddNewTcW();
                                 cellWidth.type = ST_TblWidth.dxa;
-                                cellWidth.w = "700";
+                                cellWidth.w = "650"; //"700";
                                 //fontrun.SetText("姓名");
                             }
                             else if (i == 4)
                             {
                                 CT_TblWidth cellWidth = newCell.GetCTTc().AddNewTcPr().AddNewTcW();
                                 cellWidth.type = ST_TblWidth.dxa;
-                                cellWidth.w = "1400";
+                                cellWidth.w = "1350";//"1400";
                             }
                             else if (i == 5)
                             {
