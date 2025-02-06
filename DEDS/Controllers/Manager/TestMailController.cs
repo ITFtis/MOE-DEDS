@@ -99,22 +99,26 @@ namespace DEDS.Controllers.Manager
                 string subject = "測試信件(TestMail)";
                 emailHelper.Subject = subject;
                 emailHelper.Body = body;
-
-                f.ToMails = f.ToMails == null ? "" : f.ToMails;
-                foreach (string addr in f.ToMails.Split(','))
+                
+                if (!string.IsNullOrEmpty(f.ToMails))
                 {
-                    if (addr != "")
+                    foreach (string addr in f.ToMails.Split(','))
                     {
-                        emailHelper.AddTo(addr, "");
+                        if (addr != "")
+                        {
+                            emailHelper.AddTo(addr, "");
+                        }
                     }
                 }
 
-                f.BCCMails = f.BCCMails == null ? "" : f.BCCMails;
-                foreach (string addr in f.BCCMails.Split(','))
-                {
-                    if (addr != "")
+                if (!string.IsNullOrEmpty(f.BCCMails))
+                {                    
+                    foreach (string addr in f.BCCMails.Split(','))
                     {
-                        emailHelper.AddBCC(addr, "");
+                        if (addr != "")
+                        {
+                            emailHelper.AddBCC(addr, "");
+                        }
                     }
                 }
 
