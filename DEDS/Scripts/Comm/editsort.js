@@ -23,7 +23,7 @@
 
     //dou_options.editformWindowStyle = $.editformWindowStyle.detail;
     dou_options.appendCustomToolbars = [{
-        item: '<span class="btn btn-primary glyphicon glyphicon-sort" title="編輯">編 輯</span>', event: 'click .glyphicon-sort',
+        item: '<span class="btn btn-success glyphicon glyphicon-sort" title="編輯">編 輯</span>', event: 'click .glyphicon-sort',
         callback: function (e) {
             $(this).parent().find('> *').toggleClass('d-none');            
             createTableDragger();
@@ -97,7 +97,7 @@
         }
         },
         {
-            item: '<span class="btn btn-secondary glyphicon glyphicon-download-alt" title="編輯">檢核確認</span>', event: 'click .glyphicon-download-alt',
+            item: '<span class="btn btn-primary glyphicon glyphicon-download-alt" title="檢核確認">檢核確認</span>', event: 'click .glyphicon-download-alt',
             callback: function (e) {
                 
                 helper.misc.showBusyIndicator();

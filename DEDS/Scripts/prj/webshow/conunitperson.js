@@ -43,7 +43,7 @@
     //幕僚人員不能檢核確認
     if (!IsOrgStaff) {
         var a = {};
-        a.item = '<span class="btn btn-secondary glyphicon glyphicon-download-alt"> 檢核確認</span>';
+        a.item = '<span class="btn btn-primary glyphicon glyphicon-download-alt"> 檢核確認</span>';
         a.event = 'click .glyphicon-download-alt';
         a.callback = function importQdate(a, b, c, d) {
 
@@ -88,7 +88,7 @@
     //匯出pdf
     //var ToPDF
     var ToPDF = {};
-    ToPDF.item = '<span class="btn btn-secondary glyphicon glyphicon-file"> 匯出PDF</span>';
+    ToPDF.item = '<span class="btn btn-warning glyphicon glyphicon-file"> 匯出PDF</span>';
     ToPDF.event = 'click .glyphicon glyphicon-file';
     ToPDF.callback = function importQdate(a, b, c, d) {
 
@@ -128,7 +128,7 @@
     //匯出excel
     //var ToExcel
     var ToExcel = {};
-    ToExcel.item = '<span class="btn btn-secondary glyphicon glyphicon-tree-deciduous"> 匯出Excel</span>';
+    ToExcel.item = '<span class="btn btn-warning glyphicon glyphicon-tree-deciduous"> 匯出Excel</span>';
     ToExcel.event = 'click .glyphicon glyphicon-tree-deciduous';
     ToExcel.callback = function importQdate(a, b, c, d) {
 
